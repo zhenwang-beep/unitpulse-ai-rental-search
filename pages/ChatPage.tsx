@@ -405,8 +405,15 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
          )}
        </AnimatePresence>
 
-       <div className={`flex-1 flex min-h-0 relative transition-all duration-300 w-full pt-16 md:pt-20`}>
-          {/* Chat interface — always visible; narrows on desktop when property panel is open */}
+       <div className={`flex-1 flex min-h-0 relative transition-all duration-300 w-full ${!isPropertyPanelOpen ? 'pt-16 md:pt-20' : ''}`}>
+          {/* Property panel — LEFT side (desktop: 60%, mobile: full screen overlay) */}
+          {isPropertyPanelOpen && (
+            <div className="fixed inset-0 z-[50] lg:static lg:flex lg:w-[60%] h-full overflow-hidden lg:border-r lg:border-black/5">
+              <Outlet />
+            </div>
+          )}
+
+          {/* Chat interface — RIGHT side when panel open, full width otherwise */}
           <div className={`${isPropertyPanelOpen ? 'hidden lg:flex lg:w-[40%]' : 'flex-1'} flex flex-col min-h-0 min-w-0`}>
             <ChatInterface
               messages={messages}
@@ -422,13 +429,6 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
               onScroll={handleLandingScroll}
             />
           </div>
-
-          {/* Property panel — mobile: full-screen overlay; desktop: right column */}
-          {isPropertyPanelOpen && (
-            <div className="fixed inset-0 z-[50] lg:static lg:flex-1 lg:h-full overflow-hidden lg:border-l lg:border-black/5">
-              <Outlet />
-            </div>
-          )}
        </div>
 
         {/* Enlarged Image Modal */}

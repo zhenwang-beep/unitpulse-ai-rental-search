@@ -9,7 +9,9 @@ function generateId(): string {
 const SearchRedirect: React.FC = () => {
   const { addThread } = useAppContext();
   const location = useLocation();
-  const query = (location.state as { query?: string } | null)?.query;
+  const state = location.state as { query?: string; propertyId?: string } | null;
+  const query = state?.query;
+  const propertyId = state?.propertyId;
 
   // Generate and register the thread synchronously — ref prevents double-creation in StrictMode
   const chatIdRef = useRef<string | null>(null);
@@ -18,9 +20,13 @@ const SearchRedirect: React.FC = () => {
     addThread(chatIdRef.current);
   }
 
+  const destination = propertyId
+    ? `/search/${chatIdRef.current}/property/${propertyId}`
+    : `/search/${chatIdRef.current}`;
+
   return (
     <Navigate
-      to={`/search/${chatIdRef.current}`}
+      to={destination}
       state={{ query }}
       replace
     />
