@@ -221,7 +221,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
 
   // --- CHAT VIEW (Main Interface) ---
   return (
-    <div className="flex flex-col h-[100dvh] w-full bg-[#f5f4f0] font-sans text-black overflow-hidden">
+    <div className="flex flex-col h-[100dvh] w-full bg-[#FCF9F8] font-sans text-black overflow-hidden">
        {/* Live Interface Overlay */}
        {isLiveMode && (
          <LiveInterface
@@ -233,7 +233,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
        )}
 
        {!isPropertyPanelOpen && (
-        <header className={`fixed top-0 left-0 right-0 px-8 py-4 flex justify-between items-center z-[60] transition-all duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isAtTop ? 'bg-[#f5f4f0]' : 'bg-white shadow-sm'}`}>
+        <header className={`fixed top-0 left-0 right-0 px-8 py-4 flex justify-between items-center z-[60] transition-all duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
           <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
             <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/')}>
                <img src={LOGO_URL} alt="UnitPulse" className="h-8" />
