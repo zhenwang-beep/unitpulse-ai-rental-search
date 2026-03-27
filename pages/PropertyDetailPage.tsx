@@ -13,11 +13,7 @@ const PropertyDetailPage: React.FC = () => {
   const isFavorite = favorites.some(f => f.id === propertyId);
 
   const handleClose = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-    } else {
-      navigate('/');
-    }
+    navigate('/');
   };
 
   // Use declarative redirect — never call navigate() during render

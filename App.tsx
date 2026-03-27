@@ -27,13 +27,11 @@ const AppShell: React.FC = () => {
   const [showLoginView, setShowLoginView] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
-  const [showGooglePrompt, setShowGooglePrompt] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
     setShowLoginView(false);
-    setShowGooglePrompt(false);
   };
 
   const handleLogout = () => {
@@ -139,7 +137,6 @@ const AppShell: React.FC = () => {
               setShowLoginView={setShowLoginView}
               setShowFavorites={setShowFavorites}
               handleLogout={handleLogout}
-              showFavorites={showFavorites}
             />
           }
         />

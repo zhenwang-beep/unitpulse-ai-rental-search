@@ -5,7 +5,6 @@ import { MOCK_PROPERTIES, SUGGESTION_CHIPS } from '../constants';
 import { Property } from '../types';
 import PropertyCard from '../components/PropertyCard';
 import LiveInterface from '../components/LiveInterface';
-import FavoritesPage from '../components/FavoritesPage';
 import { useAppContext } from '../context/AppContext';
 import { ArrowRight, Search, AudioLines, ChevronDown, Loader2, Heart, LogOut, Menu, X, ArrowLeftRight, Calculator, Target, MessageSquare, Sparkles, Clock, FileText, Building, Settings, HelpCircle } from 'lucide-react';
 
@@ -30,7 +29,6 @@ interface LandingPageProps {
   setShowLoginView: (v: boolean) => void;
   setShowFavorites: (v: boolean) => void;
   handleLogout: () => void;
-  showFavorites: boolean;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({
@@ -40,7 +38,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
   setShowLoginView,
   setShowFavorites,
   handleLogout,
-  showFavorites,
 }) => {
   const navigate = useNavigate();
   const { favorites, toggleFavorite } = useAppContext();
@@ -611,19 +608,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
         </footer>
       </main>
 
-      <AnimatePresence>
-        {showFavorites && (
-          <FavoritesPage
-            favorites={favorites}
-            onToggleFavorite={toggleFavorite}
-            onPropertyClick={(property) => {
-              setShowFavorites(false);
-              navigate(`/property/${property.id}`);
-            }}
-            onClose={() => setShowFavorites(false)}
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 };

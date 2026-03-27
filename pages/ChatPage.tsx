@@ -33,8 +33,6 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
 
   const { allThreads, updateThread, favorites, toggleFavorite } = useAppContext();
 
-  if (!allThreads[chatId!]) return <Navigate to="/" replace />;
-
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const messages = allThreads[chatId!]?.messages || [];
 
@@ -217,6 +215,9 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
     handleSendMessage(`Analyze my style from these links: ${exampleLinks}`);
     setExampleLinks('');
   };
+
+  // Guard: redirect if thread doesn't exist (must be after all hooks)
+  if (!allThreads[chatId!]) return <Navigate to="/" replace />;
 
   // --- CHAT VIEW (Main Interface) ---
   return (
