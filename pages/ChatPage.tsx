@@ -390,7 +390,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                  {Object.entries(allThreads).map(([id, thread]) => (
                    <button
                      key={id}
-                     onClick={() => navigate('/search/' + id)}
+                     onClick={() => handleSwitchThread(id)}
                      className={`flex items-center gap-2 p-3 rounded-xl transition-colors font-medium text-sm text-left ${id === chatId ? 'bg-neutral-100 text-black' : 'hover:bg-neutral-50 text-neutral-700'}`}
                    >
                      <MessageSquare size={16} className="text-neutral-400 shrink-0" />
@@ -410,7 +410,6 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
               <Outlet />
             </div>
           )}
-          <Outlet />
 
           <div className={`${isPropertyPanelOpen ? 'lg:w-1/3' : 'flex-1'} flex flex-col min-h-0 min-w-0`}>
             {!isPropertyPanelOpen && (
