@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { MOCK_PROPERTIES, SUGGESTION_CHIPS } from '../constants';
 import { Property } from '../types';
 import PropertyCard from '../components/PropertyCard';
+import PropertyDetailsModal from '../components/PropertyDetailsModal';
 import LiveInterface from '../components/LiveInterface';
 import { useAppContext } from '../context/AppContext';
 import { ArrowRight, Search, AudioLines, ChevronDown, Loader2, Heart, LogOut, Menu, X, ArrowLeftRight, Calculator, Target, MessageSquare, Sparkles, Clock, FileText, Building, Settings, HelpCircle } from 'lucide-react';
@@ -56,6 +57,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const [isLiveMode, setIsLiveMode] = useState(false);
   const [selectedCity, setSelectedCity] = useState('All');
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
 
   const handleLandingScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const currentScrollY = e.currentTarget.scrollTop;
@@ -456,7 +458,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                   property={p}
                   isFavorite={favorites.some(f => f.id === p.id)}
                   onToggleFavorite={toggleFavorite}
-                  onClick={(property: Property) => navigate(`/property/${property.id}`)}
+                  onClick={(property: Property) => setSelectedProperty(property)}
                 />
               </div>
             ))}
@@ -608,6 +610,18 @@ const LandingPage: React.FC<LandingPageProps> = ({
         </footer>
       </main>
 
+      {selectedProperty && (
+        <PropertyDetailsModal
+          property={selectedProperty}
+          onClose={() => setSelectedProperty(null)}
+          isFavorite={favorites.some(f => f.id === selectedProperty.id)}
+          onToggleFavorite={(id) => {
+            const prop = MOCK_PROPERTIES.find(p => p.id === id);
+            if (prop) toggleFavorite(prop);
+          }}
+          isInline={false}
+        />
+      )}
     </div>
   );
 };

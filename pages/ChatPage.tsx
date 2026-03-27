@@ -405,30 +405,30 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
          )}
        </AnimatePresence>
 
-       <div className={`flex-1 flex flex-col min-h-0 relative transition-all duration-300 w-full ${!isPropertyPanelOpen ? 'pt-16 md:pt-20' : ''}`}>
+       <div className={`flex-1 flex min-h-0 relative transition-all duration-300 w-full pt-16 md:pt-20`}>
+          {/* Chat interface — always visible; narrows on desktop when property panel is open */}
+          <div className={`${isPropertyPanelOpen ? 'hidden lg:flex lg:w-[40%]' : 'flex-1'} flex flex-col min-h-0 min-w-0`}>
+            <ChatInterface
+              messages={messages}
+              onSendMessage={handleSendMessage}
+              isLoading={isLoading}
+              onToggleFavorite={toggleFavorite}
+              favorites={favorites}
+              onStartLiveMode={() => setIsLiveMode(true)}
+              onPropertyClick={handlePropertyClick}
+              selectedProperty={null}
+              onToggleHistory={() => setIsHistoryOpen(!isHistoryOpen)}
+              onNewChat={handleNewChat}
+              onScroll={handleLandingScroll}
+            />
+          </div>
+
+          {/* Property panel — mobile: full-screen overlay; desktop: right column */}
           {isPropertyPanelOpen && (
-            <div className="hidden lg:flex lg:flex-1 h-full overflow-hidden">
+            <div className="fixed inset-0 z-[50] lg:static lg:flex-1 lg:h-full overflow-hidden lg:border-l lg:border-black/5">
               <Outlet />
             </div>
           )}
-
-          <div className={`${isPropertyPanelOpen ? 'lg:w-1/3' : 'flex-1'} flex flex-col min-h-0 min-w-0`}>
-            {!isPropertyPanelOpen && (
-              <ChatInterface
-                messages={messages}
-                onSendMessage={handleSendMessage}
-                isLoading={isLoading}
-                onToggleFavorite={toggleFavorite}
-                favorites={favorites}
-                onStartLiveMode={() => setIsLiveMode(true)}
-                onPropertyClick={handlePropertyClick}
-                selectedProperty={null}
-                onToggleHistory={() => setIsHistoryOpen(!isHistoryOpen)}
-                onNewChat={handleNewChat}
-                onScroll={handleLandingScroll}
-              />
-            )}
-          </div>
        </div>
 
         {/* Enlarged Image Modal */}
