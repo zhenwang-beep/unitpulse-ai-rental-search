@@ -459,7 +459,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                   property={p}
                   isFavorite={favorites.some(f => f.id === p.id)}
                   onToggleFavorite={toggleFavorite}
-                  onClick={(property: Property) => navigate('/search', { state: { query: property.title } })}
+                  onClick={(property: Property) => navigate(`/property/${property.id}`)}
                 />
               </div>
             ))}
@@ -616,7 +616,10 @@ const LandingPage: React.FC<LandingPageProps> = ({
           <FavoritesPage
             favorites={favorites}
             onToggleFavorite={toggleFavorite}
-            onPropertyClick={(property) => { navigate('/search', { state: { query: property.title } }); setShowFavorites(false); }}
+            onPropertyClick={(property) => {
+              setShowFavorites(false);
+              navigate(`/property/${property.id}`);
+            }}
             onClose={() => setShowFavorites(false)}
           />
         )}

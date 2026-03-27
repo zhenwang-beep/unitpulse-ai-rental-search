@@ -18,17 +18,6 @@ declare global {
   }
 }
 
-const PLACEHOLDER_PROMPTS = [
-  "A modern loft in SoHo under $3000...",
-  "2 bedroom apartment with a private garden...",
-  "Pet-friendly home near Central Park...",
-  "Quiet studio for a remote worker...",
-  "Luxury penthouse with skyline views..."
-];
-
-const POPULAR_CITIES = [
-  'All', 'Los Angeles', 'Seattle', 'Chicago', 'Houston', 'Irvine', 'New York'
-];
 
 const App: React.FC = () => {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
@@ -56,7 +45,7 @@ const App: React.FC = () => {
   const [currentFilters, setCurrentFilters] = useState<SearchFilters>({});
   const [favorites, setFavorites] = useState<Property[]>([]);
   const [isLiveMode, setIsLiveMode] = useState(false);
-  const [selectedCity, setSelectedCity] = useState('All');
+
   const [signedPropertyId, setSignedPropertyId] = useState<string | null>(null);
   const [hasIntelligencePermission, setHasIntelligencePermission] = useState(false);
   const [recommendationStep, setRecommendationStep] = useState<'initial' | 'analyzing' | 'confirming' | 'recommending'>('initial');
