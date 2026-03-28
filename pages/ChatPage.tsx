@@ -239,8 +239,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
          />
        )}
 
-       {!isPropertyPanelOpen && (
-        <header className={`fixed top-0 left-0 right-0 px-8 py-4 flex justify-between items-center z-[60] transition-all duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
+       <header className={`fixed top-0 left-0 right-0 px-8 py-4 flex justify-between items-center z-[60] transition-all duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
           <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
             <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/')}>
                <img src={LOGO_URL} alt="UnitPulse" className="h-8" />
@@ -282,7 +281,6 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
             </button>
           </div>
         </header>
-       )}
 
        {/* History Sidebar */}
        <AnimatePresence>
@@ -427,7 +425,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
          )}
        </AnimatePresence>
 
-       <div className={`flex-1 flex min-h-0 relative transition-all duration-300 w-full ${!isPropertyPanelOpen ? 'pt-16 md:pt-20' : ''}`}>
+       <div className="flex-1 flex min-h-0 relative transition-all duration-300 w-full pt-16 md:pt-[72px]">
           {/* Property panel — LEFT side (desktop: 60%, mobile: full screen) */}
           {isPropertyPanelOpen && (
             <div className="fixed inset-0 z-[50] lg:static lg:flex lg:w-[60%] h-full overflow-hidden lg:border-r lg:border-black/5">
