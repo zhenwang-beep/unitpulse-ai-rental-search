@@ -465,7 +465,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
          )}
        </AnimatePresence>
 
-       <div ref={splitContainerRef} className="flex-1 flex min-h-0 relative w-full pt-16 md:pt-[72px] overflow-hidden">
+       <div ref={splitContainerRef} className="flex-1 flex min-h-0 relative w-full pt-16 overflow-hidden">
           {/* Property panel — LEFT side (desktop: dynamic width, mobile: full screen) */}
           <AnimatePresence>
             {isPropertyPanelOpen && (
@@ -493,7 +493,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
               {/* Grip dots */}
               <div className="flex flex-col gap-[3px]">
                 {[0,1,2,3].map(i => (
-                  <div key={i} className="w-[3px] h-[3px] rounded-full bg-neutral-300 group-hover:bg-[#4A5D23]/50 transition-colors" />
+                  <div key={i} className="w-[3px] h-[3px] rounded-full bg-transparent group-hover:bg-[#4A5D23]/50 transition-colors" />
                 ))}
               </div>
               {/* Collapse button on hover */}
@@ -531,12 +531,12 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
             />
           </div>
 
-          {/* Re-open chat button — shown when collapsed, desktop only */}
+          {/* Re-open chat button — fixed so it's always above the full-width property panel */}
           {isPropertyPanelOpen && isChatCollapsed && (
             <button
               onClick={() => setIsChatCollapsed(false)}
               title="Open chat"
-              className="hidden lg:flex absolute right-4 top-20 z-30 items-center gap-2 px-3 py-2 bg-white border border-black/10 rounded-xl shadow-lg text-xs font-bold hover:shadow-xl hover:-translate-y-0.5 transition-all"
+              className="hidden lg:flex fixed right-5 top-[76px] z-[80] items-center gap-1.5 px-3 py-2 bg-white border border-black/10 rounded-xl shadow-lg text-xs font-bold hover:shadow-xl hover:-translate-y-0.5 transition-all"
             >
               <PanelRightOpen size={14} />
               Chat
