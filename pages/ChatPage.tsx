@@ -425,16 +425,29 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
          )}
        </AnimatePresence>
 
-       <div className="flex-1 flex min-h-0 relative transition-all duration-300 w-full pt-16 md:pt-[72px]">
+       <div className="flex-1 flex min-h-0 relative w-full pt-16 md:pt-[72px] overflow-hidden">
           {/* Property panel — LEFT side (desktop: 60%, mobile: full screen) */}
-          {isPropertyPanelOpen && (
-            <div className="fixed inset-0 z-[50] lg:static lg:flex lg:w-[60%] h-full overflow-hidden lg:border-r lg:border-black/5">
-              <Outlet />
-            </div>
-          )}
+          <AnimatePresence>
+            {isPropertyPanelOpen && (
+              <motion.div
+                key="property-panel"
+                initial={{ x: '-100%', opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: '-100%', opacity: 0 }}
+                transition={{ duration: 0.38, ease: [0.32, 0.72, 0, 1] }}
+                className="fixed inset-0 z-[50] lg:static lg:flex lg:w-[60%] h-full overflow-hidden lg:border-r lg:border-black/5"
+              >
+                <Outlet />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Chat interface — RIGHT side when panel open, full width otherwise */}
-          <div className={`${isPropertyPanelOpen ? 'hidden lg:flex lg:w-[40%]' : 'flex-1'} flex flex-col min-h-0 min-w-0 isolate`}>
+          <motion.div
+            layout
+            transition={{ duration: 0.38, ease: [0.32, 0.72, 0, 1] }}
+            className={`${isPropertyPanelOpen ? 'hidden lg:flex lg:w-[40%]' : 'flex-1'} flex flex-col min-h-0 min-w-0 isolate`}
+          >
             <ChatInterface
               messages={messages}
               onSendMessage={handleSendMessage}
@@ -448,7 +461,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
               onNewChat={handleNewChat}
               onScroll={handleLandingScroll}
             />
-          </div>
+          </motion.div>
        </div>
 
         {/* Enlarged Image Modal */}
