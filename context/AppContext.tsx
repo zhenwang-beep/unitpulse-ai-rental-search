@@ -6,7 +6,7 @@ type AllThreads = Record<string, Thread>;
 
 interface AppContextValue {
   allThreads: AllThreads;
-  addThread: (id: string, title?: string) => void;
+  addThread: (id: string, title?: string, initialMessages?: ChatMessage[]) => void;
   updateThread: (id: string, updater: (prev: ChatMessage[]) => ChatMessage[]) => void;
   favorites: Property[];
   toggleFavorite: (property: Property) => void;
@@ -49,10 +49,10 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(favorites));
   }, [favorites]);
 
-  const addThread = (id: string, title = 'New Chat') => {
+  const addThread = (id: string, title = 'New Chat', initialMessages: ChatMessage[] = []) => {
     setAllThreads(prev => {
       if (prev[id]) return prev; // Don't overwrite existing thread
-      return { ...prev, [id]: { messages: [], title } };
+      return { ...prev, [id]: { messages: initialMessages, title } };
     });
   };
 

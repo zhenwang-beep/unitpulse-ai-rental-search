@@ -1,0 +1,7 @@
+{
+  "name": "Remix: 💥 3/27/2026: UnitPulse - AI Rental Search",
+  "description": "A futuristic, conversational rental home search experience powered by Gemini.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
