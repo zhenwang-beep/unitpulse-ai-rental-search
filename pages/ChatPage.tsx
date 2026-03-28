@@ -31,7 +31,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
   const location = useLocation();
   const isPropertyPanelOpen = !!useMatch('/search/:chatId/property/:propertyId');
 
-  const { allThreads, updateThread, favorites, toggleFavorite, renameThread } = useAppContext();
+  const { allThreads, updateThread, favorites, toggleFavorite, renameThread, deleteThread } = useAppContext();
 
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const messages = allThreads[chatId!]?.messages || [];
@@ -396,14 +396,29 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                    New Chat
                  </button>
                  {Object.entries(allThreads).map(([id, thread]) => (
-                   <button
+                   <div
                      key={id}
-                     onClick={() => handleSwitchThread(id)}
-                     className={`flex items-center gap-2 p-3 rounded-xl transition-colors font-medium text-sm text-left ${id === chatId ? 'bg-neutral-100 text-black' : 'hover:bg-neutral-50 text-neutral-700'}`}
+                     className={`group flex items-center gap-2 p-3 rounded-xl transition-colors text-sm ${id === chatId ? 'bg-neutral-100 text-black' : 'hover:bg-neutral-50 text-neutral-700'}`}
                    >
-                     <MessageSquare size={16} className="text-neutral-400 shrink-0" />
-                     <span className="truncate">{thread.title || 'Chat'}</span>
-                   </button>
+                     <button
+                       onClick={() => handleSwitchThread(id)}
+                       className="flex items-center gap-2 flex-1 min-w-0 text-left font-medium"
+                     >
+                       <MessageSquare size={16} className="text-neutral-400 shrink-0" />
+                       <span className="truncate">{thread.title || 'Chat'}</span>
+                     </button>
+                     <button
+                       onClick={(e) => {
+                         e.stopPropagation();
+                         deleteThread(id);
+                         if (id === chatId) navigate('/');
+                       }}
+                       aria-label="Delete thread"
+                       className="opacity-0 group-hover:opacity-100 p-1 rounded-lg hover:bg-red-50 hover:text-red-500 text-neutral-400 transition-all shrink-0"
+                     >
+                       <X size={14} />
+                     </button>
+                   </div>
                  ))}
                </div>
              </div>
@@ -451,7 +466,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                 <div className="flex items-center gap-6">
                   <div className="flex flex-col">
                     <span className="text-sm font-black tracking-wider">{modalTitle}</span>
-                    <span className="text-[10px] font-bold opacity-60 uppercase tracking-wider">{selectedPropertyImageIndex + 1} / {modalImages.length}</span>
+                    <span className="text-xs font-bold opacity-60 uppercase tracking-wider">{selectedPropertyImageIndex + 1} / {modalImages.length}</span>
                   </div>
                 </div>
 

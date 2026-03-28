@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ArrowUp, Loader2, ChevronRight, ChevronLeft, AudioLines, RotateCcw, Check, MapPin, Star, Wifi, Car, Coffee, ShieldCheck, Upload, CreditCard, PenTool, Key, Zap, ClipboardCheck, Heart, Sparkles, Plus, Phone, Calendar, ArrowUpDown, SquarePen, History } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChatMessage, Property } from '../types';
-import { AI_AVATAR } from '../constants';
+import { AI_AVATAR, SUGGESTION_CHIPS } from '../constants';
 import PropertyCard from './PropertyCard';
 
 interface ChatInterfaceProps {
@@ -103,17 +103,17 @@ export const RichMediaCanvas = ({ property, onAction }: { property: Property, on
       <div className="p-6 md:p-8 space-y-6 md:space-y-8">
         <div className="grid grid-cols-3 gap-4">
           <div className="p-4 bg-neutral-50 rounded-2xl border border-black/5 text-center">
-            <div className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider mb-2">Monthly</div>
+            <div className="text-xs font-medium text-neutral-400 uppercase tracking-wider mb-2">Monthly</div>
             <div className="text-base md:text-lg font-bold text-black flex items-baseline justify-center gap-1">
               ${property.price.toLocaleString()}+
             </div>
           </div>
           <div className="p-4 bg-neutral-50 rounded-2xl border border-black/5 text-center">
-            <div className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider mb-2">Bedrooms</div>
+            <div className="text-xs font-medium text-neutral-400 uppercase tracking-wider mb-2">Bedrooms</div>
             <div className="text-base md:text-lg font-bold text-black">{property.bedsRange || property.bedrooms}</div>
           </div>
           <div className="p-4 bg-neutral-50 rounded-2xl border border-black/5 text-center">
-            <div className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider mb-2">Sq Ft</div>
+            <div className="text-xs font-medium text-neutral-400 uppercase tracking-wider mb-2">Sq Ft</div>
             <div className="text-base md:text-lg font-bold text-black">{property.sqftRange || property.sqft || '1,240'}</div>
           </div>
         </div>
@@ -124,7 +124,7 @@ export const RichMediaCanvas = ({ property, onAction }: { property: Property, on
               <ShieldCheck size={16} />
             </div>
             <div>
-              <div className="text-[10px] font-medium uppercase tracking-wider text-neutral-400">Security</div>
+              <div className="text-xs font-medium uppercase tracking-wider text-neutral-400">Security</div>
               <div className="font-medium">24/7 Gated</div>
             </div>
           </div>
@@ -133,17 +133,17 @@ export const RichMediaCanvas = ({ property, onAction }: { property: Property, on
               <Zap size={16} />
             </div>
             <div>
-              <div className="text-[10px] font-medium uppercase tracking-wider text-neutral-400">Utilities</div>
+              <div className="text-xs font-medium uppercase tracking-wider text-neutral-400">Utilities</div>
               <div className="font-medium">Eco-Friendly</div>
             </div>
           </div>
         </div>
 
         <div>
-          <h3 className="text-[10px] font-bold text-black uppercase tracking-wider mb-4">Premium Amenities</h3>
+          <h3 className="text-xs font-bold text-black uppercase tracking-wider mb-4">Premium Amenities</h3>
           <div className="flex flex-wrap gap-2 md:gap-4">
             {property.amenities.map(amenity => (
-              <div key={amenity} className="flex items-center gap-2 px-4 py-2 bg-neutral-50 rounded-full border border-black/5 text-[10px] md:text-xs font-medium text-neutral-600">
+              <div key={amenity} className="flex items-center gap-2 px-4 py-2 bg-neutral-50 rounded-full border border-black/5 text-xs md:text-xs font-medium text-neutral-600">
                 {amenity === 'WiFi' ? <Wifi size={14} /> : amenity === 'Parking' ? <Car size={14} /> : <Coffee size={14} />}
                 {amenity}
               </div>
@@ -152,7 +152,7 @@ export const RichMediaCanvas = ({ property, onAction }: { property: Property, on
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-[10px] font-bold text-black uppercase tracking-wider">Description</h3>
+          <h3 className="text-xs font-bold text-black uppercase tracking-wider">Description</h3>
           <p className="text-neutral-600 leading-relaxed text-xs md:text-sm">
             {property.description}
           </p>
@@ -162,14 +162,14 @@ export const RichMediaCanvas = ({ property, onAction }: { property: Property, on
           <div className="grid grid-cols-2 gap-4">
             <button 
               onClick={() => onAction("Call Agent")}
-              className="py-3 bg-white border border-black/10 text-black rounded-xl font-medium text-[10px] md:text-xs uppercase tracking-wider hover:bg-neutral-50 transition-all flex items-center justify-center gap-2"
+              className="py-3 bg-white border border-black/10 text-black rounded-xl font-medium text-xs md:text-xs uppercase tracking-wider hover:bg-neutral-50 transition-all flex items-center justify-center gap-2"
             >
               <AudioLines size={16} />
               <span>Call Agent</span>
             </button>
             <button 
               onClick={() => onAction("Schedule Viewing")}
-              className="py-3 bg-white border border-black/10 text-black rounded-xl font-medium text-[10px] md:text-xs uppercase tracking-wider hover:bg-neutral-50 transition-all flex items-center justify-center gap-2"
+              className="py-3 bg-white border border-black/10 text-black rounded-xl font-medium text-xs md:text-xs uppercase tracking-wider hover:bg-neutral-50 transition-all flex items-center justify-center gap-2"
             >
               <ClipboardCheck size={16} />
               <span>Schedule Viewing</span>
@@ -216,8 +216,8 @@ const ApplicationForm = ({ onComplete }: { onComplete: () => void }) => {
     >
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
-          <div className="text-[10px] font-medium text-black uppercase tracking-wider">Application Journey</div>
-          <div className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider">{currentStep.progress}% Complete</div>
+          <div className="text-xs font-medium text-black uppercase tracking-wider">Application Journey</div>
+          <div className="text-xs font-medium text-neutral-400 uppercase tracking-wider">{currentStep.progress}% Complete</div>
         </div>
         <h3 className="text-xl font-bold text-black tracking-tight">Step {step} of 3: {currentStep.name}</h3>
         <div className="w-full h-1.5 bg-neutral-100 rounded-full mt-4 overflow-hidden">
@@ -239,7 +239,7 @@ const ApplicationForm = ({ onComplete }: { onComplete: () => void }) => {
             className="space-y-6"
           >
             <div className="space-y-4">
-              <label className="block text-[10px] font-medium text-neutral-400 uppercase tracking-wider">Personal Information</label>
+              <label className="block text-xs font-medium text-neutral-400 uppercase tracking-wider">Personal Information</label>
               <input type="text" placeholder="Full Legal Name" className="w-full px-4 py-3 bg-white border border-black/5 rounded-xl focus:ring-1 focus:ring-black outline-none text-sm" />
               <input type="email" placeholder="Email Address" className="w-full px-4 py-3 bg-white border border-black/5 rounded-xl focus:ring-1 focus:ring-black outline-none text-sm" />
               <input type="tel" placeholder="Phone Number" className="w-full px-4 py-3 bg-white border border-black/5 rounded-xl focus:ring-1 focus:ring-black outline-none text-sm" />
@@ -268,7 +268,7 @@ const ApplicationForm = ({ onComplete }: { onComplete: () => void }) => {
                   </div>
                   <div>
                     <div className="text-xs font-bold text-black">Scanning...</div>
-                    <div className="text-[10px] text-neutral-400">Extracting data from Government ID</div>
+                    <div className="text-xs text-neutral-400">Extracting data from Government ID</div>
                   </div>
                 </div>
                 <div className="text-[8px] font-medium text-black uppercase tracking-wider">Secure Link</div>
@@ -296,7 +296,7 @@ const ApplicationForm = ({ onComplete }: { onComplete: () => void }) => {
                     </div>
                     <div className="text-center">
                       <p className="text-sm font-bold text-black">Scan ID</p>
-                      <p className="text-[10px] text-neutral-400 font-medium mt-1">Drag and drop your document here or click to browse</p>
+                      <p className="text-xs text-neutral-400 font-medium mt-1">Drag and drop your document here or click to browse</p>
                     </div>
                   </>
                 )}
@@ -318,7 +318,7 @@ const ApplicationForm = ({ onComplete }: { onComplete: () => void }) => {
             className="space-y-6"
           >
             <div className="space-y-4">
-              <label className="block text-[10px] font-medium text-neutral-400 uppercase tracking-wider">Final Review</label>
+              <label className="block text-xs font-medium text-neutral-400 uppercase tracking-wider">Final Review</label>
               <div className="p-4 bg-[#F4F7EC] rounded-2xl border border-[#4A5D23]/15 flex items-start gap-3">
                 <ShieldCheck className="text-[#4A5D23] shrink-0 mt-0.5" size={20} />
                 <p className="text-xs text-[#243510] leading-relaxed">
@@ -347,18 +347,56 @@ const ContractSummary = ({ property, onComplete }: { property: Property, onCompl
     }
   }, [isPaid, onComplete]);
 
+  if (isPaid) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="w-full bg-gradient-to-br from-[#F4F7EC] to-[#F4F1EE] rounded-3xl border border-[#4A5D23]/20 shadow-2xl mt-4 overflow-hidden"
+      >
+        <div className="p-10 flex flex-col items-center text-center gap-5">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.15, type: 'spring', stiffness: 260, damping: 20 }}
+            className="w-20 h-20 bg-[#4A5D23] rounded-full flex items-center justify-center shadow-xl shadow-[#4A5D23]/30"
+          >
+            <Check size={40} strokeWidth={3} className="text-white" />
+          </motion.div>
+          <div>
+            <p className="text-xs font-bold text-[#4A5D23] uppercase tracking-widest mb-2">Lease Signed</p>
+            <h3 className="text-2xl font-black font-heading text-black tracking-tight">Welcome home. 🎉</h3>
+            <p className="text-sm text-neutral-500 font-medium mt-2">{property.title} · {property.location}</p>
+          </div>
+          <div className="flex gap-3 w-full mt-2">
+            <button
+              onClick={() => onComplete?.()}
+              className="flex-1 py-3 bg-[#4A5D23] text-white rounded-xl font-semibold text-sm hover:bg-[#3a4e1a] transition-all"
+            >
+              View Move-in Checklist
+            </button>
+            <button className="px-4 py-3 bg-white border border-black/5 text-black rounded-xl font-semibold text-sm hover:bg-neutral-50 transition-all">
+              Share
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full bg-[#FCF9F4] rounded-3xl border border-black/5 shadow-2xl mt-4 overflow-hidden"
+      className="w-full bg-[#FCF9F8] rounded-3xl border border-black/5 shadow-2xl mt-4 overflow-hidden"
     >
       <div className="p-8 pb-4">
         <div className="flex items-center justify-between mb-4">
-          <div className="text-[10px] font-medium text-black uppercase tracking-wider">Official Agreement</div>
+          <div className="text-xs font-medium text-black uppercase tracking-wider">Official Agreement</div>
           <div className="flex items-center gap-1.5 px-2 py-1 bg-[#F4F7EC] text-[#4A5D23] rounded-full">
-            <div className="w-1 h-1 bg-emerald-600 rounded-full animate-pulse" />
-            <span className="text-[8px] font-medium uppercase tracking-wider">Ready to Close</span>
+            <div className="w-1 h-1 bg-[#4A5D23] rounded-full animate-pulse" />
+            <span className="text-xs font-medium uppercase tracking-wider">Ready to Close</span>
           </div>
         </div>
         <h3 className="text-2xl font-bold text-black tracking-tight">Contract Summary</h3>
@@ -367,22 +405,22 @@ const ContractSummary = ({ property, onComplete }: { property: Property, onCompl
       <div className="p-8 pt-0 space-y-8">
         <div className="grid grid-cols-2 gap-4">
           <div className="p-4 bg-white rounded-2xl border border-black/5">
-            <div className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider mb-1">Monthly Rent</div>
+            <div className="text-xs font-medium text-neutral-400 uppercase tracking-wider mb-1">Monthly Rent</div>
             <div className="flex items-baseline gap-1">
               <span className="text-lg font-bold text-black">${property.price.toLocaleString()}+</span>
-              <span className="text-[10px] text-neutral-400 font-medium">/mo</span>
+              <span className="text-xs text-neutral-400 font-medium">/mo</span>
             </div>
           </div>
           <div className="p-4 bg-white rounded-2xl border border-black/5">
-            <div className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider mb-1">Security Deposit</div>
+            <div className="text-xs font-medium text-neutral-400 uppercase tracking-wider mb-1">Security Deposit</div>
             <div className="text-lg font-bold text-black">${(property.price * 2).toLocaleString()}</div>
           </div>
           <div className="p-4 bg-white rounded-2xl border border-black/5">
-            <div className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider mb-1">Move-in Date</div>
-            <div className="text-lg font-bold text-black">Oct 12, 2024</div>
+            <div className="text-xs font-medium text-neutral-400 uppercase tracking-wider mb-1">Move-in Date</div>
+            <div className="text-lg font-bold text-black">{new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
           </div>
           <div className="p-4 bg-white rounded-2xl border border-black/5">
-            <div className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider mb-1">Lease Term</div>
+            <div className="text-xs font-medium text-neutral-400 uppercase tracking-wider mb-1">Lease Term</div>
             <div className="text-lg font-bold text-black">12 Months</div>
           </div>
         </div>
@@ -394,7 +432,7 @@ const ContractSummary = ({ property, onComplete }: { property: Property, onCompl
             </div>
             <div>
               <div className="text-sm font-bold text-black">{property.title.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</div>
-              <div className="text-[10px] text-neutral-400">{property.location.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</div>
+              <div className="text-xs text-neutral-400">{property.location.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</div>
             </div>
           </div>
           <ShieldCheck className="text-neutral-300" size={20} />
@@ -402,7 +440,7 @@ const ContractSummary = ({ property, onComplete }: { property: Property, onCompl
 
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <label className="text-[10px] font-medium text-neutral-400 uppercase tracking-wider">Signature of Tenant</label>
+            <label className="text-xs font-medium text-neutral-400 uppercase tracking-wider">Signature of Tenant</label>
             <button onClick={() => setIsSigned(false)} className="text-[8px] font-medium text-black uppercase tracking-wider hover:underline">Clear Canvas</button>
           </div>
           <div 
@@ -412,7 +450,7 @@ const ContractSummary = ({ property, onComplete }: { property: Property, onCompl
             {isSigned ? (
               <div className="flex flex-col items-center gap-2">
                 <div className="text-black font-heading text-3xl italic opacity-80">Signed digitally</div>
-                <div className="text-[10px] text-[#4A5D23] font-medium uppercase tracking-wider">Verified by UnitPulse</div>
+                <div className="text-xs text-[#4A5D23] font-medium uppercase tracking-wider">Verified by UnitPulse</div>
               </div>
             ) : (
               <div className="flex flex-col items-center gap-3 text-neutral-300">
@@ -492,7 +530,7 @@ const StyleAnalysis = ({
               {styleAvatar || <Sparkles size={24} />}
             </div>
             <div>
-              <div className="text-[10px] font-bold text-[#4A5D23] uppercase tracking-[0.2em] mb-0.5">Your Style Profile</div>
+              <div className="text-xs font-bold text-[#4A5D23] uppercase tracking-[0.2em] mb-0.5">Your Style Profile</div>
               <h3 className="text-xl font-bold tracking-tight">{styleTitle || 'Style Summary'}</h3>
             </div>
           </div>
@@ -566,7 +604,7 @@ const MoveInChecklist = ({ onComplete }: { onComplete: () => void }) => {
       className="w-full bg-white rounded-3xl border border-black/10 shadow-2xl mt-4 overflow-hidden"
     >
       <div className="bg-black p-6 text-white">
-        <div className="text-[10px] font-bold uppercase tracking-wider opacity-60 mb-1">Next Steps</div>
+        <div className="text-xs font-bold uppercase tracking-wider opacity-60 mb-1">Next Steps</div>
         <h3 className="text-xl font-bold tracking-tight">Move-in Checklist</h3>
       </div>
       
@@ -671,7 +709,7 @@ const TourScheduling = ({ propertyName, onComplete }: { propertyName: string; on
       </div>
 
       <div className="mb-6">
-        <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-wider mb-3">Select a Date</label>
+        <label className="block text-xs font-black text-neutral-400 uppercase tracking-wider mb-3">Select a Date</label>
         <div className="grid grid-cols-6 gap-2">
           {days.map((d, i) => (
             <button
@@ -693,7 +731,7 @@ const TourScheduling = ({ propertyName, onComplete }: { propertyName: string; on
       </div>
 
       <div className="mb-6">
-        <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-wider mb-3">Select a Time</label>
+        <label className="block text-xs font-black text-neutral-400 uppercase tracking-wider mb-3">Select a Time</label>
         <div className="grid grid-cols-3 gap-2">
           {timeSlots.map((slot) => (
             <button
@@ -712,7 +750,7 @@ const TourScheduling = ({ propertyName, onComplete }: { propertyName: string; on
       </div>
 
       <div className="mb-6 space-y-3">
-        <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-wider">Your Contact Info</label>
+        <label className="block text-xs font-black text-neutral-400 uppercase tracking-wider">Your Contact Info</label>
         <input
           type="text"
           placeholder="Full Name"
@@ -786,13 +824,13 @@ const CompactPropertyCard = ({
         </div>
         
         {property.matchScore && (
-          <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/80 backdrop-blur-md rounded text-[10px] font-semibold text-white uppercase tracking-wider flex items-center gap-1">
+          <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/80 backdrop-blur-md rounded text-xs font-semibold text-white uppercase tracking-wider flex items-center gap-1">
             <Zap size={10} className="text-amber-400 fill-amber-400" />
             {property.matchScore}% Match
           </div>
         )}
 
-        <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/60 backdrop-blur-md rounded text-[10px] font-semibold text-white uppercase tracking-wider flex items-baseline gap-1">
+        <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/60 backdrop-blur-md rounded text-xs font-semibold text-white uppercase tracking-wider flex items-baseline gap-1">
           ${property.price.toLocaleString()}+
         </div>
       </div>
@@ -818,14 +856,14 @@ const CompactPropertyCard = ({
         <div className="flex gap-2 pt-2">
           <button 
             onClick={(e) => { e.stopPropagation(); window.location.href = 'tel:+11234567890'; }}
-            className="flex-1 py-1.5 bg-transparent hover:text-neutral-600 text-black rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5"
+            className="flex-1 py-1.5 bg-transparent hover:text-neutral-600 text-black rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5"
           >
             <Phone size={10} />
             <span className="truncate">(123) 456-7890</span>
           </button>
           <button 
             onClick={(e) => { e.stopPropagation(); onClick?.(property); }}
-            className="flex-1 py-1.5 bg-[#4A5D23] hover:bg-[#3a4e1a] text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5"
+            className="flex-1 py-1.5 bg-[#4A5D23] hover:bg-[#3a4e1a] text-white rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5"
           >
             <Calendar size={10} />
             Tour
@@ -897,7 +935,7 @@ const PropertyComparisonTable = ({
           <thead className="sticky top-0 z-10 bg-neutral-50 shadow-sm">
             <tr className="border-b border-black/5">
               <th 
-                className="px-3 py-2.5 text-[10px] font-medium uppercase tracking-wider text-neutral-400 cursor-pointer hover:text-black transition-colors w-48"
+                className="px-3 py-2.5 text-xs font-medium uppercase tracking-wider text-neutral-400 cursor-pointer hover:text-black transition-colors w-48"
                 onClick={() => handleSort('title')}
               >
                 Property <SortIndicator column="title" />
@@ -905,13 +943,13 @@ const PropertyComparisonTable = ({
               {visibleColumns.map(col => (
                 <th 
                   key={col}
-                  className="px-3 py-2.5 text-[10px] font-medium uppercase tracking-wider text-neutral-400 cursor-pointer hover:text-black transition-colors"
+                  className="px-3 py-2.5 text-xs font-medium uppercase tracking-wider text-neutral-400 cursor-pointer hover:text-black transition-colors"
                   onClick={() => handleSort(col as any)}
                 >
                   {col === 'sqft' ? 'SQFT' : col} <SortIndicator column={col as any} />
                 </th>
               ))}
-              <th className="px-3 py-2.5 text-[10px] font-medium uppercase tracking-wider text-neutral-400 text-right sticky right-0 bg-neutral-50 shadow-sm">
+              <th className="px-3 py-2.5 text-xs font-medium uppercase tracking-wider text-neutral-400 text-right sticky right-0 bg-neutral-50 shadow-sm">
                 Actions
               </th>
             </tr>
@@ -932,7 +970,7 @@ const PropertyComparisonTable = ({
                       </div>
                       <div className="min-w-0">
                         <div className="text-xs font-medium tracking-tight truncate group-hover:text-[#4A5D23] transition-colors">{property.title}</div>
-                        <div className="text-[10px] font-normal text-neutral-400 tracking-normal truncate flex items-center gap-1">
+                        <div className="text-xs font-normal text-neutral-400 tracking-normal truncate flex items-center gap-1">
                           <MapPin size={8} />
                           {property.location}
                         </div>
@@ -960,7 +998,7 @@ const PropertyComparisonTable = ({
                       {col === 'amenities' && (
                         <div className="flex flex-wrap gap-1">
                           {property.amenities.slice(0, 2).map((am, i) => (
-                            <span key={i} className="text-[10px] font-normal uppercase tracking-wider px-1.5 py-0.5 bg-neutral-100 text-neutral-500 rounded-sm">
+                            <span key={i} className="text-xs font-normal uppercase tracking-wider px-1.5 py-0.5 bg-neutral-100 text-neutral-500 rounded-sm">
                               {am}
                             </span>
                           ))}
@@ -984,7 +1022,7 @@ const PropertyComparisonTable = ({
                           e.stopPropagation();
                           onSendMessage(`I'd like to schedule a tour for ${property.title}`);
                         }}
-                        className="px-2 py-1 bg-[#4A5D23] text-white text-[10px] font-medium uppercase tracking-wider rounded-lg hover:bg-[#3a4e1a] transition-all whitespace-nowrap flex items-center gap-1"
+                        className="px-2 py-1 bg-[#4A5D23] text-white text-xs font-medium uppercase tracking-wider rounded-lg hover:bg-[#3a4e1a] transition-all whitespace-nowrap flex items-center gap-1"
                       >
                         <Calendar size={10} />
                         Tour
@@ -1051,18 +1089,18 @@ const PropertyCarousel = ({
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Sparkles size={14} className="text-amber-500" />
-          <span className="text-[10px] font-medium uppercase tracking-wider text-black">Top Matches</span>
+          <span className="text-xs font-medium uppercase tracking-wider text-black">Top Matches</span>
         </div>
         <div className="flex bg-neutral-100 p-1 rounded-xl border border-black/5">
           <button 
             onClick={() => setViewMode('carousel')}
-            className={`px-3 py-1.5 rounded-lg text-[10px] font-medium uppercase tracking-wider transition-all ${viewMode === 'carousel' ? 'bg-white text-black shadow-sm' : 'text-neutral-400 hover:text-black'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium uppercase tracking-wider transition-all ${viewMode === 'carousel' ? 'bg-white text-black shadow-sm' : 'text-neutral-400 hover:text-black'}`}
           >
             List
           </button>
           <button 
             onClick={() => setViewMode('table')}
-            className={`px-3 py-1.5 rounded-lg text-[10px] font-medium uppercase tracking-wider transition-all ${viewMode === 'table' ? 'bg-white text-black shadow-sm' : 'text-neutral-400 hover:text-black'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium uppercase tracking-wider transition-all ${viewMode === 'table' ? 'bg-white text-black shadow-sm' : 'text-neutral-400 hover:text-black'}`}
           >
             Compare
           </button>
@@ -1261,7 +1299,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 <div className="animate-fade-in-up">
                   <div className="flex flex-col gap-3 w-full">
                     <div className="flex items-center gap-2 ml-1">
-                       <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center text-white text-[10px] font-bold font-heading">U</div>
+                       <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center text-white text-xs font-bold font-heading">U</div>
                        <span className="text-xs font-medium text-black uppercase tracking-wider">UnitPulse</span>
                     </div>
 
@@ -1271,19 +1309,19 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                         <div className="flex flex-wrap gap-3 mt-4">
                           <button 
                             onClick={() => onSendMessage(`I'd like to schedule a tour for ${selectedProperty.title}.`)}
-                            className="px-4 py-2 bg-neutral-100 text-black text-[10px] lg:text-xs font-medium rounded-full hover:bg-neutral-200 transition-all tracking-tight"
+                            className="px-4 py-2 bg-neutral-100 text-black text-xs lg:text-xs font-medium rounded-full hover:bg-neutral-200 transition-all tracking-tight"
                           >
                             Schedule Tour
                           </button>
                           <button 
                             onClick={() => onSendMessage(`What are the lease terms for ${selectedProperty.title}?`)}
-                            className="px-4 py-2 bg-neutral-100 text-black text-[10px] lg:text-xs font-medium rounded-full hover:bg-neutral-200 transition-all tracking-tight"
+                            className="px-4 py-2 bg-neutral-100 text-black text-xs lg:text-xs font-medium rounded-full hover:bg-neutral-200 transition-all tracking-tight"
                           >
                             Lease Terms
                           </button>
                           <button 
                             onClick={() => onSendMessage(`Tell me about the amenities at ${selectedProperty.title}.`)}
-                            className="px-4 py-2 bg-neutral-100 text-black text-[10px] lg:text-xs font-medium rounded-full hover:bg-neutral-200 transition-all tracking-tight"
+                            className="px-4 py-2 bg-neutral-100 text-black text-xs lg:text-xs font-medium rounded-full hover:bg-neutral-200 transition-all tracking-tight"
                           >
                             Amenities
                           </button>
@@ -1293,6 +1331,29 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 </div>
               )}
              
+             {/* Empty state — shown before any conversation starts */}
+             {messages.length === 0 && !isLoading && !selectedProperty && (
+               <div className="flex flex-col items-center justify-center min-h-[50vh] text-center animate-fade-in-up">
+                 <div className="w-12 h-12 bg-black rounded-2xl flex items-center justify-center text-white font-black font-heading text-lg mb-4 shadow-lg">U</div>
+                 <h2 className="text-xl font-black font-heading text-black mb-1">Hi, I'm Lumina</h2>
+                 <p className="text-sm text-neutral-500 font-medium mb-8 max-w-xs">Your AI rental concierge. Tell me what you're looking for.</p>
+                 <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
+                   {SUGGESTION_CHIPS.map((chip) => (
+                     <button
+                       key={chip.label}
+                       onClick={() => onSendMessage(chip.query)}
+                       className="group relative overflow-hidden rounded-2xl border border-black/5 bg-white hover:border-[#4A5D23]/20 hover:shadow-lg transition-all duration-200 text-left"
+                     >
+                       <img src={chip.image} alt="" className="w-full h-20 object-cover" referrerPolicy="no-referrer" />
+                       <div className="px-3 py-2.5">
+                         <span className="text-xs font-bold text-black">{chip.label}</span>
+                       </div>
+                     </button>
+                   ))}
+                 </div>
+               </div>
+             )}
+
              {messages.map((msg, index) => (
                <div key={msg.id} className="animate-fade-in-up">
                  
@@ -1301,20 +1362,20 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                      <div className="bg-neutral-100 text-neutral-800 px-6 py-3.5 rounded-2xl max-w-[85%] lg:max-w-[70%] text-sm leading-relaxed border border-black/5 whitespace-pre-wrap font-medium shadow-sm">
                        {msg.text}
                      </div>
-                     <span className="text-[10px] text-neutral-400 font-medium px-2">
+                     <span className="text-xs text-neutral-400 font-medium px-2">
                        {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                      </span>
                    </div>
                  ) : (
                    <div className="flex flex-col gap-3 w-full">
                      <div className="flex items-center gap-2 ml-1">
-                        <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center text-white text-[10px] font-bold font-heading">U</div>
+                        <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center text-white text-xs font-bold font-heading">U</div>
                         <span className="text-xs font-medium text-black uppercase tracking-wider">UnitPulse</span>
                      </div>
 
                      <div className={`text-neutral-800 text-sm leading-relaxed pl-1 whitespace-pre-wrap font-medium ${msg.isSigningMessage ? 'bg-[#F4F7EC] p-6 rounded-2xl border-2 border-emerald-500/20 shadow-xl shadow-emerald-500/5' : ''}`}>
                         {msg.isSigningMessage && (
-                          <div className="flex items-center gap-2 text-[#4A5D23] font-bold uppercase tracking-wider text-[10px] mb-4">
+                          <div className="flex items-center gap-2 text-[#4A5D23] font-bold uppercase tracking-wider text-xs mb-4">
                             <Check size={14} strokeWidth={3} />
                             Lease Agreement Ready
                           </div>
@@ -1373,7 +1434,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                                 </div>
                                 <div>
                                    <div className="text-sm font-medium text-black uppercase tracking-tight">Digital Lease Ready</div>
-                                   <div className="text-[10px] text-neutral-400 font-medium uppercase tracking-wider">Secured by UnitPulse</div>
+                                   <div className="text-xs text-neutral-400 font-medium uppercase tracking-wider">Secured by UnitPulse</div>
                                 </div>
                              </div>
                              <div className="text-xs font-medium text-[#4A5D23] uppercase tracking-wider bg-[#F4F7EC] px-3 py-1.5 rounded-full">Active</div>
@@ -1396,13 +1457,24 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
              ))}
              
              {isLoading && (
-               <div className="flex flex-col gap-4 max-w-3xl animate-breathing">
-                  <div className="flex items-center gap-2 ml-1">
-                     <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center text-white text-[10px] font-bold font-heading">U</div>
-                      <span className="text-xs font-medium text-neutral-400 uppercase tracking-wider">
-                        {AI_STATUS_MESSAGES[aiStatusIndex]}
-                      </span>
-                  </div>
+               <div className="flex flex-col gap-3 animate-fade-in-up">
+                 <div className="flex items-center gap-2 ml-1">
+                   <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center text-white text-xs font-bold font-heading shrink-0">U</div>
+                   <span className="text-xs font-medium text-neutral-400 uppercase tracking-wider animate-pulse">
+                     {AI_STATUS_MESSAGES[aiStatusIndex]}
+                   </span>
+                 </div>
+                 <div className="bg-white border border-black/5 rounded-2xl p-5 space-y-3 shadow-sm">
+                   <div className="space-y-2">
+                     <div className="h-3 bg-neutral-100 rounded-full animate-pulse w-3/4" />
+                     <div className="h-3 bg-neutral-100 rounded-full animate-pulse w-full" />
+                     <div className="h-3 bg-neutral-100 rounded-full animate-pulse w-5/6" />
+                   </div>
+                   <div className="flex gap-2 pt-1">
+                     <div className="h-7 w-24 bg-neutral-100 rounded-full animate-pulse" />
+                     <div className="h-7 w-20 bg-neutral-100 rounded-full animate-pulse" />
+                   </div>
+                 </div>
                </div>
              )}
            </div>

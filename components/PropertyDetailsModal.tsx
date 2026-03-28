@@ -87,19 +87,33 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto">
 
-        {/* Close / back button */}
-        <div className="sticky top-0 z-20 flex justify-between items-center px-4 py-4">
+        {/* Top navigation bar */}
+        <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 gap-3">
+          {/* Left: back / close */}
           <button
             onClick={onClose}
-            aria-label="Close property details"
-            className="p-2 bg-white/80 backdrop-blur-md shadow-sm border border-black/5 rounded-full hover:bg-white transition-colors"
+            aria-label={isInline ? "Back to search" : "Close property details"}
+            className="flex items-center gap-1.5 pl-1 pr-3 py-1.5 bg-white/80 backdrop-blur-md shadow-sm border border-black/5 rounded-full hover:bg-white transition-colors shrink-0"
           >
-            <X size={18} />
+            <ChevronLeft size={16} />
+            {isInline && <span className="text-xs font-semibold">Back</span>}
           </button>
+
+          {/* Center: property address breadcrumb */}
+          {isInline && (
+            <div className="flex-1 min-w-0 text-center">
+              <p className="text-xs font-semibold text-neutral-500 truncate">
+                <MapPin size={10} className="inline mr-0.5 -mt-0.5" />
+                {property.location}
+              </p>
+            </div>
+          )}
+
+          {/* Right: favorite */}
           <button
             onClick={() => onToggleFavorite(property.id)}
             aria-label={isFavorite ? "Remove from favorites" : "Save to favorites"}
-            className={`p-2 bg-white/80 backdrop-blur-md shadow-sm border border-black/5 rounded-full transition-all hover:bg-white ${isFavorite ? 'text-red-500' : 'text-neutral-400 hover:text-red-400'}`}
+            className={`p-2 bg-white/80 backdrop-blur-md shadow-sm border border-black/5 rounded-full transition-all hover:bg-white shrink-0 ${isFavorite ? 'text-red-500' : 'text-neutral-400 hover:text-red-400'}`}
           >
             <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
           </button>
@@ -143,7 +157,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
             {/* View all button */}
             <button
               onClick={() => openImage(0)}
-              className="absolute bottom-3 right-3 px-3 py-1.5 bg-white/90 backdrop-blur-md border border-black/5 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 hover:bg-black hover:text-white transition-all shadow-lg"
+              className="absolute bottom-3 right-3 px-3 py-1.5 bg-white/90 backdrop-blur-md border border-black/5 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 hover:bg-black hover:text-white transition-all shadow-lg"
             >
               <Menu size={12} />
               View all photos
@@ -156,8 +170,8 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
           {/* Title & Location */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <span className="px-2.5 py-1 bg-black text-white text-[10px] font-black uppercase tracking-wider rounded-full">New Listing</span>
-              <span className="px-2.5 py-1 bg-[#4A5D23] text-white text-[10px] font-black uppercase tracking-wider rounded-full flex items-center gap-1">
+              <span className="px-2.5 py-1 bg-black text-white text-xs font-black uppercase tracking-wider rounded-full">New Listing</span>
+              <span className="px-2.5 py-1 bg-[#4A5D23] text-white text-xs font-black uppercase tracking-wider rounded-full flex items-center gap-1">
                 <Sparkles size={10} />
                 {matchScore}% Match
               </span>
@@ -182,7 +196,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-black text-black leading-none mb-1">{stat.value}</span>
-                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider leading-none">{stat.label}</span>
+                  <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider leading-none">{stat.label}</span>
                 </div>
               </div>
             ))}
@@ -195,7 +209,10 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
               <h3 className="text-xs font-black text-[#1a2609] uppercase tracking-wider">AI Lifestyle Match</h3>
             </div>
             <p className="text-xs font-medium text-[#243510] leading-relaxed">
-              Compared to similar listings, this unit includes all utilities and features a private terrace — perfectly aligned with your preference for privacy and outdoor space.
+              {property.matchReason
+                ? `${property.matchReason} This ${property.type.toLowerCase()} in ${property.location} stands out for its ${property.amenities.slice(0, 2).join(' and ').toLowerCase()}.`
+                : `This ${property.type.toLowerCase()} in ${property.location} stands out for its ${property.amenities.slice(0, 2).join(' and ').toLowerCase()}${property.amenities.length > 2 ? ` and ${property.amenities.length - 2} more premium features` : ''}.`
+              }
             </p>
           </div>
 
@@ -219,7 +236,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                   >
                     <div className="text-left space-y-1">
                       <span className="text-sm font-black text-black uppercase tracking-wider block">{plan.type}</span>
-                      <div className="flex items-center gap-3 text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
+                      <div className="flex items-center gap-3 text-xs font-bold text-neutral-400 uppercase tracking-wider">
                         <span>{plan.priceRange}</span>
                         <span>•</span>
                         <span>{plan.sqft} sqft</span>
@@ -258,13 +275,13 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                                   <div className="flex justify-between items-start">
                                     <div>
                                       <span className="text-xs font-black uppercase tracking-wider block">{unit.id}</span>
-                                      <span className={`text-[10px] font-bold uppercase tracking-wider ${selectedUnit === unit.id ? 'text-white/60' : 'text-neutral-400'}`}>
+                                      <span className={`text-xs font-bold uppercase tracking-wider ${selectedUnit === unit.id ? 'text-white/60' : 'text-neutral-400'}`}>
                                         {plan.type} • {unit.sqft || plan.sqft}
                                       </span>
                                     </div>
                                     <div className="text-right">
                                       <span className="text-sm font-black block">{unit.price}</span>
-                                      <span className={`text-[10px] font-black uppercase tracking-wider ${selectedUnit === unit.id ? 'text-[#8aaa4d]' : 'text-[#4A5D23]'}`}>Available Now</span>
+                                      <span className={`text-xs font-black uppercase tracking-wider ${selectedUnit === unit.id ? 'text-[#8aaa4d]' : 'text-[#4A5D23]'}`}>Available Now</span>
                                     </div>
                                   </div>
                                   <div className="flex gap-2 mt-2">
@@ -288,17 +305,17 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                                   >
                                     <div className="p-4 bg-[#F4F1EE] rounded-xl border border-black/5 space-y-4">
                                       <div className="space-y-2">
-                                        <span className="text-[10px] font-black uppercase tracking-wider text-neutral-400">Unit Amenities</span>
+                                        <span className="text-xs font-black uppercase tracking-wider text-neutral-400">Unit Amenities</span>
                                         <div className="grid grid-cols-2 gap-2">
                                           {unit.amenities.map((am) => (
                                             <div key={am} className="flex items-center gap-2 px-3 py-2 bg-white border border-[#4A5D23]/15 rounded-lg">
                                               <Check size={10} className="text-[#4A5D23]" strokeWidth={3} />
-                                              <span className="text-[10px] font-black text-black uppercase tracking-wider">{am}</span>
+                                              <span className="text-xs font-black text-black uppercase tracking-wider">{am}</span>
                                             </div>
                                           ))}
                                         </div>
                                       </div>
-                                      <button className="w-full py-3 bg-[#4A5D23] text-white rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#3a4e1a] transition-all">
+                                      <button className="w-full py-3 bg-[#4A5D23] text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#3a4e1a] transition-all">
                                         <FileText size={14} />
                                         Apply for this unit
                                       </button>
@@ -330,7 +347,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                 : buildingItems;
               return (
                 <div key={cat} className="space-y-2">
-                  <span className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">{cat}</span>
+                  <span className="text-xs font-black text-neutral-400 uppercase tracking-widest">{cat}</span>
                   <div className="grid grid-cols-2 gap-2">
                     {items.map((am) => (
                       <div key={am} className="flex items-center gap-2.5 px-3 py-2.5 bg-[#F4F1EE] rounded-xl border border-black/5">
@@ -415,14 +432,14 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
         <div className="shrink-0 lg:hidden flex border-t border-black/5 bg-[#FCF9F8]" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
           <div className="flex-1 h-14 flex flex-col items-center justify-center gap-0.5 text-[#4A5D23]">
             <Building2 size={18} />
-            <span className="text-[10px] font-bold uppercase tracking-wider">Listing</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Listing</span>
           </div>
           <button
             onClick={onClose}
             className="flex-1 h-14 flex flex-col items-center justify-center gap-0.5 text-neutral-400 active:text-black transition-colors"
           >
             <MessageSquare size={18} />
-            <span className="text-[10px] font-bold uppercase tracking-wider">Chat</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Chat</span>
           </button>
         </div>
       )}
@@ -440,7 +457,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
             <div className="p-5 flex justify-between items-center text-white border-b border-white/10">
               <div className="flex flex-col">
                 <span className="text-sm font-black tracking-wider">{property.title}</span>
-                <span className="text-[10px] font-bold opacity-60 uppercase tracking-wider">{selectedImageIndex + 1} / {images.length}</span>
+                <span className="text-xs font-bold opacity-60 uppercase tracking-wider">{selectedImageIndex + 1} / {images.length}</span>
               </div>
               <button onClick={() => setIsImageModalOpen(false)} className="p-3 hover:bg-white/10 rounded-full transition-all">
                 <X size={22} />
