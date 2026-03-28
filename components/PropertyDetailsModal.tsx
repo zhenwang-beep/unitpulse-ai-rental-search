@@ -99,15 +99,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
             {isInline && <span className="text-xs font-semibold">Back</span>}
           </button>
 
-          {/* Center: property address breadcrumb */}
-          {isInline && (
-            <div className="flex-1 min-w-0 text-center">
-              <p className="text-xs font-semibold text-neutral-500 truncate">
-                <MapPin size={10} className="inline mr-0.5 -mt-0.5" />
-                {property.location}
-              </p>
-            </div>
-          )}
+          <div className="flex-1" />
 
           {/* Right: favorite */}
           <button
