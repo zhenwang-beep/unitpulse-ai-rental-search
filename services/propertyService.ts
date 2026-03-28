@@ -1,6 +1,26 @@
 import { Property, SearchFilters } from '../types';
 import { MOCK_PROPERTIES } from '../constants';
 
+// TODO [Backend Integration]:
+// Replace the mock implementation below with a real API call.
+//
+// Expected API contract:
+//   GET /api/properties
+//   Response: { data: Property[]; total: number; page: number; pageSize: number }
+//
+// Query params (map from SearchFilters):
+//   location       — string, e.g. "San Francisco"
+//   minPrice       — number, e.g. 1500
+//   maxPrice       — number, e.g. 4000
+//   minBedrooms    — number, e.g. 2
+//   amenities      — comma-separated string, e.g. "Pool,Gym"
+//   propertyType   — string, e.g. "Apartment"
+//
+// Suggested providers:
+//   - Zillow Bridge API  (https://www.zillowgroup.com/developers/)
+//   - RentCast           (https://rentcast.io/api)
+//   - Apartments.com     (partner API, contact required)
+//   - MLS IDX            (via Spark API or similar IDX provider)
 export const getFilteredProperties = (filters: SearchFilters): Property[] => {
   const results = MOCK_PROPERTIES.filter(property => {
     let matches = true;

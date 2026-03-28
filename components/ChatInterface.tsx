@@ -605,6 +605,142 @@ const MoveInChecklist = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
+const TourScheduling = ({ propertyName, onComplete }: { propertyName: string; onComplete: () => void }) => {
+  const today = new Date();
+  const days = Array.from({ length: 6 }, (_, i) => {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    return d;
+  });
+  const timeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '2:00 PM', '3:00 PM', '4:00 PM'];
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [confirmed, setConfirmed] = useState(false);
+
+  const handleConfirm = () => {
+    if (selectedDay === null || !selectedTime || !name.trim() || !phone.trim()) return;
+    setConfirmed(true);
+  };
+
+  if (confirmed) {
+    const confirmedDay = days[selectedDay!];
+    const dateStr = confirmedDay.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full bg-[#F4F7EC] rounded-3xl border border-[#4A5D23]/15 shadow-lg mt-4 p-8 text-center"
+      >
+        <div className="w-12 h-12 bg-[#4A5D23] rounded-full flex items-center justify-center mx-auto mb-4">
+          <Check size={24} className="text-white" strokeWidth={3} />
+        </div>
+        <h3 className="text-xl font-black text-black mb-1">Tour Confirmed!</h3>
+        <p className="text-sm font-medium text-neutral-500 mb-4">{propertyName}</p>
+        <div className="bg-white rounded-2xl border border-[#4A5D23]/15 px-6 py-4 inline-block mb-6">
+          <span className="text-sm font-bold text-[#1a2609]">{dateStr} at {selectedTime}</span>
+        </div>
+        <p className="text-xs font-medium text-neutral-400 mb-6">We'll send a reminder to {phone}</p>
+        <button
+          onClick={onComplete}
+          className="px-6 py-2.5 bg-[#4A5D23] text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#3a4e1a] transition-all"
+        >
+          Back to Chat
+        </button>
+      </motion.div>
+    );
+  }
+
+  const canConfirm = selectedDay !== null && selectedTime !== null && name.trim().length > 0 && phone.trim().length > 0;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="w-full bg-[#FCF9F4] rounded-3xl border border-black/5 shadow-lg mt-4 p-8"
+    >
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-full bg-[#4A5D23] flex items-center justify-center shrink-0">
+          <Calendar size={18} className="text-white" />
+        </div>
+        <div>
+          <h3 className="text-base font-black text-black">Schedule a Tour</h3>
+          <p className="text-xs font-medium text-neutral-400 truncate max-w-[220px]">{propertyName}</p>
+        </div>
+      </div>
+
+      <div className="mb-6">
+        <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-wider mb-3">Select a Date</label>
+        <div className="grid grid-cols-6 gap-2">
+          {days.map((d, i) => (
+            <button
+              key={i}
+              onClick={() => setSelectedDay(i)}
+              className={`flex flex-col items-center py-2.5 rounded-xl border text-center transition-all ${
+                selectedDay === i
+                  ? 'bg-[#4A5D23] border-[#4A5D23] text-white'
+                  : 'bg-white border-black/5 hover:border-black/20 text-black'
+              }`}
+            >
+              <span className={`text-[9px] font-bold uppercase tracking-wider mb-0.5 ${selectedDay === i ? 'text-white/70' : 'text-neutral-400'}`}>
+                {i === 0 ? 'Today' : i === 1 ? 'Tmrw' : d.toLocaleDateString('en-US', { weekday: 'short' })}
+              </span>
+              <span className="text-sm font-black">{d.getDate()}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-6">
+        <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-wider mb-3">Select a Time</label>
+        <div className="grid grid-cols-3 gap-2">
+          {timeSlots.map((slot) => (
+            <button
+              key={slot}
+              onClick={() => setSelectedTime(slot)}
+              className={`py-2.5 rounded-xl border text-xs font-bold transition-all ${
+                selectedTime === slot
+                  ? 'bg-[#4A5D23] border-[#4A5D23] text-white'
+                  : 'bg-white border-black/5 hover:border-black/20 text-black'
+              }`}
+            >
+              {slot}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-6 space-y-3">
+        <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-wider">Your Contact Info</label>
+        <input
+          type="text"
+          placeholder="Full Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full px-4 py-3 bg-white border border-black/5 rounded-xl focus:ring-1 focus:ring-[#4A5D23] outline-none text-sm"
+        />
+        <input
+          type="tel"
+          placeholder="Phone Number"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          className="w-full px-4 py-3 bg-white border border-black/5 rounded-xl focus:ring-1 focus:ring-[#4A5D23] outline-none text-sm"
+        />
+      </div>
+
+      <button
+        onClick={handleConfirm}
+        disabled={!canConfirm}
+        className="w-full py-3 bg-[#4A5D23] text-white rounded-xl font-bold text-sm uppercase tracking-wider hover:bg-[#3a4e1a] transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+      >
+        <Calendar size={16} />
+        Confirm Tour
+      </button>
+    </motion.div>
+  );
+};
+
 // --- END INTERACTIVE COMPONENTS ---
 
 const AI_STATUS_MESSAGES = [
@@ -935,8 +1071,9 @@ const PropertyCarousel = ({
 
       {viewMode === 'carousel' ? (
         <div className="relative group/carousel w-full">
-          <button 
+          <button
             onClick={() => scroll('left')}
+            aria-label="Scroll properties left"
             className={`absolute left-0 top-1/2 -translate-y-1/2 -ml-3 z-20 w-8 h-8 bg-white rounded-full shadow-lg border border-black/5 flex items-center justify-center text-black transition-all ${canScrollLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
           >
             <ChevronLeft size={16} />
@@ -959,8 +1096,9 @@ const PropertyCarousel = ({
              ))}
           </div>
 
-          <button 
+          <button
             onClick={() => scroll('right')}
+            aria-label="Scroll properties right"
             className={`absolute right-0 top-1/2 -translate-y-1/2 -mr-3 z-20 w-8 h-8 bg-white rounded-full shadow-lg border border-black/5 flex items-center justify-center text-black transition-all ${canScrollRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
           >
             <ChevronRight size={16} />
@@ -1220,6 +1358,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                           <MoveInChecklist onComplete={() => onSendMessage("I've finished my move-in checklist!")} />
                         )}
 
+                        {msg.interactiveType === 'tour-scheduling' && (
+                          <TourScheduling
+                            propertyName={msg.interactiveData?.propertyName || 'this property'}
+                            onComplete={() => onSendMessage("I've scheduled a tour!")}
+                          />
+                        )}
+
                         {msg.isSigningMessage && !msg.interactiveType && (
                           <div className="mt-8 p-6 bg-white rounded-xl border border-[#4A5D23]/15 flex items-center justify-between shadow-sm">
                              <div className="flex items-center gap-4">
@@ -1372,12 +1517,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                    >
                      <AudioLines size={20} />
                    </button>
-                   <button 
+                   <button
                      type="button"
                      disabled={isLoading || !hasText}
                      onClick={handleSubmit}
+                     aria-label="Send message"
                      className={`h-8 w-8 rounded-full transition-all flex items-center justify-center ${
-                       hasText 
+                       hasText
                          ? 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
                          : 'bg-neutral-100 text-neutral-300 cursor-not-allowed'
                      }`}

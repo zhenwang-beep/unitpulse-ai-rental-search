@@ -31,7 +31,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
   const location = useLocation();
   const isPropertyPanelOpen = !!useMatch('/search/:chatId/property/:propertyId');
 
-  const { allThreads, updateThread, favorites, toggleFavorite } = useAppContext();
+  const { allThreads, updateThread, favorites, toggleFavorite, renameThread } = useAppContext();
 
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const messages = allThreads[chatId!]?.messages || [];
@@ -140,6 +140,13 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
       };
       setMessages(prev => [...prev, aiMsg]);
     }
+
+    // Auto-title thread from first user message
+    if (messages.length === 0) {
+      const rawTitle = text.trim();
+      const title = rawTitle.length > 45 ? rawTitle.slice(0, 45).trimEnd() + '…' : rawTitle;
+      renameThread(chatId!, title);
+    }
   };
 
   const hasSentInitialQuery = useRef(false);
@@ -188,8 +195,8 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
         ? `Great! I've started the tour scheduling process. Please confirm your preferred date and time below.`
         : `Excellent choice! I've initiated the application process. Let's get your details ready.`,
       timestamp: Date.now() + 1,
-      interactiveType: type === 'tour' ? 'contract' : 'application-form',
-      interactiveData: undefined,
+      interactiveType: type === 'tour' ? 'tour-scheduling' : 'application-form',
+      interactiveData: type === 'tour' ? { propertyName: 'this property' } : undefined,
       suggestedReplies: type === 'tour' ? ["Tomorrow at 10am", "This weekend"] : ["Start Form", "Ask about fees"]
     };
 

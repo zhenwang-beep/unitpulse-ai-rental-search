@@ -91,12 +91,14 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
         <div className="sticky top-0 z-20 flex justify-between items-center px-4 py-4">
           <button
             onClick={onClose}
+            aria-label="Close property details"
             className="p-2 bg-white/80 backdrop-blur-md shadow-sm border border-black/5 rounded-full hover:bg-white transition-colors"
           >
             <X size={18} />
           </button>
           <button
             onClick={() => onToggleFavorite(property.id)}
+            aria-label={isFavorite ? "Remove from favorites" : "Save to favorites"}
             className={`p-2 bg-white/80 backdrop-blur-md shadow-sm border border-black/5 rounded-full transition-all hover:bg-white ${isFavorite ? 'text-red-500' : 'text-neutral-400 hover:text-red-400'}`}
           >
             <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
@@ -449,6 +451,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
             <div className="flex-1 relative flex items-center justify-center p-4 overflow-hidden">
               <button
                 onClick={() => setSelectedImageIndex((prev) => (prev - 1 + images.length) % images.length)}
+                aria-label="Previous image"
                 className="absolute left-4 p-3 bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-full text-white z-10 border border-white/10 transition-all"
               >
                 <ChevronLeft size={28} />
@@ -464,6 +467,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
               />
               <button
                 onClick={() => setSelectedImageIndex((prev) => (prev + 1) % images.length)}
+                aria-label="Next image"
                 className="absolute right-4 p-3 bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-full text-white z-10 border border-white/10 transition-all"
               >
                 <ChevronRight size={28} />

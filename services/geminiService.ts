@@ -49,6 +49,7 @@ When a user sends a message:
    - "contract": When showing the final summary for signature and payment.
    - "move-in-checklist": When the lease is signed and paid, showing the next steps for moving in.
    - "style-analysis": When analyzing the user's preferred style from external links or descriptions.
+   - "tour-scheduling": When the user wants to schedule a viewing or tour of a property.
 8. Generate 3-4 "suggestedReplies" that the user might want to say next.
 
 Output JSON format strictly.
@@ -188,7 +189,7 @@ export const sendMessageToGemini = async (
               },
               interactiveType: {
                 type: Type.STRING,
-                enum: ["properties", "deep-dive", "application-form", "contract", "move-in-checklist", "style-analysis"],
+                enum: ["properties", "deep-dive", "application-form", "contract", "move-in-checklist", "style-analysis", "tour-scheduling"],
                 description: "The type of interactive UI component to render in the chat."
               },
               styleTitle: {
