@@ -1120,7 +1120,7 @@ const PropertyCarousel = ({
           <div 
             ref={scrollRef}
             onScroll={checkScroll}
-            className="flex gap-4 overflow-x-auto pb-8 pt-4 px-4 -ml-4 snap-x property-carousel scroll-smooth items-stretch scrollbar-hide"
+            className="flex gap-4 overflow-x-auto pb-8 pt-4 snap-x property-carousel scroll-smooth items-stretch scrollbar-hide"
           >
              {sortedProperties.map((property) => (
                <div key={property.id} className="min-w-[280px] max-w-[320px] snap-start">
