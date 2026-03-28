@@ -488,20 +488,16 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
           {isPropertyPanelOpen && !isChatCollapsed && (
             <div
               onMouseDown={handleDividerMouseDown}
-              className="hidden lg:flex w-2 shrink-0 flex-col items-center justify-center cursor-col-resize select-none relative z-20 group border-l border-r border-black/5 hover:border-[#4A5D23]/20 hover:bg-[#4A5D23]/5 transition-colors"
+              className="hidden lg:flex w-[5px] shrink-0 flex-col items-center justify-center cursor-col-resize select-none relative z-[55] group border-r border-black/10 hover:border-[#4A5D23]/30 hover:bg-[#4A5D23]/5 transition-colors"
             >
-              {/* Grip dots */}
-              <div className="flex flex-col gap-[3px]">
-                {[0,1,2,3].map(i => (
-                  <div key={i} className="w-[3px] h-[3px] rounded-full bg-transparent group-hover:bg-[#4A5D23]/50 transition-colors" />
-                ))}
-              </div>
-              {/* Collapse button on hover */}
+              {/* Drag pill — appears on hover */}
+              <div className="w-[3px] h-8 rounded-full bg-transparent group-hover:bg-[#4A5D23]/40 transition-all duration-150" />
+              {/* Collapse button — positioned fully in chat panel area */}
               <button
                 onMouseDown={e => e.stopPropagation()}
                 onClick={() => setIsChatCollapsed(true)}
                 title="Collapse chat"
-                className="absolute top-5 -right-3.5 opacity-0 group-hover:opacity-100 transition-opacity w-7 h-7 bg-white border border-black/10 rounded-full flex items-center justify-center shadow-md hover:bg-neutral-50"
+                className="absolute top-5 left-full ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-[56] w-7 h-7 bg-white border border-black/10 rounded-full flex items-center justify-center shadow-md hover:bg-neutral-50"
               >
                 <PanelRightClose size={12} />
               </button>
@@ -536,7 +532,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
             <button
               onClick={() => setIsChatCollapsed(false)}
               title="Open chat"
-              className="hidden lg:flex fixed right-5 top-[76px] z-[80] items-center gap-1.5 px-3 py-2 bg-white border border-black/10 rounded-xl shadow-lg text-xs font-bold hover:shadow-xl hover:-translate-y-0.5 transition-all"
+              className="hidden lg:flex fixed right-5 top-[116px] z-[80] items-center gap-1.5 px-3 py-2 bg-white border border-black/10 rounded-xl shadow-lg text-xs font-bold hover:shadow-xl hover:-translate-y-0.5 transition-all"
             >
               <PanelRightOpen size={14} />
               Chat
