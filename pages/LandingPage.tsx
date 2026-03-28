@@ -560,7 +560,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
         {/* Footer */}
         <footer className="w-full py-16 md:py-20 bg-[#F0EDEA] mt-16">
-          <div className="w-full px-8">
+          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-12 mb-12 md:mb-16">
               <div className="lg:col-span-1">
                 <div className="flex items-center gap-2 mb-4">
