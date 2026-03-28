@@ -67,7 +67,7 @@ export interface ChatMessage {
   properties?: Property[];
   suggestedReplies?: string[];
   isSigningMessage?: boolean;
-  interactiveType?: 'properties' | 'deep-dive' | 'application-form' | 'contract' | 'move-in-checklist' | 'style-analysis';
+  interactiveType?: 'properties' | 'deep-dive' | 'application-form' | 'contract' | 'move-in-checklist' | 'style-analysis' | 'tour-scheduling';
   interactiveData?: any;
   styleTitle?: string;
   styleAvatar?: string;
@@ -81,7 +81,7 @@ export interface GeminiResponse {
   intentToSearch?: boolean;
   intentToSign?: boolean;
   intentToApply?: boolean;
-  interactiveType?: 'properties' | 'deep-dive' | 'application-form' | 'contract' | 'move-in-checklist' | 'style-analysis';
+  interactiveType?: 'properties' | 'deep-dive' | 'application-form' | 'contract' | 'move-in-checklist' | 'style-analysis' | 'tour-scheduling';
   styleTitle?: string;
   styleAvatar?: string;
   styleSummary?: string;

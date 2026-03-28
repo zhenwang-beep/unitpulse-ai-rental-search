@@ -8,6 +8,7 @@ interface AppContextValue {
   allThreads: AllThreads;
   addThread: (id: string, title?: string, initialMessages?: ChatMessage[]) => void;
   updateThread: (id: string, updater: (prev: ChatMessage[]) => ChatMessage[]) => void;
+  renameThread: (id: string, title: string) => void;
   favorites: Property[];
   toggleFavorite: (property: Property) => void;
 }
@@ -66,6 +67,13 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     });
   };
 
+  const renameThread = (id: string, title: string) => {
+    setAllThreads(prev => {
+      if (!prev[id]) return prev;
+      return { ...prev, [id]: { ...prev[id], title } };
+    });
+  };
+
   const toggleFavorite = (property: Property) => {
     setFavorites(prev =>
       prev.find(p => p.id === property.id)
@@ -75,7 +83,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   };
 
   return (
-    <AppContext.Provider value={{ allThreads, addThread, updateThread, favorites, toggleFavorite }}>
+    <AppContext.Provider value={{ allThreads, addThread, updateThread, renameThread, favorites, toggleFavorite }}>
       {children}
     </AppContext.Provider>
   );
