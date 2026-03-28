@@ -475,7 +475,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                 animate={{ width: isChatCollapsed ? '100%' : `${100 - chatPanelWidth}%`, opacity: 1 }}
                 exit={{ width: 0, opacity: 0 }}
                 transition={{ duration: 0.42, ease: [0.32, 0.72, 0, 1] }}
-                className="fixed inset-0 z-[50] lg:static lg:flex h-full overflow-hidden shrink-0"
+                className="fixed inset-x-0 top-16 bottom-0 z-[50] lg:static lg:flex h-full overflow-hidden shrink-0"
               >
                 <div className="w-full h-full overflow-hidden">
                   <Outlet />
@@ -488,7 +488,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
           {isPropertyPanelOpen && !isChatCollapsed && (
             <div
               onMouseDown={handleDividerMouseDown}
-              className="hidden lg:flex w-[5px] shrink-0 flex-col items-center justify-center cursor-col-resize select-none relative z-[55] group border-r border-black/10 hover:border-[#4A5D23]/30 hover:bg-[#4A5D23]/5 transition-colors"
+              className="hidden lg:flex w-1 shrink-0 flex-col items-center justify-center cursor-col-resize select-none relative z-[55] group border-l border-black/10 hover:border-[#4A5D23]/30 hover:bg-[#4A5D23]/5 transition-colors"
             >
               {/* Drag pill — appears on hover */}
               <div className="w-[3px] h-8 rounded-full bg-transparent group-hover:bg-[#4A5D23]/40 transition-all duration-150" />
