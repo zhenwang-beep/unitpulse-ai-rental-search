@@ -181,7 +181,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
       )}
 
       <header className={`w-full px-8 py-4 flex justify-between items-center z-[60] shrink-0 transition-all duration-300 sticky top-0 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
-        <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
+        <div className="w-full flex justify-between items-center">
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => {}}>
             <img src={LOGO_URL} alt="UnitPulse" className="h-8" />
             <span className="font-heading font-bold text-xl tracking-wider">UnitPulse</span>
