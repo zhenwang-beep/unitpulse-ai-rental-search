@@ -42,6 +42,14 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const navigate = useNavigate();
   const { favorites, toggleFavorite } = useAppContext();
 
+  const handleToggleFavorite = (property: Property) => {
+    if (!isLoggedIn) {
+      setShowLoginView(true);
+      return;
+    }
+    toggleFavorite(property);
+  };
+
   const [landingInput, setLandingInput] = useState('');
   const [landingGhostText, setLandingGhostText] = useState('');
   const [isLandingFocused, setIsLandingFocused] = useState(false);
@@ -175,7 +183,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
         <LiveInterface
           onClose={() => setIsLiveMode(false)}
           onMessage={() => {}}
-          onToggleFavorite={toggleFavorite}
+          onToggleFavorite={handleToggleFavorite}
           favorites={favorites}
         />
       )}
@@ -475,7 +483,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 <PropertyCard
                   property={p}
                   isFavorite={favorites.some(f => f.id === p.id)}
-                  onToggleFavorite={toggleFavorite}
+                  onToggleFavorite={handleToggleFavorite}
                   onClick={(property: Property) => navigate('/search', { state: { propertyId: property.id } })}
                 />
               </div>

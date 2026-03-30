@@ -33,6 +33,14 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
 
   const { allThreads, updateThread, favorites, toggleFavorite, renameThread } = useAppContext();
 
+  const handleToggleFavorite = (property: Property) => {
+    if (!isLoggedIn) {
+      setShowLoginView(true);
+      return;
+    }
+    toggleFavorite(property);
+  };
+
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const messages = allThreads[chatId!]?.messages || [];
 
@@ -234,7 +242,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
          <LiveInterface
            onClose={() => setIsLiveMode(false)}
            onMessage={handleLiveMessage}
-           onToggleFavorite={toggleFavorite}
+           onToggleFavorite={handleToggleFavorite}
            favorites={favorites}
          />
        )}
@@ -436,7 +444,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
           {/* Property panel — LEFT side (desktop: 60%, mobile: full screen) */}
           {isPropertyPanelOpen && (
             <div className="fixed inset-0 z-[50] lg:static lg:flex lg:w-[60%] h-full overflow-hidden lg:border-r lg:border-black/5">
-              <Outlet />
+              <Outlet context={{ isLoggedIn, setShowLoginView }} />
             </div>
           )}
 
@@ -446,7 +454,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
               messages={messages}
               onSendMessage={handleSendMessage}
               isLoading={isLoading}
-              onToggleFavorite={toggleFavorite}
+              onToggleFavorite={handleToggleFavorite}
               favorites={favorites}
               onStartLiveMode={() => setIsLiveMode(true)}
               onPropertyClick={handlePropertyClick}
