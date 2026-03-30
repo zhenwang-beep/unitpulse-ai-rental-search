@@ -189,7 +189,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
       )}
 
       <header className={`w-full px-8 py-4 flex justify-between items-center z-[60] shrink-0 transition-all duration-300 sticky top-0 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
-        <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
+        <div className="w-full flex justify-between items-center">
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => {}}>
             <img src={LOGO_URL} alt="UnitPulse" className="h-8" />
             <span className="font-heading font-bold text-xl tracking-wider">UnitPulse</span>
@@ -373,12 +373,12 @@ const LandingPage: React.FC<LandingPageProps> = ({
           </h1>
 
           <form onSubmit={handleLandingSubmit} className="w-full max-w-3xl relative group opacity-0 animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-            <div className={`transition-all duration-500 rounded-full border-2 ${isLandingFocused ? 'shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-[#4A5D23]' : 'shadow-[0_10px_20px_rgba(0,0,0,0.05)] border-transparent'}`}>
-              <div className="relative bg-white rounded-full pl-6 p-2 pr-4 flex items-end gap-2 overflow-hidden min-h-[4rem] z-10">
-                <div className="flex-1 relative flex items-center min-w-0 py-3">
+            <div className={`transition-all duration-500 rounded-3xl border-2 ${isLandingFocused ? 'shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-[#4A5D23]' : 'shadow-[0_10px_20px_rgba(0,0,0,0.05)] border-transparent'}`}>
+              <div className="relative bg-white rounded-3xl pl-6 p-2 pr-4 flex items-end gap-2 overflow-hidden min-h-[4rem] z-10">
+                <div className="flex-1 relative flex items-start min-w-0 py-3">
                   {/* Rotating Placeholder */}
                   {!landingInput && (
-                    <div className="absolute inset-0 flex items-center pointer-events-none pt-0.5">
+                    <div className="absolute inset-0 flex items-start pt-3 pointer-events-none">
                       <span
                         key={placeholderIndex}
                         className="text-neutral-400 text-lg animate-fade-in-up truncate w-full text-left font-sans leading-normal tracking-normal"
@@ -390,7 +390,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
                   {/* Ghost Text Overlay */}
                   {landingGhostText && isLandingFocused && (
-                    <div className="absolute inset-0 px-2 pointer-events-none flex items-center">
+                    <div className="absolute inset-0 px-2 pointer-events-none flex items-start pt-3">
                       <div className="w-full flex">
                         <span className="text-lg opacity-0 whitespace-pre-wrap font-sans leading-normal tracking-normal break-words">{landingInput}</span>
                         <span className="text-neutral-400/40 whitespace-pre-wrap break-words font-sans text-lg leading-normal tracking-normal">{landingGhostText.slice(landingInput.length)}</span>
@@ -407,7 +407,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     onKeyDown={handleLandingKeyDown}
                     placeholder=""
                     rows={1}
-                    className="flex-1 bg-transparent border-0 p-0 text-black focus:ring-0 focus:outline-none text-lg min-w-0 w-full relative z-10 resize-none overflow-hidden leading-normal font-sans self-center tracking-normal"
+                    className="flex-1 bg-transparent border-0 p-0 text-black focus:ring-0 focus:outline-none text-lg min-w-0 w-full relative z-10 resize-none overflow-hidden leading-normal font-sans self-start tracking-normal"
                     style={{ maxHeight: '200px' }}
                   />
                 </div>
@@ -587,7 +587,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
         </div>
 
         {/* Footer */}
-        <footer className="w-full py-16 md:py-20 bg-[#F0EDEA] mt-16">
+        <footer className="w-[calc(100%+2rem)] -mx-4 py-16 md:py-20 bg-[#F0EDEA] mt-16">
           <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-12 mb-12 md:mb-16">
               <div className="lg:col-span-1">

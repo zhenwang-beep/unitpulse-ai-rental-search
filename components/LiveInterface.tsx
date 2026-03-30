@@ -393,7 +393,7 @@ const LiveInterface: React.FC<LiveInterfaceProps> = ({ onClose, onMessage, onTog
                           <div className="w-14 h-14 rounded-full bg-neutral-50 flex items-center justify-center mb-2 border border-black/5">
                              <ChevronRight size={24} />
                           </div>
-                          <span className="text-[10px] font-bold uppercase tracking-wider">View All</span>
+                          <span className="text-xs font-bold uppercase tracking-wider">View All</span>
                       </button>
                   </div>
                 )}

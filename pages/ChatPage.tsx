@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Navigate, Outlet, useLocation, useMatch, useNavigate, useParams } from 'react-router-dom';
 import { MOCK_PROPERTIES, SUGGESTION_CHIPS } from '../constants';
@@ -31,7 +31,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
   const location = useLocation();
   const isPropertyPanelOpen = !!useMatch('/search/:chatId/property/:propertyId');
 
-  const { allThreads, updateThread, favorites, toggleFavorite, renameThread } = useAppContext();
+  const { allThreads, updateThread, favorites, toggleFavorite, renameThread, deleteThread } = useAppContext();
 
   const handleToggleFavorite = (property: Property) => {
     if (!isLoggedIn) {
@@ -69,6 +69,46 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
   const [isAtBottom, setIsAtBottom] = useState(false);
   const [isPropertyScrolled, setIsPropertyScrolled] = useState(false);
   const bottomSentinelRef = useRef<HTMLDivElement>(null);
+
+  // Resizable split panel
+  const [chatPanelWidth, setChatPanelWidth] = useState(40); // percentage
+  const [isChatCollapsed, setIsChatCollapsed] = useState(false);
+  const splitContainerRef = useRef<HTMLDivElement>(null);
+  const isResizingRef = useRef(false);
+
+  const handleDividerMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    isResizingRef.current = true;
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isResizingRef.current || !splitContainerRef.current) return;
+      const rect = splitContainerRef.current.getBoundingClientRect();
+      const newChatWidth = ((rect.right - e.clientX) / rect.width) * 100;
+      setChatPanelWidth(Math.min(Math.max(newChatWidth, 25), 55));
+    };
+    const handleMouseUp = () => {
+      if (isResizingRef.current) {
+        isResizingRef.current = false;
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+      }
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
+
+  // Reset collapse when panel closes
+  useEffect(() => {
+    if (!isPropertyPanelOpen) setIsChatCollapsed(false);
+  }, [isPropertyPanelOpen]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -247,9 +287,8 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
          />
        )}
 
-       {!isPropertyPanelOpen && (
-        <header className={`fixed top-0 left-0 right-0 px-8 py-4 flex justify-between items-center z-[60] transition-all duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
-          <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
+       <header className={`fixed top-0 left-0 right-0 px-8 py-4 flex justify-between items-center z-[60] transition-all duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isPropertyPanelOpen ? 'bg-white border-b border-black/10' : isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
+          <div className="w-full flex justify-between items-center">
             <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/')}>
                <img src={LOGO_URL} alt="UnitPulse" className="h-8" />
                <span className="font-heading font-bold text-xl tracking-wider">UnitPulse</span>
@@ -302,7 +341,6 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
             </button>
           </div>
         </header>
-       )}
 
        {/* History Sidebar */}
        <AnimatePresence>
@@ -424,14 +462,29 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                    New Chat
                  </button>
                  {Object.entries(allThreads).map(([id, thread]) => (
-                   <button
+                   <div
                      key={id}
-                     onClick={() => handleSwitchThread(id)}
-                     className={`flex items-center gap-2 p-3 rounded-xl transition-colors font-medium text-sm text-left ${id === chatId ? 'bg-neutral-100 text-black' : 'hover:bg-neutral-50 text-neutral-700'}`}
+                     className={`group flex items-center gap-2 p-3 rounded-xl transition-colors text-sm ${id === chatId ? 'bg-neutral-100 text-black' : 'hover:bg-neutral-50 text-neutral-700'}`}
                    >
-                     <MessageSquare size={16} className="text-neutral-400 shrink-0" />
-                     <span className="truncate">{thread.title || 'Chat'}</span>
-                   </button>
+                     <button
+                       onClick={() => handleSwitchThread(id)}
+                       className="flex items-center gap-2 flex-1 min-w-0 text-left font-medium"
+                     >
+                       <MessageSquare size={16} className="text-neutral-400 shrink-0" />
+                       <span className="truncate">{thread.title || 'Chat'}</span>
+                     </button>
+                     <button
+                       onClick={(e) => {
+                         e.stopPropagation();
+                         deleteThread(id);
+                         if (id === chatId) navigate('/');
+                       }}
+                       aria-label="Delete thread"
+                       className="opacity-0 group-hover:opacity-100 p-1 rounded-lg hover:bg-red-50 hover:text-red-500 text-neutral-400 transition-all shrink-0"
+                     >
+                       <X size={14} />
+                     </button>
+                   </div>
                  ))}
                </div>
              </div>
@@ -440,16 +493,53 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
          )}
        </AnimatePresence>
 
-       <div className={`flex-1 flex min-h-0 relative transition-all duration-300 w-full ${!isPropertyPanelOpen ? 'pt-16 md:pt-20' : ''}`}>
-          {/* Property panel — LEFT side (desktop: 60%, mobile: full screen) */}
-          {isPropertyPanelOpen && (
-            <div className="fixed inset-0 z-[50] lg:static lg:flex lg:w-[60%] h-full overflow-hidden lg:border-r lg:border-black/5">
-              <Outlet context={{ isLoggedIn, setShowLoginView }} />
+       <div ref={splitContainerRef} className="flex-1 flex min-h-0 relative w-full pt-16 overflow-hidden">
+          {/* Property panel — LEFT side (desktop: dynamic width, mobile: full screen) */}
+          <AnimatePresence>
+            {isPropertyPanelOpen && (
+              <motion.div
+                key="property-panel"
+                initial={{ width: 0, opacity: 0 }}
+                animate={{ width: isChatCollapsed ? '100%' : `${100 - chatPanelWidth}%`, opacity: 1 }}
+                exit={{ width: 0, opacity: 0 }}
+                transition={{ duration: 0.42, ease: [0.32, 0.72, 0, 1] }}
+                className="fixed inset-x-0 top-16 bottom-0 z-[50] lg:static lg:flex h-full overflow-hidden shrink-0"
+              >
+                <div className="w-full h-full overflow-hidden">
+                  <Outlet context={{ isLoggedIn, setShowLoginView }} />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Resize divider — desktop only, visible when panel open and not collapsed */}
+          {isPropertyPanelOpen && !isChatCollapsed && (
+            <div
+              onMouseDown={handleDividerMouseDown}
+              className="hidden lg:flex w-1 shrink-0 flex-col items-center justify-center cursor-col-resize select-none relative z-[55] group border-l border-black/10 hover:border-[#4A5D23]/30 hover:bg-[#4A5D23]/5 transition-colors"
+            >
+              {/* Drag pill — appears on hover */}
+              <div className="w-[3px] h-8 rounded-full bg-transparent group-hover:bg-[#4A5D23]/40 transition-all duration-150" />
+              {/* Collapse button — positioned fully in chat panel area */}
+              <button
+                onMouseDown={e => e.stopPropagation()}
+                onClick={() => setIsChatCollapsed(true)}
+                title="Collapse chat"
+                className="absolute top-5 left-full ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-[56] w-7 h-7 bg-white border border-black/10 rounded-full flex items-center justify-center shadow-md hover:bg-neutral-50"
+              >
+                <PanelRightClose size={12} />
+              </button>
             </div>
           )}
 
-          {/* Chat interface — RIGHT side when panel open, full width otherwise */}
-          <div className={`${isPropertyPanelOpen ? 'hidden lg:flex lg:w-[40%]' : 'flex-1'} flex flex-col min-h-0 min-w-0 isolate`}>
+          {/* Chat panel — RIGHT side */}
+          <div
+            className={`${isPropertyPanelOpen ? 'hidden lg:flex' : ''} flex-col min-h-0 min-w-0 isolate`}
+            style={isPropertyPanelOpen
+              ? { width: `${chatPanelWidth}%`, flexShrink: 0, flexGrow: 0, display: isChatCollapsed ? 'none' : 'flex' }
+              : { flex: 1, display: 'flex' }
+            }
+          >
             <ChatInterface
               messages={messages}
               onSendMessage={handleSendMessage}
@@ -464,6 +554,18 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
               onScroll={handleLandingScroll}
             />
           </div>
+
+          {/* Re-open chat button — fixed so it's always above the full-width property panel */}
+          {isPropertyPanelOpen && isChatCollapsed && (
+            <button
+              onClick={() => setIsChatCollapsed(false)}
+              title="Open chat"
+              className="hidden lg:flex fixed right-5 top-[116px] z-[80] items-center gap-1.5 px-3 py-2 bg-white border border-black/10 rounded-xl shadow-lg text-xs font-bold hover:shadow-xl hover:-translate-y-0.5 transition-all"
+            >
+              <PanelRightOpen size={14} />
+              Chat
+            </button>
+          )}
        </div>
 
         {/* Enlarged Image Modal */}
@@ -479,7 +581,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                 <div className="flex items-center gap-6">
                   <div className="flex flex-col">
                     <span className="text-sm font-black tracking-wider">{modalTitle}</span>
-                    <span className="text-[10px] font-bold opacity-60 uppercase tracking-wider">{selectedPropertyImageIndex + 1} / {modalImages.length}</span>
+                    <span className="text-xs font-bold opacity-60 uppercase tracking-wider">{selectedPropertyImageIndex + 1} / {modalImages.length}</span>
                   </div>
                 </div>
 

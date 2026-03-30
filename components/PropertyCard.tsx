@@ -8,9 +8,10 @@ interface PropertyCardProps {
   isFavorite: boolean;
   onToggleFavorite: (property: Property) => void;
   onClick?: (property: Property) => void;
+  showDescription?: boolean;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onToggleFavorite, onClick }) => {
+const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onToggleFavorite, onClick, showDescription = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const images = property.images || [`https://picsum.photos/seed/${property.imageSeed}/800/600`];
@@ -117,7 +118,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
         <div className="absolute bottom-3 left-3 text-white">
            <p className="text-xl font-extrabold font-heading tracking-tight flex items-baseline">
              ${property.price.toLocaleString()}+
-             <span className="text-[10px] font-medium opacity-70 ml-1">/mo</span>
+             <span className="text-xs font-medium opacity-70 ml-1">/mo</span>
            </p>
         </div>
       </div>
@@ -150,13 +151,15 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
           </div>
         </div>
         
-        {/* Description Preview */}
-        <p className="text-xs leading-relaxed text-neutral-600 mb-4 line-clamp-2">
-          {property.description}
-        </p>
-        
+        {/* Description Preview — only shown when explicitly requested */}
+        {showDescription && (
+          <p className="text-xs leading-relaxed text-neutral-600 mb-4 line-clamp-2">
+            {property.description}
+          </p>
+        )}
+
         {/* Amenities Tags */}
-        <div className="flex flex-nowrap overflow-hidden gap-2 mb-6 mt-auto relative">
+        <div className="flex flex-nowrap overflow-hidden gap-2 mb-4 mt-auto relative">
            {property.amenities.map((am, i) => (
              <span key={i} className="text-xs whitespace-nowrap shrink-0 px-3 py-1 bg-neutral-100 text-neutral-700 rounded-md">
                {am}
