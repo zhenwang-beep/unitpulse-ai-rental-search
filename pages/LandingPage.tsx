@@ -204,9 +204,11 @@ const LandingPage: React.FC<LandingPageProps> = ({
                   className="w-10 h-10 rounded-full bg-neutral-100 border border-black/5 flex items-center justify-center overflow-hidden cursor-pointer hover:border-black transition-all"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" className="w-full h-full object-cover" />
+                  <span className="w-full h-full bg-[#4A5D23] text-white text-xs font-black flex items-center justify-center">FZ</span>
                 </div>
                 {isDropdownOpen && (
+                  <>
+                  <div className="fixed inset-0 z-40" onClick={() => setIsDropdownOpen(false)} />
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-black/5 py-2 z-50">
                     <button
                       onClick={() => { navigate('/favorites'); setIsDropdownOpen(false); }}
@@ -227,6 +229,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                       <LogOut size={16} /> Logout
                     </button>
                   </div>
+                  </>
                 )}
               </div>
             ) : (
@@ -277,10 +280,10 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 <div className="p-6 border-b border-black/5 flex flex-col gap-6 md:hidden">
                   {isLoggedIn ? (
                     <div className="flex items-center gap-4 p-4 bg-neutral-50 rounded-2xl border border-black/5">
-                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" className="w-12 h-12 rounded-full border border-black/5 bg-white shadow-sm" />
+                      <div className="w-12 h-12 rounded-full bg-[#4A5D23] text-white text-sm font-black flex items-center justify-center shadow-sm">FZ</div>
                       <div className="flex flex-col">
                         <span className="text-sm font-bold text-neutral-900">Felix Zhou</span>
-                        <span className="text-xs font-medium text-neutral-500">Pro Member</span>
+                        <span className="text-xs font-medium text-neutral-500">felix.zhou@gmail.com</span>
                       </div>
                     </div>
                   ) : (

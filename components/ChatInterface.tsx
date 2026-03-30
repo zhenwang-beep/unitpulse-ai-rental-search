@@ -815,7 +815,7 @@ const CompactPropertyCard = ({
         <div className="absolute top-2 right-2 flex gap-1">
           <button 
             onClick={(e) => { e.stopPropagation(); onToggleFavorite(property); }}
-            className={`p-1.5 rounded-full backdrop-blur-md transition-all ${isFavorite ? 'bg-white text-red-500' : 'bg-white/20 text-white hover:bg-white hover:text-red-400'}`}
+            className={`p-1.5 rounded-full backdrop-blur-md transition-all duration-300 ${isFavorite ? 'bg-black text-white' : 'bg-white/20 text-white hover:bg-white hover:text-black'}`}
           >
             <Heart size={12} fill={isFavorite ? "currentColor" : "none"} />
           </button>

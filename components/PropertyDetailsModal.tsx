@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Property } from '../types';
-import { X, MapPin, Bed, Bath, Ruler, Sparkles, Heart, Check, Calendar, FileText, ChevronDown, Menu, ChevronLeft, ChevronRight, Building2, MessageSquare } from 'lucide-react';
+import { X, MapPin, Bed, Bath, Ruler, Sparkles, Heart, Check, Calendar, FileText, ChevronDown, Menu, ChevronLeft, ChevronRight, Building2, MessageSquare, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface PropertyDetailsModalProps {
@@ -64,6 +64,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
   const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isAnalyzing, setIsAnalyzing] = useState(true);
 
   useEffect(() => {
     if (property && !isInline) {
@@ -73,6 +74,12 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
     }
     return () => { document.body.style.overflow = 'unset'; };
   }, [property, isInline]);
+
+  useEffect(() => {
+    setIsAnalyzing(true);
+    const timer = setTimeout(() => setIsAnalyzing(false), 1600);
+    return () => clearTimeout(timer);
+  }, [property?.id]);
 
   if (!property) return null;
 
@@ -197,16 +204,58 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
 
           {/* AI Lifestyle Match */}
           <div className="bg-gradient-to-br from-[#F4F7EC] to-[#F4F7EC]/50 rounded-2xl p-5 border border-[#4A5D23]/15 relative overflow-hidden">
-            <div className="flex items-center gap-2 mb-3">
-              <Sparkles size={16} className="text-[#4A5D23]" />
-              <h3 className="text-xs font-black text-[#1a2609] uppercase tracking-wider">AI Lifestyle Match</h3>
+            <div className="flex items-center justify-between gap-2 mb-3">
+              <div className="flex items-center gap-2">
+                <Sparkles size={16} className={`text-[#4A5D23] ${isAnalyzing ? 'animate-pulse' : ''}`} />
+                <h3 className="text-xs font-black text-[#1a2609] uppercase tracking-wider">AI Lifestyle Match</h3>
+              </div>
+              {isAnalyzing && (
+                <span className="text-[10px] font-bold text-[#4A5D23]/60 uppercase tracking-wider flex items-center gap-1">
+                  <Loader2 size={10} className="animate-spin" />
+                  Analyzing
+                </span>
+              )}
             </div>
-            <p className="text-xs font-medium text-[#243510] leading-relaxed">
-              {property.matchReason
-                ? `${property.matchReason} This ${property.type.toLowerCase()} in ${property.location} stands out for its ${property.amenities.slice(0, 2).join(' and ').toLowerCase()}.`
-                : `This ${property.type.toLowerCase()} in ${property.location} stands out for its ${property.amenities.slice(0, 2).join(' and ').toLowerCase()}${property.amenities.length > 2 ? ` and ${property.amenities.length - 2} more premium features` : ''}.`
-              }
-            </p>
+            {isAnalyzing ? (
+              <div className="space-y-2">
+                <div className="h-3 bg-[#4A5D23]/10 rounded-full animate-pulse w-full" />
+                <div className="h-3 bg-[#4A5D23]/10 rounded-full animate-pulse w-5/6" />
+                <div className="h-3 bg-[#4A5D23]/10 rounded-full animate-pulse w-4/6 mt-3" />
+                <div className="h-3 bg-[#4A5D23]/10 rounded-full animate-pulse w-full" />
+                <div className="h-3 bg-[#4A5D23]/10 rounded-full animate-pulse w-3/4 mt-3" />
+                <div className="h-3 bg-[#4A5D23]/10 rounded-full animate-pulse w-5/6" />
+              </div>
+            ) : (() => {
+              const pricePerSqft = Math.round(property.price / property.sqft);
+              const isPetFriendly = property.amenities.some(a => a.toLowerCase().includes('pet'));
+              const hasOutdoor = property.amenities.some(a => ['balcony', 'garden', 'backyard', 'roof deck', 'rooftop'].some(k => a.toLowerCase().includes(k)));
+              const hasRemoteWork = property.amenities.some(a => ['co-working', 'high speed', 'smart home', 'internet'].some(k => a.toLowerCase().includes(k)));
+              const bedroomLabel = property.bedrooms === 0 ? 'studio' : `${property.bedrooms}-bed`;
+              return (
+                <div className="space-y-3">
+                  <p className="text-xs font-semibold text-[#1a2609] leading-relaxed">
+                    This {bedroomLabel} {property.type.toLowerCase()} in {property.location} aligns strongly with your search — here's why it stands out:
+                  </p>
+                  <ul className="space-y-2">
+                    <li className="flex items-start gap-2 text-xs text-[#243510] leading-relaxed">
+                      <span className="mt-0.5 w-4 h-4 rounded-full bg-[#4A5D23]/15 flex items-center justify-center shrink-0 text-[#4A5D23] font-black text-[9px]">$</span>
+                      <span>At <strong>${property.price.toLocaleString()}/mo</strong> (~${pricePerSqft}/sqft), it's priced {pricePerSqft < 4 ? 'competitively' : 'at market rate'} for {property.location} — good value for {property.sqft.toLocaleString()} sqft.</span>
+                    </li>
+                    <li className="flex items-start gap-2 text-xs text-[#243510] leading-relaxed">
+                      <span className="mt-0.5 w-4 h-4 rounded-full bg-[#4A5D23]/15 flex items-center justify-center shrink-0 text-[#4A5D23] font-black text-[9px]">✦</span>
+                      <span>{property.amenities.slice(0, 2).map(a => <strong key={a}>{a}</strong>).reduce((acc, el, i) => i === 0 ? [el] : [...acc, ' and ', el], [] as React.ReactNode[])} make this ideal for {hasRemoteWork ? 'remote workers' : isPetFriendly ? 'pet owners' : 'modern city living'}.</span>
+                    </li>
+                    <li className="flex items-start gap-2 text-xs text-[#243510] leading-relaxed">
+                      <span className="mt-0.5 w-4 h-4 rounded-full bg-[#4A5D23]/15 flex items-center justify-center shrink-0 text-[#4A5D23] font-black text-[9px]">↑</span>
+                      <span>{hasOutdoor ? `Outdoor access is a rare perk at this price — a strong lifestyle bonus for ${property.location}.` : `With ${property.amenities.length} listed amenities, the building adds meaningful value beyond the unit itself.`}</span>
+                    </li>
+                  </ul>
+                  <p className="text-[10px] text-[#4A5D23]/60 font-medium pt-1 border-t border-[#4A5D23]/10">
+                    {matchScore}% match based on your search preferences
+                  </p>
+                </div>
+              );
+            })()}
           </div>
 
           {/* Floor Plans */}

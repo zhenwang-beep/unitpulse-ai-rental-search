@@ -41,7 +41,7 @@ const AppShell: React.FC = () => {
       toggleFavorite(pendingFavoriteProperty);
       setPendingFavoriteProperty(null);
       setToast({
-        message: 'Saved to Favorites',
+        message: 'Added to Saved Homes',
         subtext: 'Find it in your account menu',
         actionLabel: 'View Saved Homes →',
         onAction: () => navigate('/favorites'),
