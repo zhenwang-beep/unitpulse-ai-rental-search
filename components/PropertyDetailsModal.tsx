@@ -106,7 +106,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
           <button
             onClick={() => onToggleFavorite(property.id)}
             aria-label={isFavorite ? "Remove from favorites" : "Save to favorites"}
-            className={`p-2 bg-white/80 backdrop-blur-md shadow-sm border border-black/5 rounded-full transition-all hover:bg-white shrink-0 ${isFavorite ? 'text-red-500' : 'text-neutral-400 hover:text-red-400'}`}
+            className={`p-2 backdrop-blur-md rounded-full transition-all duration-300 shrink-0 ${isFavorite ? 'bg-black text-white' : 'bg-white/80 shadow-sm border border-black/5 text-neutral-400 hover:bg-white hover:text-black'}`}
           >
             <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
           </button>
