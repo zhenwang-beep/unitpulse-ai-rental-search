@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowUp, Loader2, ChevronRight, ChevronLeft, AudioLines, RotateCcw, Check, MapPin, Star, Wifi, Car, Coffee, ShieldCheck, Upload, CreditCard, PenTool, Key, Zap, ClipboardCheck, Heart, Sparkles, Plus, Phone, Calendar, ArrowUpDown, SquarePen, History } from 'lucide-react';
+import { ArrowUp, Loader2, ChevronRight, ChevronLeft, AudioLines, RotateCcw, Check, MapPin, Star, Wifi, Car, Coffee, ShieldCheck, Upload, CreditCard, PenTool, Key, Zap, ClipboardCheck, Heart, Sparkles, Plus, Phone, Calendar, ArrowUpDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChatMessage, Property } from '../types';
 import { AI_AVATAR, SUGGESTION_CHIPS } from '../constants';
@@ -13,8 +13,6 @@ interface ChatInterfaceProps {
   favorites: Property[];
   onStartLiveMode: () => void;
   onPropertyClick: (property: Property) => void;
-  onToggleHistory?: () => void;
-  onNewChat?: () => void;
   selectedProperty?: Property | null;
   onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
   onInputFocus?: () => void;
@@ -817,7 +815,7 @@ const CompactPropertyCard = ({
         <div className="absolute top-2 right-2 flex gap-1">
           <button 
             onClick={(e) => { e.stopPropagation(); onToggleFavorite(property); }}
-            className={`p-1.5 rounded-full backdrop-blur-md transition-all ${isFavorite ? 'bg-black text-white' : 'bg-white/20 text-white hover:bg-white hover:text-black'}`}
+            className={`p-1.5 rounded-full backdrop-blur-md transition-all ${isFavorite ? 'bg-white text-red-500' : 'bg-white/20 text-white hover:bg-white hover:text-red-400'}`}
           >
             <Heart size={12} fill={isFavorite ? "currentColor" : "none"} />
           </button>
@@ -1063,12 +1061,13 @@ const PropertyCarousel = ({
   const checkScroll = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollLeft(scrollLeft > 5);
       setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 5);
     }
   };
 
   useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollLeft = 0;
     checkScroll();
     window.addEventListener('resize', checkScroll);
     return () => window.removeEventListener('resize', checkScroll);
@@ -1085,8 +1084,8 @@ const PropertyCarousel = ({
   };
 
   return (
-    <div className="w-full mt-4 animate-fade-in">
-      <div className="flex items-center justify-between mb-4">
+    <div className="-mx-4 md:-mx-6 mt-4 animate-fade-in">
+      <div className="flex items-center justify-between mb-4 px-4 md:px-6">
         <div className="flex items-center gap-2">
           <Sparkles size={14} className="text-amber-500" />
           <span className="text-xs font-medium uppercase tracking-wider text-black">Top Matches</span>
@@ -1112,18 +1111,18 @@ const PropertyCarousel = ({
           <button
             onClick={() => scroll('left')}
             aria-label="Scroll properties left"
-            className={`absolute left-0 top-1/2 -translate-y-1/2 -ml-3 z-20 w-8 h-8 bg-white rounded-full shadow-lg border border-black/5 flex items-center justify-center text-black transition-all ${canScrollLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+            className={`absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 bg-white rounded-full shadow-lg border border-black/5 flex items-center justify-center text-black transition-all ${canScrollLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
           >
             <ChevronLeft size={16} />
           </button>
 
-          <div 
+          <div
             ref={scrollRef}
             onScroll={checkScroll}
-            className="flex gap-4 overflow-x-auto pb-8 pt-4 snap-x property-carousel scroll-smooth items-stretch scrollbar-hide"
+            className="flex gap-4 overflow-x-auto pb-8 pt-4 px-4 md:px-6 property-carousel scroll-smooth items-stretch scrollbar-hide"
           >
              {sortedProperties.map((property) => (
-               <div key={property.id} className="min-w-[280px] max-w-[320px] snap-start">
+               <div key={property.id} className="min-w-[280px] max-w-[320px]">
                  <CompactPropertyCard 
                     property={property} 
                     isFavorite={favorites.some(f => f.id === property.id)}
@@ -1137,19 +1136,21 @@ const PropertyCarousel = ({
           <button
             onClick={() => scroll('right')}
             aria-label="Scroll properties right"
-            className={`absolute right-0 top-1/2 -translate-y-1/2 -mr-3 z-20 w-8 h-8 bg-white rounded-full shadow-lg border border-black/5 flex items-center justify-center text-black transition-all ${canScrollRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+            className={`absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 bg-white rounded-full shadow-lg border border-black/5 flex items-center justify-center text-black transition-all ${canScrollRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
           >
             <ChevronRight size={16} />
           </button>
         </div>
       ) : (
-        <PropertyComparisonTable 
-          properties={sortedProperties} 
-          onPropertyClick={onPropertyClick}
-          onSendMessage={onSendMessage}
-          onToggleFavorite={onToggleFavorite}
-          favorites={favorites}
-        />
+        <div className="px-4 md:px-6">
+          <PropertyComparisonTable
+            properties={sortedProperties}
+            onPropertyClick={onPropertyClick}
+            onSendMessage={onSendMessage}
+            onToggleFavorite={onToggleFavorite}
+            favorites={favorites}
+          />
+        </div>
       )}
     </div>
   );
@@ -1163,8 +1164,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   favorites,
   onStartLiveMode,
   onPropertyClick,
-  onToggleHistory,
-  onNewChat,
   selectedProperty,
   onScroll,
   onInputFocus,
@@ -1560,22 +1559,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
              <div className={`flex items-center justify-between mt-1 pt-1 ${isCollapsed ? 'hidden' : ''}`}>
                <div className="flex items-center gap-2">
-                 <button 
-                   type="button"
-                   onClick={onNewChat}
-                   className="p-2 text-neutral-400 hover:text-black hover:bg-neutral-100 rounded-full transition-all"
-                   title="New Chat"
-                 >
-                   <SquarePen size={20} />
-                 </button>
-                 <button 
-                   type="button"
-                   onClick={onToggleHistory}
-                   className="p-2 text-neutral-400 hover:text-black hover:bg-neutral-100 rounded-full transition-all"
-                   title="Chat History"
-                 >
-                   <History size={20} />
-                 </button>
                </div>
 
                <div className="flex items-center gap-4">

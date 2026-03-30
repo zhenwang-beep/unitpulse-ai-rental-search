@@ -511,6 +511,9 @@ export const MOCK_PROPERTIES: Property[] = [
 export const PLACEHOLDER_AVATAR = "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix";
 export const AI_AVATAR = "https://api.dicebear.com/7.x/bottts/svg?seed=Lumina";
 
+// Single persistent conversation thread — all sessions share one history
+export const PERSISTENT_THREAD_ID = 'main';
+
 export const SUGGESTION_CHIPS = [
   { 
     label: 'Modern Loft', 

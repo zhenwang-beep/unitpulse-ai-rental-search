@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Property } from '../types';
 import { X, MapPin, Bed, Bath, Ruler, Sparkles, Heart, Check, Calendar, FileText, ChevronDown, Menu, ChevronLeft, ChevronRight, Building2, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -113,7 +114,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
 
           {/* Bento Box Image Grid — inset with padding, rounded corners */}
           <div className="px-4 md:px-5 mb-5">
-          <div className="w-full grid grid-cols-4 grid-rows-2 gap-1 aspect-[3/2] md:aspect-[16/6] overflow-hidden relative group rounded-2xl">
+          <div className="w-full grid grid-cols-4 grid-rows-2 gap-1 aspect-[3/2] md:aspect-[16/6] max-h-[42vh] overflow-hidden relative group rounded-2xl">
             {/* Main image */}
             <div
               className="col-span-4 md:col-span-2 row-span-2 relative cursor-pointer overflow-hidden"
@@ -401,50 +402,35 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
       <div className="shrink-0 border-t border-black/5 bg-[#FCF9F8] px-4 lg:px-6 py-3 lg:py-5">
         <div className="max-w-3xl mx-auto w-full flex items-center justify-between gap-3">
         <div className="flex flex-col min-w-0">
-          <span className="text-sm lg:text-xl font-black font-heading text-black leading-tight whitespace-nowrap">
-            ${property.price.toLocaleString()} <span className="font-semibold text-xs lg:text-sm opacity-70">/ mo</span>
+          <span className="text-base lg:text-xl font-black font-heading text-black leading-tight whitespace-nowrap">
+            ${property.price.toLocaleString()} <span className="font-semibold text-sm lg:text-sm opacity-70">/ mo</span>
           </span>
           <span className="text-xs text-neutral-500 mt-0.5 truncate max-w-[140px] lg:max-w-none">Unit 402 • Avail. Mar 1st</span>
         </div>
         <div className="flex gap-2 shrink-0">
-          <button className="h-9 lg:h-12 px-3 lg:px-5 bg-neutral-100 text-black rounded-xl font-semibold text-xs lg:text-sm hover:bg-neutral-200 transition-all">
+          <button className="h-11 lg:h-12 px-4 lg:px-5 bg-neutral-100 text-black rounded-xl font-semibold text-sm lg:text-sm hover:bg-neutral-200 transition-all">
             Inquire
           </button>
-          <button className="h-9 lg:h-12 px-3 lg:px-5 bg-[#4A5D23] text-white rounded-xl font-semibold text-xs lg:text-sm hover:bg-[#3a4e1a] transition-all flex items-center gap-1.5">
-            <Calendar size={13} className="lg:hidden" />
+          <button className="h-11 lg:h-12 px-4 lg:px-5 bg-[#4A5D23] text-white rounded-xl font-semibold text-sm lg:text-sm hover:bg-[#3a4e1a] transition-all flex items-center gap-1.5">
+            <Calendar size={15} className="lg:hidden" />
             <Calendar size={16} className="hidden lg:block" />
-            Schedule Tour
+            Tour
           </button>
         </div>
         </div>
       </div>
 
-      {/* Mobile tab bar — inside the modal so it stacks below the footer naturally */}
-      {isInline && (
-        <div className="shrink-0 lg:hidden flex border-t border-black/5 bg-[#FCF9F8]" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-          <div className="flex-1 h-14 flex flex-col items-center justify-center gap-0.5 text-[#4A5D23]">
-            <Building2 size={18} />
-            <span className="text-xs font-bold uppercase tracking-wider">Listing</span>
-          </div>
-          <button
-            onClick={onClose}
-            className="flex-1 h-14 flex flex-col items-center justify-center gap-0.5 text-neutral-400 active:text-black transition-colors"
-          >
-            <MessageSquare size={18} />
-            <span className="text-xs font-bold uppercase tracking-wider">Chat</span>
-          </button>
-        </div>
-      )}
 
-      {/* Enlarged Image Modal */}
-      <AnimatePresence>
-        {isImageModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[300] bg-black/95 flex flex-col"
-          >
+      {/* Enlarged Image Modal — rendered via portal to escape stacking context */}
+      {createPortal(
+        <AnimatePresence>
+          {isImageModalOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[300] bg-black/95 flex flex-col"
+            >
             {/* Header */}
             <div className="p-5 flex justify-between items-center text-white border-b border-white/10">
               <div className="flex flex-col">
@@ -495,9 +481,11 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                 </button>
               ))}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
     </div>
   );

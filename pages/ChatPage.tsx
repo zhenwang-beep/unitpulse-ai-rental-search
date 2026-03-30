@@ -10,7 +10,7 @@ import PropertyDetailsModal from '../components/PropertyDetailsModal';
 import { sendMessageToGemini } from '../services/geminiService';
 import { getFilteredProperties } from '../services/propertyService';
 import { useAppContext } from '../context/AppContext';
-import { ArrowRight, Search, Sun, TreePine, Music, PanelRightClose, PanelRightOpen, ChevronDown, RotateCcw, Loader2, AudioLines, MapPin, X, ShieldCheck, Heart, Bed, Bath, Ruler, Calendar, Phone, Sparkles, CheckCircle2, Zap, ChevronLeft, ChevronRight, Info, PenTool, FileText, Check, Menu, LogOut, User, ArrowLeftRight, Calculator, Target, MessageSquare, Clock, Building, Settings, HelpCircle, Eye, EyeOff } from 'lucide-react';
+import { ArrowRight, Search, Sun, TreePine, Music, PanelRightClose, PanelRightOpen, ChevronDown, RotateCcw, Loader2, AudioLines, MapPin, X, ShieldCheck, Heart, Bed, Bath, Ruler, Calendar, Phone, Sparkles, CheckCircle2, Zap, ChevronLeft, ChevronRight, Info, PenTool, FileText, Check, Menu, LogOut, User, ArrowLeftRight, Calculator, Target, Clock, Building, Settings, HelpCircle, Eye, EyeOff } from 'lucide-react';
 
 declare global {
   interface Window {
@@ -31,7 +31,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
   const location = useLocation();
   const isPropertyPanelOpen = !!useMatch('/search/:chatId/property/:propertyId');
 
-  const { allThreads, updateThread, favorites, toggleFavorite, renameThread, deleteThread } = useAppContext();
+  const { allThreads, updateThread, favorites, toggleFavorite, renameThread } = useAppContext();
 
   const handleToggleFavorite = (property: Property) => {
     if (!isLoggedIn) {
@@ -62,7 +62,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
   const [summarizedPreference, setSummarizedPreference] = useState('You love modern lofts with high ceilings, industrial accents, and plenty of natural light. You prefer open floor plans and floor-to-ceiling windows.');
   const [isEditingPreference, setIsEditingPreference] = useState(false);
   const [isAiExpanded, setIsAiExpanded] = useState(false);
-  const [mobileTab, setMobileTab] = useState<'listing' | 'ai'>('listing');
+  const [mobileTab, setMobileTab] = useState<'listing' | 'chat'>('listing');
   const [aiPanelState, setAiPanelState] = useState<'collapsed' | 'half' | 'full'>('collapsed');
   const [isAiDrawerOpen, setIsAiDrawerOpen] = useState(false);
   const [isMatchPopoverOpen, setIsMatchPopoverOpen] = useState(false);
@@ -73,12 +73,15 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
   // Resizable split panel
   const [chatPanelWidth, setChatPanelWidth] = useState(40); // percentage
   const [isChatCollapsed, setIsChatCollapsed] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= 1024);
   const splitContainerRef = useRef<HTMLDivElement>(null);
   const isResizingRef = useRef(false);
 
   const handleDividerMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     isResizingRef.current = true;
+    setIsResizing(true);
     document.body.style.cursor = 'col-resize';
     document.body.style.userSelect = 'none';
   }, []);
@@ -93,6 +96,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
     const handleMouseUp = () => {
       if (isResizingRef.current) {
         isResizingRef.current = false;
+        setIsResizing(false);
         document.body.style.cursor = '';
         document.body.style.userSelect = '';
       }
@@ -105,9 +109,19 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
     };
   }, []);
 
-  // Reset collapse when panel closes
   useEffect(() => {
-    if (!isPropertyPanelOpen) setIsChatCollapsed(false);
+    const update = () => setIsDesktop(window.innerWidth >= 1024);
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  // Reset collapse + mobile tab when panel opens/closes
+  useEffect(() => {
+    if (!isPropertyPanelOpen) {
+      setIsChatCollapsed(false);
+    } else {
+      setMobileTab('listing');
+    }
   }, [isPropertyPanelOpen]);
 
   useEffect(() => {
@@ -218,14 +232,6 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
     setMessages(prev => [...prev, newMessage]);
   };
 
-  const handleNewChat = () => {
-    navigate('/search');
-  };
-
-  const handleSwitchThread = (id: string) => {
-    navigate('/search/' + id);
-    setIsHistoryOpen(false);
-  };
 
   const handleStartRentalProcess = (type: 'tour' | 'apply') => {
     // Add user message to chat for context
@@ -263,6 +269,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
 
   const handlePropertyClick = (property: Property) => {
     navigate('./property/' + property.id);
+    setMobileTab('listing');
   };
 
   const handleAnalyzeStyle = () => {
@@ -287,7 +294,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
          />
        )}
 
-       <header className={`fixed top-0 left-0 right-0 px-8 py-4 flex justify-between items-center z-[60] transition-all duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isPropertyPanelOpen ? 'bg-white border-b border-black/10' : isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
+       <header className={`fixed top-0 left-0 right-0 px-4 md:px-8 py-4 flex justify-between items-center z-[60] transition-all duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isPropertyPanelOpen ? 'bg-white border-b border-black/10' : isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
           <div className="w-full flex justify-between items-center">
             <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/')}>
                <img src={LOGO_URL} alt="UnitPulse" className="h-8" />
@@ -355,24 +362,21 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                onClick={() => setIsHistoryOpen(false)}
              />
            <motion.div
-             initial={{ x: '-100%' }}
+             initial={{ x: '100%' }}
              animate={{ x: 0 }}
-             exit={{ x: '-100%' }}
+             exit={{ x: '100%' }}
              transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
-             className="fixed inset-y-0 left-0 w-80 bg-white shadow-2xl z-[70] border-r border-black/5 flex flex-col"
+             className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-[70] border-l border-black/5 flex flex-col"
            >
-             <div className="p-6 border-b border-black/5 flex justify-between items-center">
-               <div className="flex items-center gap-2">
-                 <img src={LOGO_URL} alt="UnitPulse" className="h-6" />
-                 <h2 className="font-heading font-bold text-lg tracking-wider">UnitPulse</h2>
-               </div>
+             <div className="px-4 py-3 border-b border-black/5 flex justify-between items-center">
+               <span className="text-sm font-semibold text-neutral-500 uppercase tracking-wider">Menu</span>
                <button onClick={() => setIsHistoryOpen(false)} aria-label="Close menu" className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
                  <X size={20} />
                </button>
              </div>
 
              <div className="flex-1 overflow-y-auto flex flex-col">
-               <div className="p-6 border-b border-black/5 flex flex-col gap-6 md:hidden">
+               <div className="p-5 flex flex-col gap-5">
                  {isLoggedIn ? (
                    <div className="flex items-center gap-4 p-4 bg-neutral-50 rounded-2xl border border-black/5">
                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" className="w-12 h-12 rounded-full border border-black/5 bg-white shadow-sm" />
@@ -421,7 +425,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                    </a>
                  </div>
 
-                 <div className="h-px bg-neutral-100 w-full"></div>
+                 <div className="h-px bg-neutral-100 w-full" />
 
                  <div className="flex flex-col gap-1">
                    <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
@@ -440,7 +444,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
 
                  {isLoggedIn && (
                    <>
-                     <div className="h-px bg-neutral-100 w-full"></div>
+                     <div className="h-px bg-neutral-100 w-full" />
                      <button
                        onClick={() => { setIsHistoryOpen(false); }}
                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-red-50 text-red-600 transition-colors font-medium w-full text-left"
@@ -451,59 +455,42 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                    </>
                  )}
                </div>
-
-               {/* Thread history list */}
-               <div className="p-4 flex flex-col gap-2">
-                 <button
-                   onClick={handleNewChat}
-                   className="flex items-center gap-2 p-3 rounded-xl bg-black text-white hover:bg-neutral-800 transition-colors font-medium text-sm"
-                 >
-                   <MessageSquare size={16} />
-                   New Chat
-                 </button>
-                 {Object.entries(allThreads).map(([id, thread]) => (
-                   <div
-                     key={id}
-                     className={`group flex items-center gap-2 p-3 rounded-xl transition-colors text-sm ${id === chatId ? 'bg-neutral-100 text-black' : 'hover:bg-neutral-50 text-neutral-700'}`}
-                   >
-                     <button
-                       onClick={() => handleSwitchThread(id)}
-                       className="flex items-center gap-2 flex-1 min-w-0 text-left font-medium"
-                     >
-                       <MessageSquare size={16} className="text-neutral-400 shrink-0" />
-                       <span className="truncate">{thread.title || 'Chat'}</span>
-                     </button>
-                     <button
-                       onClick={(e) => {
-                         e.stopPropagation();
-                         deleteThread(id);
-                         if (id === chatId) navigate('/');
-                       }}
-                       aria-label="Delete thread"
-                       className="opacity-0 group-hover:opacity-100 p-1 rounded-lg hover:bg-red-50 hover:text-red-500 text-neutral-400 transition-all shrink-0"
-                     >
-                       <X size={14} />
-                     </button>
-                   </div>
-                 ))}
-               </div>
              </div>
             </motion.div>
            </>
          )}
        </AnimatePresence>
 
-       <div ref={splitContainerRef} className="flex-1 flex min-h-0 relative w-full pt-16 overflow-hidden">
+       {/* Mobile tab bar — below app header, only when property panel is open */}
+       {isPropertyPanelOpen && !isDesktop && (
+         <div className="fixed top-[69px] inset-x-0 z-[58] bg-white border-b border-black/10 flex">
+           <button
+             onClick={() => setMobileTab('listing')}
+             className={`flex-1 py-3 text-sm font-semibold transition-colors ${mobileTab === 'listing' ? 'text-black border-b-2 border-[#4A5D23]' : 'text-neutral-400'}`}
+           >
+             Listing
+           </button>
+           <button
+             onClick={() => setMobileTab('chat')}
+             className={`flex-1 py-3 text-sm font-semibold transition-colors ${mobileTab === 'chat' ? 'text-black border-b-2 border-[#4A5D23]' : 'text-neutral-400'}`}
+           >
+             Chat
+           </button>
+         </div>
+       )}
+
+       <div ref={splitContainerRef} className={`flex-1 flex min-h-0 relative w-full ${!isDesktop && isPropertyPanelOpen ? 'pt-[116px]' : 'pt-[72px]'} overflow-hidden`}>
           {/* Property panel — LEFT side (desktop: dynamic width, mobile: full screen) */}
           <AnimatePresence>
             {isPropertyPanelOpen && (
               <motion.div
                 key="property-panel"
-                initial={{ width: 0, opacity: 0 }}
-                animate={{ width: isChatCollapsed ? '100%' : `${100 - chatPanelWidth}%`, opacity: 1 }}
-                exit={{ width: 0, opacity: 0 }}
-                transition={{ duration: 0.42, ease: [0.32, 0.72, 0, 1] }}
-                className="fixed inset-x-0 top-16 bottom-0 z-[50] lg:static lg:flex h-full overflow-hidden shrink-0"
+                initial={{ width: isDesktop ? 0 : '100%', opacity: 0 }}
+                animate={{ width: isDesktop ? (isChatCollapsed ? '100%' : `${100 - chatPanelWidth}%`) : '100%', opacity: 1 }}
+                exit={{ width: isDesktop ? 0 : '100%', opacity: 0 }}
+                transition={isResizing ? { duration: 0 } : { duration: 0.42, ease: [0.32, 0.72, 0, 1] }}
+                style={{ display: !isDesktop && mobileTab !== 'listing' ? 'none' : undefined }}
+                className="fixed inset-x-0 top-[116px] bottom-0 z-[50] lg:static lg:flex lg:top-0 lg:h-full overflow-hidden shrink-0"
               >
                 <div className="w-full h-full overflow-hidden">
                   <Outlet context={{ isLoggedIn, setShowLoginView }} />
@@ -525,7 +512,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                 onMouseDown={e => e.stopPropagation()}
                 onClick={() => setIsChatCollapsed(true)}
                 title="Collapse chat"
-                className="absolute top-5 left-full ml-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-[56] w-7 h-7 bg-white border border-black/10 rounded-full flex items-center justify-center shadow-md hover:bg-neutral-50"
+                className="absolute top-4 left-full ml-2 z-[56] w-9 h-9 bg-white border border-black/10 rounded-full flex items-center justify-center shadow-md hover:bg-neutral-50 transition-colors"
               >
                 <PanelRightClose size={12} />
               </button>
@@ -534,9 +521,16 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
 
           {/* Chat panel — RIGHT side */}
           <div
-            className={`${isPropertyPanelOpen ? 'hidden lg:flex' : ''} flex-col min-h-0 min-w-0 isolate`}
+            className="flex-col min-h-0 min-w-0 isolate"
             style={isPropertyPanelOpen
-              ? { width: `${chatPanelWidth}%`, flexShrink: 0, flexGrow: 0, display: isChatCollapsed ? 'none' : 'flex' }
+              ? {
+                  width: isDesktop ? `${chatPanelWidth}%` : '100%',
+                  flexShrink: 0,
+                  flexGrow: 0,
+                  display: isDesktop
+                    ? (isChatCollapsed ? 'none' : 'flex')
+                    : (mobileTab === 'chat' ? 'flex' : 'none'),
+                }
               : { flex: 1, display: 'flex' }
             }
           >
@@ -549,21 +543,26 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
               onStartLiveMode={() => setIsLiveMode(true)}
               onPropertyClick={handlePropertyClick}
               selectedProperty={null}
-              onToggleHistory={() => setIsHistoryOpen(!isHistoryOpen)}
-              onNewChat={handleNewChat}
               onScroll={handleLandingScroll}
             />
           </div>
 
-          {/* Re-open chat button — fixed so it's always above the full-width property panel */}
+          {/* Re-open chat — agent avatar bubble when chat is collapsed */}
           {isPropertyPanelOpen && isChatCollapsed && (
             <button
               onClick={() => setIsChatCollapsed(false)}
-              title="Open chat"
-              className="hidden lg:flex fixed right-5 top-[116px] z-[80] items-center gap-1.5 px-3 py-2 bg-white border border-black/10 rounded-xl shadow-lg text-xs font-bold hover:shadow-xl hover:-translate-y-0.5 transition-all"
+              title="Chat with UnitPulse"
+              className="hidden lg:flex fixed right-5 top-[168px] z-[80] flex-col items-center gap-1 group"
             >
-              <PanelRightOpen size={14} />
-              Chat
+              <div className="relative">
+                <img
+                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=UnitPulse"
+                  alt="UnitPulse Agent"
+                  className="w-12 h-12 rounded-full border-2 border-white shadow-xl bg-[#4A5D23] group-hover:scale-105 transition-transform"
+                />
+                <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-[#4A5D23] rounded-full border-2 border-white" />
+              </div>
+              <span className="text-[11px] font-semibold text-neutral-600 bg-white/90 px-2 py-0.5 rounded-full shadow-sm">Chat</span>
             </button>
           )}
        </div>

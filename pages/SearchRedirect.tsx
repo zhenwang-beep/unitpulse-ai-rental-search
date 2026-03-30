@@ -1,12 +1,8 @@
 import React, { useRef } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import { MOCK_PROPERTIES } from '../constants';
+import { MOCK_PROPERTIES, PERSISTENT_THREAD_ID } from '../constants';
 import { ChatMessage } from '../types';
-
-function generateId(): string {
-  return crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-}
 
 const SearchRedirect: React.FC = () => {
   const { addThread } = useAppContext();
@@ -15,16 +11,16 @@ const SearchRedirect: React.FC = () => {
   const query = state?.query;
   const propertyId = state?.propertyId;
 
-  // Generate and register the thread synchronously — ref prevents double-creation in StrictMode
-  const chatIdRef = useRef<string | null>(null);
-  if (!chatIdRef.current) {
-    chatIdRef.current = generateId();
+  // Ensure the persistent thread exists (addThread is a no-op if it already exists)
+  const initialized = useRef(false);
+  if (!initialized.current) {
+    initialized.current = true;
     const initialMessages: ChatMessage[] = [];
     if (propertyId) {
       const property = MOCK_PROPERTIES.find(p => p.id === propertyId);
       if (property) {
         initialMessages.push({
-          id: generateId(),
+          id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}`,
           role: 'assistant',
           text: `I see you're exploring **${property.title}** in ${property.location}. Great choice! I'm here to help you dig into every detail — lease terms, neighborhood highlights, availability, or how this fits your lifestyle. What would you like to know?`,
           timestamp: Date.now(),
@@ -37,12 +33,12 @@ const SearchRedirect: React.FC = () => {
         });
       }
     }
-    addThread(chatIdRef.current, 'New Chat', initialMessages);
+    addThread(PERSISTENT_THREAD_ID, 'UnitPulse', initialMessages);
   }
 
   const destination = propertyId
-    ? `/search/${chatIdRef.current}/property/${propertyId}`
-    : `/search/${chatIdRef.current}`;
+    ? `/search/${PERSISTENT_THREAD_ID}/property/${propertyId}`
+    : `/search/${PERSISTENT_THREAD_ID}`;
 
   return (
     <Navigate

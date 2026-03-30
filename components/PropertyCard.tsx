@@ -86,20 +86,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
             <span className="px-2.5 py-1 bg-white text-xs font-bold uppercase tracking-wider rounded-md text-black shadow-sm">
               {property.type}
             </span>
-            <span className="px-2.5 py-1 bg-black text-xs font-bold uppercase tracking-wider rounded-md text-white shadow-sm flex items-center gap-1">
-              <Star size={12} fill="currentColor" /> {property.rating}
-            </span>
           </div>
-          {property.matchReason && (
-            <motion.span 
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              className="px-2.5 py-1 bg-[#4A5D23] text-xs font-black uppercase tracking-wider rounded-md text-white shadow-lg flex items-center gap-1.5 w-fit"
-            >
-              <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-              {property.matchReason}
-            </motion.span>
-          )}
         </div>
 
         {/* Favorite Button */}
