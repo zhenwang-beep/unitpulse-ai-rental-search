@@ -42,6 +42,14 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const navigate = useNavigate();
   const { favorites, toggleFavorite } = useAppContext();
 
+  const handleToggleFavorite = (property: Property) => {
+    if (!isLoggedIn) {
+      setShowLoginView(true);
+      return;
+    }
+    toggleFavorite(property);
+  };
+
   const [landingInput, setLandingInput] = useState('');
   const [landingGhostText, setLandingGhostText] = useState('');
   const [isLandingFocused, setIsLandingFocused] = useState(false);
@@ -175,7 +183,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
         <LiveInterface
           onClose={() => setIsLiveMode(false)}
           onMessage={() => {}}
-          onToggleFavorite={toggleFavorite}
+          onToggleFavorite={handleToggleFavorite}
           favorites={favorites}
         />
       )}
@@ -189,6 +197,18 @@ const LandingPage: React.FC<LandingPageProps> = ({
           <nav className="hidden md:flex items-center gap-8">
             <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Find a home</a>
             <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Become a partner</a>
+            <button
+              onClick={() => setShowFavorites(true)}
+              aria-label="View saved homes"
+              className="relative p-2 hover:bg-neutral-100 rounded-full transition-colors"
+            >
+              <Heart size={20} />
+              {favorites.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#4A5D23] text-white text-[9px] font-black rounded-full flex items-center justify-center">
+                  {favorites.length}
+                </span>
+              )}
+            </button>
             {isLoggedIn ? (
               <div className="relative">
                 <div
@@ -286,10 +306,18 @@ const LandingPage: React.FC<LandingPageProps> = ({
                       <Search size={20} className="text-neutral-400" />
                       Find a home
                     </a>
-                    <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
+                    <button
+                      onClick={() => { setShowFavorites(true); setIsHistoryOpen(false); }}
+                      className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium w-full text-left"
+                    >
                       <Heart size={20} className="text-neutral-400" />
                       Saved Homes
-                    </a>
+                      {favorites.length > 0 && (
+                        <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                          {favorites.length}
+                        </span>
+                      )}
+                    </button>
                     <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
                       <Clock size={20} className="text-neutral-400" />
                       Recently Viewed
@@ -455,7 +483,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 <PropertyCard
                   property={p}
                   isFavorite={favorites.some(f => f.id === p.id)}
-                  onToggleFavorite={toggleFavorite}
+                  onToggleFavorite={handleToggleFavorite}
                   onClick={(property: Property) => navigate('/search', { state: { propertyId: property.id } })}
                 />
               </div>

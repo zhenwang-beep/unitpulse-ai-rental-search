@@ -33,6 +33,14 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
 
   const { allThreads, updateThread, favorites, toggleFavorite, renameThread, deleteThread } = useAppContext();
 
+  const handleToggleFavorite = (property: Property) => {
+    if (!isLoggedIn) {
+      setShowLoginView(true);
+      return;
+    }
+    toggleFavorite(property);
+  };
+
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const messages = allThreads[chatId!]?.messages || [];
 
@@ -274,7 +282,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
          <LiveInterface
            onClose={() => setIsLiveMode(false)}
            onMessage={handleLiveMessage}
-           onToggleFavorite={toggleFavorite}
+           onToggleFavorite={handleToggleFavorite}
            favorites={favorites}
          />
        )}
@@ -288,6 +296,18 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
             <nav className="hidden md:flex items-center gap-8">
               <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Find a home</a>
               <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Become a partner</a>
+              <button
+                onClick={() => setShowFavorites(true)}
+                aria-label="View saved homes"
+                className="relative p-2 hover:bg-neutral-100 rounded-full transition-colors"
+              >
+                <Heart size={20} />
+                {favorites.length > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#4A5D23] text-white text-[9px] font-black rounded-full flex items-center justify-center">
+                    {favorites.length}
+                  </span>
+                )}
+              </button>
               {isLoggedIn ? (
                 <div className="relative">
                   <div
@@ -379,10 +399,18 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                      <Search size={20} className="text-neutral-400" />
                      Find a home
                    </a>
-                   <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
+                   <button
+                     onClick={() => { setShowFavorites(true); setIsHistoryOpen(false); }}
+                     className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium w-full text-left"
+                   >
                      <Heart size={20} className="text-neutral-400" />
                      Saved Homes
-                   </a>
+                     {favorites.length > 0 && (
+                       <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                         {favorites.length}
+                       </span>
+                     )}
+                   </button>
                    <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
                      <Clock size={20} className="text-neutral-400" />
                      Recently Viewed
@@ -478,7 +506,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                 className="fixed inset-x-0 top-16 bottom-0 z-[50] lg:static lg:flex h-full overflow-hidden shrink-0"
               >
                 <div className="w-full h-full overflow-hidden">
-                  <Outlet />
+                  <Outlet context={{ isLoggedIn, setShowLoginView }} />
                 </div>
               </motion.div>
             )}
@@ -516,7 +544,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
               messages={messages}
               onSendMessage={handleSendMessage}
               isLoading={isLoading}
-              onToggleFavorite={toggleFavorite}
+              onToggleFavorite={handleToggleFavorite}
               favorites={favorites}
               onStartLiveMode={() => setIsLiveMode(true)}
               onPropertyClick={handlePropertyClick}
