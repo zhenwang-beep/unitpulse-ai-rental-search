@@ -27,7 +27,7 @@ interface LandingPageProps {
   isDropdownOpen: boolean;
   setIsDropdownOpen: (v: boolean) => void;
   setShowLoginView: (v: boolean) => void;
-  setShowFavorites: (v: boolean) => void;
+  setPendingFavoriteProperty: (p: Property | null) => void;
   handleLogout: () => void;
 }
 
@@ -36,7 +36,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
   isDropdownOpen,
   setIsDropdownOpen,
   setShowLoginView,
-  setShowFavorites,
+  setPendingFavoriteProperty,
   handleLogout,
 }) => {
   const navigate = useNavigate();
@@ -44,6 +44,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
   const handleToggleFavorite = (property: Property) => {
     if (!isLoggedIn) {
+      setPendingFavoriteProperty(property);
       setShowLoginView(true);
       return;
     }
@@ -197,18 +198,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
           <nav className="hidden md:flex items-center gap-8">
             <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Find a home</a>
             <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Become a partner</a>
-            <button
-              onClick={() => setShowFavorites(true)}
-              aria-label="View saved homes"
-              className="relative p-2 hover:bg-neutral-100 rounded-full transition-colors"
-            >
-              <Heart size={20} />
-              {favorites.length > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#4A5D23] text-white text-[9px] font-black rounded-full flex items-center justify-center">
-                  {favorites.length}
-                </span>
-              )}
-            </button>
             {isLoggedIn ? (
               <div className="relative">
                 <div
@@ -220,10 +209,16 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-black/5 py-2 z-50">
                     <button
-                      onClick={() => { setShowFavorites(true); setIsDropdownOpen(false); }}
+                      onClick={() => { navigate('/favorites'); setIsDropdownOpen(false); }}
                       className="w-full text-left px-4 py-2 text-sm font-medium hover:bg-neutral-50 flex items-center gap-2"
                     >
-                      <Heart size={16} /> Favorites
+                      <Heart size={16} />
+                      Saved Homes
+                      {favorites.length > 0 && (
+                        <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                          {favorites.length}
+                        </span>
+                      )}
                     </button>
                     <button
                       onClick={handleLogout}
@@ -306,18 +301,20 @@ const LandingPage: React.FC<LandingPageProps> = ({
                       <Search size={20} className="text-neutral-400" />
                       Find a home
                     </a>
-                    <button
-                      onClick={() => { setShowFavorites(true); setIsHistoryOpen(false); }}
-                      className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium w-full text-left"
-                    >
-                      <Heart size={20} className="text-neutral-400" />
-                      Saved Homes
-                      {favorites.length > 0 && (
-                        <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
-                          {favorites.length}
-                        </span>
-                      )}
-                    </button>
+                    {isLoggedIn && (
+                      <button
+                        onClick={() => { navigate('/favorites'); setIsHistoryOpen(false); }}
+                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium w-full text-left"
+                      >
+                        <Heart size={20} className="text-neutral-400" />
+                        Saved Homes
+                        {favorites.length > 0 && (
+                          <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                            {favorites.length}
+                          </span>
+                        )}
+                      </button>
+                    )}
                     <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
                       <Clock size={20} className="text-neutral-400" />
                       Recently Viewed
