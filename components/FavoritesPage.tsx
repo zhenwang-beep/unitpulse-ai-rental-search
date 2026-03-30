@@ -5,13 +5,14 @@ import { Heart, ArrowLeft } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import PropertyCard from './PropertyCard';
 import Toast, { ToastData } from './Toast';
+import { Property } from '../types';
 
 const FavoritesPage: React.FC = () => {
   const navigate = useNavigate();
   const { favorites, toggleFavorite } = useAppContext();
   const [toast, setToast] = useState<ToastData | null>(null);
 
-  const handleToggleFavorite = (property: typeof favorites[0]) => {
+  const handleToggleFavorite = (property: Property) => {
     const isRemoving = favorites.some(p => p.id === property.id);
     toggleFavorite(property);
     if (isRemoving) {
