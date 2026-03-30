@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Eye, EyeOff, X } from 'lucide-react';
@@ -31,6 +31,8 @@ const AppShell: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [pendingFavoriteProperty, setPendingFavoriteProperty] = useState<Property | null>(null);
   const [toast, setToast] = useState<ToastData | null>(null);
+
+  const dismissToast = useCallback(() => setToast(null), []);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -122,7 +124,7 @@ const AppShell: React.FC = () => {
         </div>
       )}
 
-      <Toast toast={toast} onDismiss={() => setToast(null)} />
+      <Toast toast={toast} onDismiss={dismissToast} />
 
       {/* Routes */}
       <Routes>
