@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { Eye, EyeOff, X } from 'lucide-react';
 import { AppContextProvider, useAppContext } from './context/AppContext';
 import LandingPage from './pages/LandingPage';
@@ -9,6 +9,8 @@ import SearchRedirect from './pages/SearchRedirect';
 import PropertyPanel from './pages/PropertyPanel';
 import PropertyDetailPage from './pages/PropertyDetailPage';
 import FavoritesPage from './components/FavoritesPage';
+import Toast, { ToastData } from './components/Toast';
+import { Property } from './types';
 
 declare global {
   interface Window {
@@ -21,17 +23,28 @@ const LOGO_URL = "https://tripalink-public.s3.us-east-2.amazonaws.com/Logo+-+Dar
 
 const AppShell: React.FC = () => {
   const navigate = useNavigate();
-  const { favorites, toggleFavorite } = useAppContext();
+  const { toggleFavorite } = useAppContext();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginView, setShowLoginView] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [showFavorites, setShowFavorites] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [pendingFavoriteProperty, setPendingFavoriteProperty] = useState<Property | null>(null);
+  const [toast, setToast] = useState<ToastData | null>(null);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
     setShowLoginView(false);
+    if (pendingFavoriteProperty) {
+      toggleFavorite(pendingFavoriteProperty);
+      setPendingFavoriteProperty(null);
+      setToast({
+        message: 'Saved to Favorites',
+        subtext: 'Find it in your account menu',
+        actionLabel: 'View Saved Homes →',
+        onAction: () => navigate('/favorites'),
+      });
+    }
   };
 
   const handleLogout = () => {
@@ -41,7 +54,6 @@ const AppShell: React.FC = () => {
 
   return (
     <>
-      {/* Login overlay — renders above everything regardless of route */}
       {showLoginView && (
         <div className="fixed inset-0 bg-white z-[200] flex flex-col items-center justify-center p-6">
           <motion.div
@@ -110,20 +122,7 @@ const AppShell: React.FC = () => {
         </div>
       )}
 
-      {/* FavoritesPage global overlay */}
-      <AnimatePresence>
-        {showFavorites && (
-          <FavoritesPage
-            favorites={favorites}
-            onToggleFavorite={toggleFavorite}
-            onPropertyClick={(property) => {
-              setShowFavorites(false);
-              navigate(`/property/${property.id}`);
-            }}
-            onClose={() => setShowFavorites(false)}
-          />
-        )}
-      </AnimatePresence>
+      <Toast toast={toast} onDismiss={() => setToast(null)} />
 
       {/* Routes */}
       <Routes>
@@ -135,7 +134,7 @@ const AppShell: React.FC = () => {
               isDropdownOpen={isDropdownOpen}
               setIsDropdownOpen={setIsDropdownOpen}
               setShowLoginView={setShowLoginView}
-              setShowFavorites={setShowFavorites}
+              setPendingFavoriteProperty={setPendingFavoriteProperty}
               handleLogout={handleLogout}
             />
           }
@@ -147,13 +146,14 @@ const AppShell: React.FC = () => {
             <ChatPage
               isLoggedIn={isLoggedIn}
               setShowLoginView={setShowLoginView}
-              setShowFavorites={setShowFavorites}
+              setPendingFavoriteProperty={setPendingFavoriteProperty}
             />
           }
         >
           <Route path="property/:propertyId" element={<PropertyPanel />} />
         </Route>
         <Route path="/property/:propertyId" element={<PropertyDetailPage />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
       </Routes>
     </>
   );
