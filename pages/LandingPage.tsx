@@ -526,9 +526,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Card 1 */}
-            <div className="group p-8 rounded-[2rem] bg-white border border-black/5 hover:border-[#4A5D23]/20 hover:shadow-2xl hover:shadow-[#4A5D23]/5 transition-all duration-500 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#4A5D23]/5 rounded-full blur-3xl -mr-20 -mt-20 transition-transform duration-700 group-hover:scale-150" />
-              <div className="w-14 h-14 rounded-2xl bg-[#FCF9F8] border border-black/5 flex items-center justify-center text-[#4A5D23] mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
+            <div className="p-8 rounded-[2rem] bg-white border border-black/5 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#4A5D23]/5 rounded-full blur-3xl -mr-20 -mt-20" />
+              <div className="w-14 h-14 rounded-2xl bg-[#FCF9F8] border border-black/5 flex items-center justify-center text-[#4A5D23] mb-6 shadow-sm">
                 <ArrowLeftRight size={24} />
               </div>
               <h3 className="text-xl font-bold text-black mb-3">Compare listings side by side</h3>
@@ -538,9 +538,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Card 2 */}
-            <div className="group p-8 rounded-[2rem] bg-white border border-black/5 hover:border-[#4A5D23]/20 hover:shadow-2xl hover:shadow-[#4A5D23]/5 transition-all duration-500 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#4A5D23]/5 rounded-full blur-3xl -mr-20 -mt-20 transition-transform duration-700 group-hover:scale-150" />
-              <div className="w-14 h-14 rounded-2xl bg-[#FCF9F8] border border-black/5 flex items-center justify-center text-[#4A5D23] mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
+            <div className="p-8 rounded-[2rem] bg-white border border-black/5 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#4A5D23]/5 rounded-full blur-3xl -mr-20 -mt-20" />
+              <div className="w-14 h-14 rounded-2xl bg-[#FCF9F8] border border-black/5 flex items-center justify-center text-[#4A5D23] mb-6 shadow-sm">
                 <Calculator size={24} />
               </div>
               <h3 className="text-xl font-bold text-black mb-3">Break down total monthly cost</h3>
@@ -550,9 +550,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Card 3 */}
-            <div className="group p-8 rounded-[2rem] bg-white border border-black/5 hover:border-[#4A5D23]/20 hover:shadow-2xl hover:shadow-[#4A5D23]/5 transition-all duration-500 relative overflow-hidden">
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#4A5D23]/5 rounded-full blur-3xl -ml-20 -mb-20 transition-transform duration-700 group-hover:scale-150" />
-              <div className="w-14 h-14 rounded-2xl bg-[#FCF9F8] border border-black/5 flex items-center justify-center text-[#4A5D23] mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
+            <div className="p-8 rounded-[2rem] bg-white border border-black/5 relative overflow-hidden">
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#4A5D23]/5 rounded-full blur-3xl -ml-20 -mb-20" />
+              <div className="w-14 h-14 rounded-2xl bg-[#FCF9F8] border border-black/5 flex items-center justify-center text-[#4A5D23] mb-6 shadow-sm">
                 <Target size={24} />
               </div>
               <h3 className="text-xl font-bold text-black mb-3">Recommend best-fit units</h3>
@@ -562,9 +562,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Card 4 */}
-            <div className="group p-8 rounded-[2rem] bg-[#4A5D23] border border-[#4A5D23] hover:shadow-2xl hover:shadow-[#4A5D23]/20 transition-all duration-500 relative overflow-hidden text-white">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20 transition-transform duration-700 group-hover:scale-150" />
-              <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center text-white mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500 backdrop-blur-md">
+            <div className="p-8 rounded-[2rem] bg-[#4A5D23] border border-[#4A5D23] relative overflow-hidden text-white">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20" />
+              <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center text-white mb-6 shadow-sm backdrop-blur-md">
                 <MessageSquare size={24} />
               </div>
               <h3 className="text-xl font-bold text-white mb-3">Answer questions about policies, fees, and amenities</h3>
@@ -592,8 +592,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 { q: "Is it free to use?", a: "Yes, UnitPulse is completely free for renters. We partner directly with property managers and landlords to bring you the most accurate listings without any hidden search fees." },
                 { q: "What cities do you cover?", a: "We currently cover major metropolitan areas across the US, including New York, Los Angeles, Chicago, and Austin. We are constantly expanding our network and adding new markets regularly." }
               ].map((item, i) => (
-                <div key={i} className="py-8 border-b border-black/10 first:pt-0 last:border-0 group">
-                  <h3 className="text-2xl font-bold text-black mb-4 group-hover:text-[#4A5D23] transition-colors tracking-tight">{item.q}</h3>
+                <div key={i} className="py-8 border-b border-black/10 first:pt-0 last:border-0">
+                  <h3 className="text-2xl font-bold text-black mb-4 tracking-tight">{item.q}</h3>
                   <p className="text-neutral-600 text-base leading-relaxed">{item.a}</p>
                 </div>
               ))}
