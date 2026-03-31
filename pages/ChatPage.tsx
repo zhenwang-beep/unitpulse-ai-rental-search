@@ -580,23 +580,26 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
             />
           </div>
 
-          {/* Re-open chat — agent avatar bubble when chat is collapsed */}
+          {/* Re-open chat — draggable agent avatar bubble, pinned to right edge */}
           {isPropertyPanelOpen && isChatCollapsed && (
-            <button
+            <motion.button
+              drag="y"
+              dragConstraints={{ top: -500, bottom: 200 }}
+              dragElastic={0.08}
+              dragMomentum={false}
               onClick={() => setIsChatCollapsed(false)}
               title="Chat with UnitPulse"
-              className="hidden lg:flex fixed right-5 top-[168px] z-[80] flex-col items-center gap-1 group"
+              className="hidden lg:flex fixed right-5 bottom-28 z-[80] flex-col items-center gap-1 group cursor-grab active:cursor-grabbing touch-none"
+              whileDrag={{ scale: 1.08 }}
             >
               <div className="relative">
-                <img
-                  src="https://api.dicebear.com/7.x/avataaars/svg?seed=UnitPulse"
-                  alt="UnitPulse Agent"
-                  className="w-12 h-12 rounded-full border-2 border-white shadow-xl bg-[#4A5D23] group-hover:scale-105 transition-transform"
-                />
-                <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-[#4A5D23] rounded-full border-2 border-white" />
+                <div className="w-12 h-12 rounded-full border-2 border-white shadow-xl bg-[#4A5D23] flex items-center justify-center text-white text-sm font-black group-hover:scale-105 transition-transform">
+                  U
+                </div>
+                <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-white" />
               </div>
-              <span className="text-[11px] font-semibold text-neutral-600 bg-white/90 px-2 py-0.5 rounded-full shadow-sm">Chat</span>
-            </button>
+              <span className="text-[11px] font-semibold text-neutral-600 bg-white/90 px-2 py-0.5 rounded-full shadow-sm select-none">Chat</span>
+            </motion.button>
           )}
        </div>
 
