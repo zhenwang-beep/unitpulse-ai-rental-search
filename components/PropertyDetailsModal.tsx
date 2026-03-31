@@ -463,7 +463,8 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
           <button className="h-11 lg:h-12 px-4 lg:px-5 bg-[#4A5D23] text-white rounded-xl font-semibold text-sm lg:text-sm hover:bg-[#3a4e1a] transition-all flex items-center gap-1.5">
             <Calendar size={15} className="lg:hidden" />
             <Calendar size={16} className="hidden lg:block" />
-            Tour
+            <span className="lg:hidden">Tour</span>
+            <span className="hidden lg:inline">Schedule a tour</span>
           </button>
         </div>
         </div>
