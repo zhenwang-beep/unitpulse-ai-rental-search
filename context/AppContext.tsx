@@ -40,17 +40,14 @@ function loadFavorites(): Property[] {
 
 export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [allThreads, setAllThreads] = useState<AllThreads>(loadThreads);
-  const [favorites, setFavorites] = useState<Property[]>(loadFavorites);
+  // Always start with empty favorites — isLoggedIn is not persisted,
+  // so we can't know if the user is authenticated on a fresh page load.
+  const [favorites, setFavorites] = useState<Property[]>([]);
 
   // Persist allThreads to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(allThreads));
   }, [allThreads]);
-
-  // Persist favorites to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(favorites));
-  }, [favorites]);
 
   const addThread = (id: string, title = 'New Chat', initialMessages: ChatMessage[] = []) => {
     setAllThreads(prev => {
