@@ -12,6 +12,7 @@ interface AppContextValue {
   deleteThread: (id: string) => void;
   favorites: Property[];
   toggleFavorite: (property: Property) => void;
+  clearFavorites: () => void;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -91,8 +92,13 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     );
   };
 
+  const clearFavorites = () => {
+    setFavorites([]);
+    localStorage.removeItem(FAV_STORAGE_KEY);
+  };
+
   return (
-    <AppContext.Provider value={{ allThreads, addThread, updateThread, renameThread, deleteThread, favorites, toggleFavorite }}>
+    <AppContext.Provider value={{ allThreads, addThread, updateThread, renameThread, deleteThread, favorites, toggleFavorite, clearFavorites }}>
       {children}
     </AppContext.Provider>
   );
