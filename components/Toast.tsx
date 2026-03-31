@@ -24,12 +24,13 @@ const Toast: React.FC<ToastProps> = ({ toast, onDismiss }) => {
   return (
     <AnimatePresence>
       {toast && (
+        <div className="fixed top-6 inset-x-0 flex justify-center z-[300] pointer-events-none">
         <motion.div
           initial={{ opacity: 0, y: -40, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.95 }}
           transition={{ duration: 0.25, ease: [0, 0, 0.2, 1] }}
-          className="fixed top-6 left-1/2 -translate-x-1/2 z-[300] flex items-center gap-3 bg-black text-white px-5 py-3.5 rounded-2xl shadow-2xl min-w-[280px] max-w-sm"
+          className="pointer-events-auto flex items-center gap-3 bg-black text-white px-5 py-3.5 rounded-2xl shadow-2xl min-w-[280px] max-w-sm"
         >
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold leading-tight">{toast.message}</p>
@@ -53,6 +54,7 @@ const Toast: React.FC<ToastProps> = ({ toast, onDismiss }) => {
             <X size={14} />
           </button>
         </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );

@@ -16,7 +16,7 @@ const FavoritesPage: React.FC = () => {
     const isRemoving = favorites.some(p => p.id === property.id);
     toggleFavorite(property);
     if (isRemoving) {
-      setToast({ message: 'Removed from Saved Homes' });
+      setToast({ message: 'Removed from Favorites' });
     }
   };
 
@@ -33,7 +33,7 @@ const FavoritesPage: React.FC = () => {
             <ArrowLeft size={20} />
           </button>
           <h1 className="text-xl font-black font-heading tracking-tight text-black">
-            Saved Homes {favorites.length > 0 && `(${favorites.length})`}
+            Favorites {favorites.length > 0 && `(${favorites.length})`}
           </h1>
         </div>
       </div>
@@ -46,7 +46,7 @@ const FavoritesPage: React.FC = () => {
               <Heart size={48} className="text-neutral-300" strokeWidth={1.5} />
             </div>
             <h2 className="text-2xl font-black font-heading tracking-tight text-black mb-4">
-              No saved homes yet.
+              No favorites yet.
             </h2>
             <p className="text-neutral-500 max-w-md mx-auto mb-8">
               When you find a home you love, click the heart icon to save it here for easy access later.

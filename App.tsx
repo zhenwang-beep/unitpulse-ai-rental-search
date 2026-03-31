@@ -41,9 +41,9 @@ const AppShell: React.FC = () => {
       toggleFavorite(pendingFavoriteProperty);
       setPendingFavoriteProperty(null);
       setToast({
-        message: 'Added to Saved Homes',
+        message: 'Added to Favorites',
         subtext: 'Find it in your account menu',
-        actionLabel: 'View Saved Homes →',
+        actionLabel: 'View Favorites →',
         onAction: () => navigate('/favorites'),
       });
     }
@@ -138,6 +138,7 @@ const AppShell: React.FC = () => {
               setShowLoginView={setShowLoginView}
               setPendingFavoriteProperty={setPendingFavoriteProperty}
               handleLogout={handleLogout}
+              showToast={setToast}
             />
           }
         />
@@ -149,6 +150,8 @@ const AppShell: React.FC = () => {
               isLoggedIn={isLoggedIn}
               setShowLoginView={setShowLoginView}
               setPendingFavoriteProperty={setPendingFavoriteProperty}
+              handleLogout={handleLogout}
+              showToast={setToast}
             />
           }
         >

@@ -10,6 +10,7 @@ import PropertyDetailsModal from '../components/PropertyDetailsModal';
 import { sendMessageToGemini } from '../services/geminiService';
 import { getFilteredProperties } from '../services/propertyService';
 import { useAppContext } from '../context/AppContext';
+import { ToastData } from '../components/Toast';
 import { ArrowRight, Search, Sun, TreePine, Music, PanelRightClose, PanelRightOpen, ChevronDown, RotateCcw, Loader2, AudioLines, MapPin, X, ShieldCheck, Heart, Bed, Bath, Ruler, Calendar, Phone, Sparkles, CheckCircle2, Zap, ChevronLeft, ChevronRight, Info, PenTool, FileText, Check, Menu, LogOut, User, ArrowLeftRight, Calculator, Target, Clock, Building, Settings, HelpCircle, Eye, EyeOff } from 'lucide-react';
 
 declare global {
@@ -23,15 +24,22 @@ interface ChatPageProps {
   isLoggedIn: boolean;
   setShowLoginView: (v: boolean) => void;
   setPendingFavoriteProperty: (p: Property | null) => void;
+  handleLogout: () => void;
+  showToast: (data: ToastData) => void;
 }
 
-const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPendingFavoriteProperty }) => {
+const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPendingFavoriteProperty, handleLogout, showToast }) => {
   const { chatId } = useParams<{ chatId: string }>();
   const navigate = useNavigate();
   const location = useLocation();
   const isPropertyPanelOpen = !!useMatch('/search/:chatId/property/:propertyId');
 
-  const { allThreads, updateThread, favorites, toggleFavorite, renameThread } = useAppContext();
+  const { allThreads, updateThread, favorites, toggleFavorite, renameThread, deleteThread, addThread } = useAppContext();
+
+  const handleResetChat = () => {
+    deleteThread(chatId!);
+    addThread(chatId!, 'UnitPulse');
+  };
 
   const handleToggleFavorite = (property: Property) => {
     if (!isLoggedIn) {
@@ -39,7 +47,15 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
       setShowLoginView(true);
       return;
     }
+    const adding = !favorites.some(f => f.id === property.id);
     toggleFavorite(property);
+    if (adding) {
+      showToast({
+        message: 'Added to Favorites',
+        actionLabel: 'View Favorites →',
+        onAction: () => navigate('/favorites'),
+      });
+    }
   };
 
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
@@ -145,7 +161,19 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
   const [expandedFloorPlan, setExpandedFloorPlan] = useState<string | null>(null);
   const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const lastTriggered = useRef<Record<string, boolean>>({});
+
+  useEffect(() => {
+    if (!isDropdownOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (!dropdownRef.current?.contains(e.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [isDropdownOpen]);
 
   // Chat view scroll state (header hide/show)
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -305,7 +333,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
               <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Find a home</a>
               <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Become a partner</a>
               {isLoggedIn ? (
-                <div className="relative">
+                <div className="relative" ref={dropdownRef}>
                   <div
                     className="w-10 h-10 rounded-full bg-neutral-100 border border-black/5 flex items-center justify-center overflow-hidden cursor-pointer hover:border-black transition-all"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -313,23 +341,26 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
                     <span className="w-full h-full bg-[#4A5D23] text-white text-xs font-black flex items-center justify-center">FZ</span>
                   </div>
                   {isDropdownOpen && (
-                    <>
-                    <div className="fixed inset-0 z-40" onClick={() => setIsDropdownOpen(false)} />
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-black/5 py-2 z-50">
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-black/5 py-2 z-[70]">
                       <button
                         onClick={() => { navigate('/favorites'); setIsDropdownOpen(false); }}
                         className="w-full text-left px-4 py-2 text-sm font-medium hover:bg-neutral-50 flex items-center gap-2"
                       >
                         <Heart size={16} />
-                        Saved Homes
+                        Favorites
                         {favorites.length > 0 && (
                           <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
                             {favorites.length}
                           </span>
                         )}
                       </button>
+                      <button
+                        onClick={() => { handleLogout(); setIsDropdownOpen(false); }}
+                        className="w-full text-left px-4 py-2 text-sm font-medium hover:bg-neutral-50 flex items-center gap-2 text-red-600"
+                      >
+                        <LogOut size={16} /> Logout
+                      </button>
                     </div>
-                    </>
                   )}
                 </div>
               ) : (
@@ -544,6 +575,8 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
               onPropertyClick={handlePropertyClick}
               selectedProperty={null}
               onScroll={handleLandingScroll}
+              isLoggedIn={isLoggedIn}
+              onResetChat={handleResetChat}
             />
           </div>
 
