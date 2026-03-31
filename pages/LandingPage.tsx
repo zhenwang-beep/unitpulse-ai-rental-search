@@ -445,7 +445,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
             <span className="font-sans font-light text-neutral-500 block text-xl md:text-3xl lg:text-4xl tracking-wide opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>tailored to your lifestyle.</span>
           </h1>
 
-          <form onSubmit={handleLandingSubmit} className="w-full max-w-3xl relative group opacity-0 animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
+          <form onSubmit={handleLandingSubmit} className="w-full max-w-3xl relative group opacity-0 animate-fade-in-up z-10" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
             <div className={`transition-all duration-500 rounded-3xl border-2 ${isLandingFocused ? 'shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-[#4A5D23]' : 'shadow-[0_10px_20px_rgba(0,0,0,0.05)] border-transparent'}`}>
               <div className="relative bg-white rounded-3xl pl-6 p-2 pr-4 flex items-center gap-2 overflow-hidden min-h-[4rem] z-10">
                 <div className="flex-1 relative flex items-center min-w-0 py-3">
