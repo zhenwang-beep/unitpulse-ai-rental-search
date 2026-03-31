@@ -56,9 +56,10 @@ Output JSON format strictly.
 `;
 
 export const sendMessageToGemini = async (
-  message: string, 
+  message: string,
   history: { role: string, text: string }[],
-  selectedProperty?: Property | null
+  selectedProperty?: Property | null,
+  signal?: AbortSignal
 ): Promise<GeminiResponse | null> => {
   const ai = getAiClient();
   
@@ -113,6 +114,12 @@ export const sendMessageToGemini = async (
   // If no AI client (e.g., missing API key), use mock data as a fallback
   if (!ai) {
     console.warn("Using mock response due to missing API client.");
+    // Simulate async delay so stop button is testable
+    await new Promise<void>((resolve, reject) => {
+      const t = setTimeout(resolve, 1200);
+      signal?.addEventListener('abort', () => { clearTimeout(t); reject(new DOMException('Aborted', 'AbortError')); });
+    });
+    if (signal?.aborted) return null;
     return getMockResponse();
   }
 
@@ -146,7 +153,8 @@ export const sendMessageToGemini = async (
     }
     
     const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('AI_REQUEST_TIMEOUT')), 60000);
+      const t = setTimeout(() => reject(new Error('AI_REQUEST_TIMEOUT')), 60000);
+      signal?.addEventListener('abort', () => { clearTimeout(t); reject(new DOMException('Aborted', 'AbortError')); });
     });
 
     const response = await Promise.race([
@@ -233,11 +241,13 @@ export const sendMessageToGemini = async (
     return JSON.parse(jsonText) as GeminiResponse;
 
   } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      return null;
+    }
     console.error("Gemini API Error:", error);
     const errorMessage = error instanceof Error ? error.message : String(error);
-    
+
     if (errorMessage.includes('AI_REQUEST_TIMEOUT') || errorMessage.toLowerCase().includes('quota') || errorMessage.toLowerCase().includes('429') || errorMessage.toLowerCase().includes('exceeded')) {
-      // Provide a seamless mock response using available data
       console.warn("Using mock response due to API timeout or quota exceeded.");
       return getMockResponse();
     }

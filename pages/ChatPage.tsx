@@ -69,6 +69,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
 
   const [isLoading, setIsLoading] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const abortRef = useRef<AbortController | null>(null);
   const [currentFilters, setCurrentFilters] = useState<SearchFilters>({});
   const [isLiveMode, setIsLiveMode] = useState(false);
 
@@ -187,7 +188,15 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
 
   const LOGO_URL = "https://tripalink-public.s3.us-east-2.amazonaws.com/Logo+-+Dark.png";
 
+  const handleStop = () => {
+    abortRef.current?.abort();
+    setIsLoading(false);
+  };
+
   const handleSendMessage = async (text: string) => {
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
     setIsLoading(true);
 
     const userMsg: ChatMessage = {
@@ -200,8 +209,9 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
     setMessages(prev => [...prev, userMsg]);
 
     const history = messages.slice(-6).map(m => ({ role: m.role, text: m.text }));
-    const response = await sendMessageToGemini(text, history, null);
+    const response = await sendMessageToGemini(text, history, null, controller.signal);
 
+    if (controller.signal.aborted) return;
     setIsLoading(false);
 
     if (response) {
@@ -578,6 +588,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
               onScroll={handleLandingScroll}
               isLoggedIn={isLoggedIn}
               onResetChat={handleResetChat}
+              onStop={handleStop}
             />
           </div>
 

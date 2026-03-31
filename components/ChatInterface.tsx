@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowUp, Loader2, ChevronRight, ChevronLeft, AudioLines, RotateCcw, Check, MapPin, Star, Wifi, Car, Coffee, ShieldCheck, Upload, CreditCard, PenTool, Key, Zap, ClipboardCheck, Heart, Sparkles, Plus, Phone, Calendar, ArrowUpDown } from 'lucide-react';
+import { ArrowUp, Loader2, ChevronRight, ChevronLeft, AudioLines, RotateCcw, Check, MapPin, Star, Wifi, Car, Coffee, ShieldCheck, Upload, CreditCard, PenTool, Key, Zap, ClipboardCheck, Heart, Sparkles, Plus, Phone, Calendar, ArrowUpDown, Square } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChatMessage, Property } from '../types';
 import { AI_AVATAR, SUGGESTION_CHIPS } from '../constants';
@@ -20,6 +20,7 @@ interface ChatInterfaceProps {
   isCollapsed?: boolean;
   isLoggedIn?: boolean;
   onResetChat?: () => void;
+  onStop?: () => void;
 }
 
 // --- INTERACTIVE COMPONENTS ---
@@ -1227,6 +1228,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   isCollapsed,
   isLoggedIn,
   onResetChat,
+  onStop,
 }) => {
   const [input, setInput] = useState('');
   const [ghostText, setGhostText] = useState('');
@@ -1677,19 +1679,30 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                    >
                      <AudioLines size={20} />
                    </button>
-                   <button
-                     type="button"
-                     disabled={isLoading || !hasText}
-                     onClick={handleSubmit}
-                     aria-label="Send message"
-                     className={`h-8 w-8 rounded-full transition-all flex items-center justify-center ${
-                       hasText
-                         ? 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
-                         : 'bg-neutral-100 text-neutral-300 cursor-not-allowed'
-                     }`}
-                   >
-                     {isLoading ? <Loader2 size={16} className="animate-spin" /> : <ArrowUp size={18} />}
-                   </button>
+                   {isLoading ? (
+                     <button
+                       type="button"
+                       onClick={onStop}
+                       aria-label="Stop generating"
+                       className="h-8 w-8 rounded-full bg-[#4A5D23] text-white hover:bg-[#3a4e1a] transition-all flex items-center justify-center"
+                     >
+                       <Square size={14} fill="currentColor" />
+                     </button>
+                   ) : (
+                     <button
+                       type="button"
+                       disabled={!hasText}
+                       onClick={handleSubmit}
+                       aria-label="Send message"
+                       className={`h-8 w-8 rounded-full transition-all flex items-center justify-center ${
+                         hasText
+                           ? 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
+                           : 'bg-neutral-100 text-neutral-300 cursor-not-allowed'
+                       }`}
+                     >
+                       <ArrowUp size={18} />
+                     </button>
+                   )}
                  </div>
                </div>
              </div>
