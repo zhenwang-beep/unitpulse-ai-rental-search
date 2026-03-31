@@ -241,6 +241,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
   };
 
   const hasSentInitialQuery = useRef(false);
+  const bubbleWasDragged = useRef(false);
   useEffect(() => {
     if (hasSentInitialQuery.current) return;
     const initialQuery = (location.state as { query?: string } | null)?.query;
@@ -587,7 +588,13 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
               dragConstraints={{ top: -500, bottom: 200 }}
               dragElastic={0.08}
               dragMomentum={false}
-              onClick={() => setIsChatCollapsed(false)}
+              onDragEnd={(_, info) => {
+                if (Math.abs(info.offset.y) > 4) bubbleWasDragged.current = true;
+              }}
+              onClick={() => {
+                if (bubbleWasDragged.current) { bubbleWasDragged.current = false; return; }
+                setIsChatCollapsed(false);
+              }}
               title="Chat with UnitPulse"
               className="hidden lg:flex fixed right-5 bottom-28 z-[80] flex-col items-center gap-1 group cursor-grab active:cursor-grabbing touch-none"
               whileDrag={{ scale: 1.08 }}
