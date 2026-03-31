@@ -405,10 +405,10 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
                   {/* Ghost Text Overlay */}
                   {landingGhostText && isLandingFocused && (
-                    <div className="absolute inset-0 px-2 pointer-events-none flex items-center">
+                    <div className="absolute inset-0 pointer-events-none flex items-center">
                       <div className="w-full flex">
-                        <span className="text-lg opacity-0 whitespace-pre-wrap font-sans leading-normal tracking-normal break-words">{landingInput}</span>
-                        <span className="text-neutral-400/40 whitespace-pre-wrap break-words font-sans text-lg leading-normal tracking-normal">{landingGhostText.slice(landingInput.length)}</span>
+                        <span className="text-sm md:text-lg opacity-0 whitespace-pre font-sans leading-normal tracking-normal">{landingInput}</span>
+                        <span className="text-neutral-400/40 whitespace-pre font-sans text-sm md:text-lg leading-normal tracking-normal">{landingGhostText.slice(landingInput.length)}</span>
                       </div>
                     </div>
                   )}
