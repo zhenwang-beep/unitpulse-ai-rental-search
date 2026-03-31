@@ -427,6 +427,16 @@ const LandingPage: React.FC<LandingPageProps> = ({
                   />
                 </div>
 
+                {/* Tab hint */}
+                {landingGhostText && isLandingFocused && (
+                  <div className="flex items-center shrink-0 z-10 pointer-events-none">
+                    <span className="flex items-center gap-1 px-2 py-1 rounded-md bg-neutral-100 border border-black/8 text-neutral-400 text-xs font-medium">
+                      <kbd className="font-sans">Tab</kbd>
+                      <span>↵</span>
+                    </span>
+                  </div>
+                )}
+
                 {/* Combined Action Button */}
                 <button
                   type={hasLandingText ? "submit" : "button"}
