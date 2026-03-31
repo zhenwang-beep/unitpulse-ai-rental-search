@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Property } from '../types';
 import { Heart, MapPin, Bed, Bath, Ruler, Star, ChevronLeft, ChevronRight, Phone, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import ContactFormModal from './ContactFormModal';
 
 interface PropertyCardProps {
   property: Property;
@@ -9,11 +10,13 @@ interface PropertyCardProps {
   onToggleFavorite: (property: Property) => void;
   onClick?: (property: Property) => void;
   showDescription?: boolean;
+  isLoggedIn?: boolean;
 }
 
-const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onToggleFavorite, onClick, showDescription = false }) => {
+const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onToggleFavorite, onClick, showDescription = false, isLoggedIn = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showTourModal, setShowTourModal] = useState(false);
   const images = property.images || [`https://picsum.photos/seed/${property.imageSeed}/800/600`];
 
   const nextImage = (e: React.MouseEvent) => {
@@ -27,6 +30,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
   };
 
   return (
+    <>
     <div
       className="group relative bg-white rounded-xl hover:shadow-xl transition-all duration-500 overflow-hidden border border-black/5 cursor-pointer h-full flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
@@ -167,7 +171,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
             <span className="truncate">(123) 456-7890</span>
           </button>
           <button
-            onClick={(e) => { e.stopPropagation(); onClick?.(property); }}
+            onClick={(e) => { e.stopPropagation(); setShowTourModal(true); }}
             aria-label="Schedule a tour"
             className="flex-1 py-2.5 bg-[#4A5D23] hover:bg-[#3a4e1a] text-white rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-1.5"
           >
@@ -177,6 +181,16 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
         </div>
       </div>
     </div>
+
+    {showTourModal && (
+      <ContactFormModal
+        mode="tour"
+        property={property}
+        isLoggedIn={isLoggedIn}
+        onClose={() => setShowTourModal(false)}
+      />
+    )}
+    </>
   );
 };
 
