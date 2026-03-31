@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { MOCK_PROPERTIES, SUGGESTION_CHIPS } from '../constants';
@@ -15,6 +15,29 @@ const PLACEHOLDER_PROMPTS = [
   "Pet-friendly home near Central Park...",
   "Quiet studio for a remote worker...",
   "Luxury penthouse with skyline views..."
+];
+
+const ALL_DROPDOWN_SUGGESTIONS = [
+  "A modern loft in SoHo under $3000",
+  "2 bedroom apartment with a private garden",
+  "Pet-friendly home near Central Park",
+  "Quiet studio for a remote worker",
+  "Luxury penthouse with skyline views",
+  "Find me a modern loft with high ceilings and an open floor plan",
+  "I want a home with a private garden or a large backyard",
+  "Show me pet-friendly apartments with nearby parks",
+  "Looking for a high-floor unit with panoramic city skyline views",
+  "1 bedroom apartment in Los Angeles under $2000",
+  "Studio apartment near downtown with gym access",
+  "2-bedroom with in-unit laundry and parking",
+  "Affordable apartment for students in Chicago",
+  "Spacious condo with ocean views in Seattle",
+  "Dog-friendly apartment with a yard in Seattle",
+  "Modern apartment with rooftop access in New York",
+  "Short-term furnished rental in San Francisco",
+  "Cozy 1-bedroom near good coffee shops",
+  "Apartment with a home office and fast internet",
+  "Family-friendly home near top-rated schools",
 ];
 
 const POPULAR_CITIES = [
@@ -65,6 +88,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const [landingInput, setLandingInput] = useState('');
   const [landingGhostText, setLandingGhostText] = useState('');
   const [isLandingFocused, setIsLandingFocused] = useState(false);
+  const [dropdownIndex, setDropdownIndex] = useState(-1);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [landingVisibleCount, setLandingVisibleCount] = useState(6);
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -146,6 +170,16 @@ const LandingPage: React.FC<LandingPageProps> = ({
     }
   }, [landingInput, isLandingFocused]);
 
+  const dropdownSuggestions = useMemo(() => {
+    if (!landingInput.trim() || !isLandingFocused) return [];
+    const q = landingInput.toLowerCase();
+    return ALL_DROPDOWN_SUGGESTIONS
+      .filter(s => s.toLowerCase().includes(q) && s.toLowerCase() !== q)
+      .slice(0, 6);
+  }, [landingInput, isLandingFocused]);
+
+  useEffect(() => { setDropdownIndex(-1); }, [landingInput]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -181,6 +215,30 @@ const LandingPage: React.FC<LandingPageProps> = ({
   };
 
   const handleLandingKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Dropdown navigation
+    if (dropdownSuggestions.length > 0) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setDropdownIndex(i => Math.min(i + 1, dropdownSuggestions.length - 1));
+        return;
+      }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setDropdownIndex(i => Math.max(i - 1, -1));
+        return;
+      }
+      if (e.key === 'Escape') {
+        setDropdownIndex(-1);
+        setIsLandingFocused(false);
+        return;
+      }
+      if (e.key === 'Enter' && !e.shiftKey && dropdownIndex >= 0) {
+        e.preventDefault();
+        navigate('/search', { state: { query: dropdownSuggestions[dropdownIndex] } });
+        return;
+      }
+    }
+
     if (e.key === 'Tab' && landingGhostText) {
       e.preventDefault();
       setLandingInput(landingGhostText);
@@ -418,7 +476,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     value={landingInput}
                     onChange={handleLandingInput}
                     onFocus={() => setIsLandingFocused(true)}
-                    onBlur={() => setIsLandingFocused(false)}
+                    onBlur={() => setTimeout(() => setIsLandingFocused(false), 150)}
                     onKeyDown={handleLandingKeyDown}
                     placeholder=""
                     rows={1}
@@ -456,6 +514,47 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 </button>
               </div>
             </div>
+            {/* Suggestions Dropdown */}
+            <AnimatePresence>
+              {dropdownSuggestions.length > 0 && isLandingFocused && (
+                <motion.div
+                  initial={{ opacity: 0, y: -6, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6, scale: 0.98 }}
+                  transition={{ duration: 0.15, ease: [0, 0, 0.2, 1] }}
+                  className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-black/5 overflow-hidden z-50"
+                >
+                  {dropdownSuggestions.map((s, i) => {
+                    const q = landingInput.toLowerCase();
+                    const idx = s.toLowerCase().indexOf(q);
+                    const before = s.slice(0, idx);
+                    const match = s.slice(idx, idx + landingInput.length);
+                    const after = s.slice(idx + landingInput.length);
+                    return (
+                      <button
+                        key={i}
+                        type="button"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          navigate('/search', { state: { query: s } });
+                        }}
+                        onMouseEnter={() => setDropdownIndex(i)}
+                        className={`w-full text-left px-5 py-3 flex items-center gap-3 transition-colors text-sm ${
+                          dropdownIndex === i ? 'bg-neutral-50' : 'hover:bg-neutral-50'
+                        }`}
+                      >
+                        <Search size={14} className="shrink-0 text-neutral-400" />
+                        <span className="text-neutral-700 truncate">
+                          {before}
+                          <span className="font-semibold text-black">{match}</span>
+                          {after}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </form>
 
           <div className="w-full overflow-x-auto scrollbar-hide px-4">
