@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FileText, ArrowRight, Heart, Search, Menu, X, Clock, Building, Settings, HelpCircle, LogOut, Share2, Facebook, Twitter, Link, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
+import { FileText, ArrowRight, Heart, Search, Menu, X, Building, LogOut, Share2, Facebook, Twitter, Link, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { ToastData } from '../components/Toast';
 import PropertyCard from '../components/PropertyCard';
@@ -54,7 +54,7 @@ const BLOG_POSTS = [
       <p>Finding the perfect apartment takes time and effort, but with these tips, you'll be well-equipped to navigate the rental market and find a home that meets your needs and budget. Remember to stay organized, be patient, and don't settle for something that doesn't feel right. Happy hunting!</p>
     `,
     image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    category: "apartment guide",
+    category: "Apartment Guide",
     date: "March 28, 2026",
     readTime: "5 min read",
     author: "Sarah Johnson",
@@ -78,7 +78,7 @@ const BLOG_POSTS = [
       <p>Coliving isn't for everyone, but it can be a great option for certain individuals. If you value flexibility, community, and convenience, coliving might be the perfect fit. However, if you prefer complete privacy and control over your living space, traditional apartments may be a better choice.</p>
     `,
     image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    category: "coliving",
+    category: "Coliving",
     date: "March 25, 2026",
     readTime: "4 min read",
     author: "Michael Chen",
@@ -105,7 +105,7 @@ const BLOG_POSTS = [
       <p>Culver City has undergone significant development in recent years, becoming a hub for tech companies and creative professionals. It offers a mix of urban amenities and suburban charm, with the average rent for a one-bedroom apartment around $2,700 per month.</p>
     `,
     image: "https://images.unsplash.com/photo-1502672023488-70e25813eb80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    category: "local guide",
+    category: "Local Guide",
     date: "March 30, 2026",
     readTime: "6 min read",
     author: "Emily Rodriguez",
@@ -135,6 +135,12 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
   const { favorites, toggleFavorite } = useAppContext();
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
+  useEffect(() => {
+    const handleResize = () => { if (window.innerWidth >= 768) setIsHistoryOpen(false); };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const blogPost = BLOG_POSTS.find(post => post.id === parseInt(id || '1')) || BLOG_POSTS[0];
   const relatedPosts = BLOG_POSTS.filter(post => post.id !== blogPost.id).slice(0, 3);
   const recommendedProperties = MOCK_PROPERTIES.slice(0, 3);
@@ -159,7 +165,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
     <div
       className="h-[100dvh] w-full bg-[#FCF9F8] flex flex-col text-black font-sans overflow-y-auto scroll-smooth"
     >
-      <header className="w-full px-8 py-4 flex justify-between items-center z-[60] shrink-0 transition-all duration-300 sticky top-0 bg-white shadow-sm">
+      <header className="w-full px-4 md:px-8 py-4 flex justify-between items-center z-[60] shrink-0 transition-all duration-300 sticky top-0 bg-white shadow-sm">
         <div className="w-full flex justify-between items-center">
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/')}>
             <img src={LOGO_URL} alt="UnitPulse" className="h-8" />
@@ -216,11 +222,24 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
       </header>
 
       {/* History Sidebar */}
-      {isHistoryOpen && (
-        <div className="fixed inset-0 bg-black/40 z-[65]" onClick={() => setIsHistoryOpen(false)} />
-      )}
-      {isHistoryOpen && (
-        <div className="fixed inset-y-0 left-0 w-80 bg-white shadow-2xl z-[70] border-r border-black/5 flex flex-col">
+      <AnimatePresence>
+        {isHistoryOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black/40 z-[65]"
+              onClick={() => setIsHistoryOpen(false)}
+            />
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
+              className="fixed inset-y-0 left-0 w-80 bg-white shadow-2xl z-[70] border-r border-black/5 flex flex-col"
+            >
           <div className="p-6 border-b border-black/5 flex justify-between items-center">
             <div className="flex items-center gap-2">
               <img src={LOGO_URL} alt="UnitPulse" className="h-6" />
@@ -232,7 +251,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
           </div>
 
           <div className="flex-1 overflow-y-auto flex flex-col">
-            <div className="p-6 border-b border-black/5 flex flex-col gap-6 md:hidden">
+            <div className="p-6 border-b border-black/5 flex flex-col gap-6">
               {isLoggedIn ? (
                 <div className="flex items-center gap-4 p-4 bg-neutral-50 rounded-2xl border border-black/5">
                   <div className="w-12 h-12 rounded-full bg-[#4A5D23] text-white text-sm font-black flex items-center justify-center shadow-sm">FZ</div>
@@ -277,14 +296,6 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
                     )}
                   </button>
                 )}
-                <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                  <Clock size={20} className="text-neutral-400" />
-                  Recently Viewed
-                </a>
-                <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                  <FileText size={20} className="text-neutral-400" />
-                  Applications
-                </a>
               </div>
 
               <div className="h-px bg-neutral-100 w-full"></div>
@@ -293,14 +304,6 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
                 <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
                   <Building size={20} className="text-neutral-400" />
                   Become a partner
-                </a>
-                <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                  <Settings size={20} className="text-neutral-400" />
-                  Settings
-                </a>
-                <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                  <HelpCircle size={20} className="text-neutral-400" />
-                  Help
                 </a>
               </div>
 
@@ -318,12 +321,14 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
               )}
             </div>
           </div>
-        </div>
-      )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
-      <main className="flex-1 flex flex-col items-center px-4 relative w-full">
+      <main className="flex-1 flex flex-col items-center relative w-full">
         {/* Breadcrumb */}
-        <div className="w-full max-w-4xl mx-auto mt-8 px-4">
+        <div className="w-full max-w-5xl mx-auto mt-8 px-4">
           <div className="flex items-center gap-2 text-sm text-neutral-500">
             <a href="/" className="hover:text-[#4A5D23] transition-colors">Home</a>
             <ChevronRight size={14} />
@@ -334,7 +339,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
         </div>
 
         {/* Blog Post Header */}
-        <div className="w-full max-w-4xl mx-auto mt-8 px-4">
+        <div className="w-full max-w-5xl mx-auto mt-8 px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -372,30 +377,6 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Left Column - Blog Content */}
             <div className="lg:col-span-8 space-y-12">
-              {/* Blog Post Header */}
-              <div>
-                <div className="inline-block px-3 py-1 bg-[#4A5D23] text-white text-xs font-bold rounded-full mb-4">
-                  {blogPost.category}
-                </div>
-                <h1 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
-                  {blogPost.title}
-                </h1>
-                <div className="flex items-center gap-4 text-sm text-neutral-500 mb-8">
-                  <span>by {blogPost.author}</span>
-                  <span>•</span>
-                  <span>{blogPost.date}</span>
-                  <span>•</span>
-                  <span>{blogPost.readTime}</span>
-                </div>
-                <div className="relative h-64 md:h-80 lg:h-96 rounded-xl overflow-hidden mb-10">
-                  <img 
-                    src={blogPost.image} 
-                    alt={blogPost.title} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-
               {/* Blog Post Content */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -455,7 +436,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
             <div className="lg:col-span-4">
               <div className="sticky top-24 space-y-8">
                 {/* Top Choices For You */}
-                <div className="bg-white rounded-xl border border-neutral-100 shadow-sm p-6">
+                <div className="bg-white rounded-xl border border-black/5 p-6">
                   <h2 className="text-xl font-bold mb-6">Top Choices For You</h2>
                   <div className="space-y-6">
                     {recommendedProperties.map((property, index) => (
@@ -485,7 +466,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
                 </div>
 
                 {/* Related Posts */}
-                <div className="bg-white rounded-xl border border-neutral-100 shadow-sm p-6">
+                <div className="bg-white rounded-xl border border-black/5 p-6">
                   <h2 className="text-xl font-bold mb-6">Related Articles</h2>
                   <div className="space-y-4">
                     {relatedPosts.map((post, index) => (
@@ -527,7 +508,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
 
 
         {/* Footer */}
-        <footer className="w-[calc(100%+2rem)] -mx-4 py-16 md:py-20 bg-[#F0EDEA] mt-16">
+        <footer className="w-full py-16 md:py-20 bg-[#F0EDEA] mt-16">
           <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-12 mb-12 md:mb-16">
               <div className="lg:col-span-1">

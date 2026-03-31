@@ -6,7 +6,7 @@ import { Property } from '../types';
 import PropertyCard from '../components/PropertyCard';
 import LiveInterface from '../components/LiveInterface';
 import { useAppContext } from '../context/AppContext';
-import { ArrowRight, Search, AudioLines, ChevronDown, Loader2, Heart, LogOut, Menu, X, ArrowLeftRight, Calculator, Target, MessageSquare, Sparkles, Clock, FileText, Building, Settings, HelpCircle } from 'lucide-react';
+import { ArrowRight, Search, AudioLines, ChevronDown, Loader2, Heart, LogOut, Menu, X, ArrowLeftRight, Calculator, Target, MessageSquare, Sparkles, FileText, Building } from 'lucide-react';
 import { ToastData } from '../components/Toast';
 
 const PLACEHOLDER_PROMPTS = [
@@ -77,6 +77,12 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const [selectedCity, setSelectedCity] = useState('All');
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => { if (window.innerWidth >= 768) setIsHistoryOpen(false); };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (!isDropdownOpen) return;
@@ -212,7 +218,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
         />
       )}
 
-      <header className={`w-full px-8 py-4 flex justify-between items-center z-[60] shrink-0 transition-all duration-300 sticky top-0 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
+      <header className={`w-full px-4 md:px-8 py-4 flex justify-between items-center z-[60] shrink-0 transition-all duration-300 sticky top-0 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
         <div className="w-full flex justify-between items-center">
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/')}>
             <img src={LOGO_URL} alt="UnitPulse" className="h-8" />
@@ -298,7 +304,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
               </div>
 
               <div className="flex-1 overflow-y-auto flex flex-col">
-                <div className="p-6 border-b border-black/5 flex flex-col gap-6 md:hidden">
+                <div className="p-6 border-b border-black/5 flex flex-col gap-6">
                   {isLoggedIn ? (
                     <div className="flex items-center gap-4 p-4 bg-neutral-50 rounded-2xl border border-black/5">
                       <div className="w-12 h-12 rounded-full bg-[#4A5D23] text-white text-sm font-black flex items-center justify-center shadow-sm">FZ</div>
@@ -343,14 +349,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
                         )}
                       </button>
                     )}
-                    <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                      <Clock size={20} className="text-neutral-400" />
-                      Recently Viewed
-                    </a>
-                    <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                      <FileText size={20} className="text-neutral-400" />
-                      Applications
-                    </a>
                   </div>
 
                   <div className="h-px bg-neutral-100 w-full"></div>
@@ -359,14 +357,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
                       <Building size={20} className="text-neutral-400" />
                       Become a partner
-                    </a>
-                    <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                      <Settings size={20} className="text-neutral-400" />
-                      Settings
-                    </a>
-                    <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                      <HelpCircle size={20} className="text-neutral-400" />
-                      Help
                     </a>
                   </div>
 
@@ -389,8 +379,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
         )}
       </AnimatePresence>
 
-      <main className="flex-1 flex flex-col items-center px-4 relative w-full">
-        <div className="max-w-4xl w-full flex flex-col items-center text-center z-10 mt-12 lg:mt-[15vh] shrink-0">
+      <main className="flex-1 flex flex-col items-center relative w-full">
+        <div className="max-w-4xl w-full flex flex-col items-center text-center z-10 mt-12 lg:mt-[15vh] shrink-0 px-4">
 
           <h1 className="text-3xl md:text-5xl lg:text-7xl mb-8 leading-tight">
             <span className="font-heading font-extrabold text-black block mb-4 tracking-tight opacity-0 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>Discover a sanctuary</span>
@@ -399,14 +389,14 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
           <form onSubmit={handleLandingSubmit} className="w-full max-w-3xl relative group opacity-0 animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
             <div className={`transition-all duration-500 rounded-3xl border-2 ${isLandingFocused ? 'shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-[#4A5D23]' : 'shadow-[0_10px_20px_rgba(0,0,0,0.05)] border-transparent'}`}>
-              <div className="relative bg-white rounded-3xl pl-6 p-2 pr-4 flex items-end gap-2 overflow-hidden min-h-[4rem] z-10">
-                <div className="flex-1 relative flex items-start min-w-0 py-3">
+              <div className="relative bg-white rounded-3xl pl-6 p-2 pr-4 flex items-center gap-2 overflow-hidden min-h-[4rem] z-10">
+                <div className="flex-1 relative flex items-center min-w-0 py-3">
                   {/* Rotating Placeholder */}
                   {!landingInput && (
-                    <div className="absolute inset-0 flex items-start pt-3 pointer-events-none">
+                    <div className="absolute inset-0 flex items-center pointer-events-none">
                       <span
                         key={placeholderIndex}
-                        className="text-neutral-400 text-lg animate-fade-in-up truncate w-full text-left font-sans leading-normal tracking-normal"
+                        className="text-neutral-400 text-sm md:text-lg animate-fade-in-up truncate w-full text-left font-sans leading-normal tracking-normal"
                       >
                         {PLACEHOLDER_PROMPTS[placeholderIndex]}
                       </span>
@@ -415,7 +405,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
                   {/* Ghost Text Overlay */}
                   {landingGhostText && isLandingFocused && (
-                    <div className="absolute inset-0 px-2 pointer-events-none flex items-start pt-3">
+                    <div className="absolute inset-0 px-2 pointer-events-none flex items-center">
                       <div className="w-full flex">
                         <span className="text-lg opacity-0 whitespace-pre-wrap font-sans leading-normal tracking-normal break-words">{landingInput}</span>
                         <span className="text-neutral-400/40 whitespace-pre-wrap break-words font-sans text-lg leading-normal tracking-normal">{landingGhostText.slice(landingInput.length)}</span>
@@ -432,7 +422,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     onKeyDown={handleLandingKeyDown}
                     placeholder=""
                     rows={1}
-                    className="flex-1 bg-transparent border-0 p-0 text-black focus:ring-0 focus:outline-none text-sm md:text-lg min-w-0 w-full relative z-10 resize-none overflow-hidden leading-normal font-sans self-start tracking-normal"
+                    className="flex-1 bg-transparent border-0 p-0 text-black focus:ring-0 focus:outline-none text-sm md:text-lg min-w-0 w-full relative z-10 resize-none overflow-hidden leading-normal font-sans tracking-normal"
                     style={{ maxHeight: '200px' }}
                   />
                 </div>
@@ -446,7 +436,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                       setIsLiveMode(true);
                     }
                   }}
-                  className={`h-10 w-10 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 mb-1.5 ${
+                  className={`h-10 w-10 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 ${
                     hasLandingText
                       ? 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
                       : 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
@@ -612,7 +602,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
         </div>
 
         {/* Footer */}
-        <footer className="w-[calc(100%+2rem)] -mx-4 py-16 md:py-20 bg-[#F0EDEA] mt-16">
+        <footer className="w-full py-16 md:py-20 bg-[#F0EDEA] mt-16">
           <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-12 mb-12 md:mb-16">
               <div className="lg:col-span-1">

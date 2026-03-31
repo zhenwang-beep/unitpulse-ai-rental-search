@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { FileText, ArrowRight, Heart, Search, Menu, X, Clock, Building, Settings, HelpCircle, LogOut, ChevronRight, Tag, MessageSquare } from 'lucide-react';
+import { FileText, ArrowRight, Heart, Search, Menu, X, Building, LogOut, ChevronRight, MessageSquare } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { ToastData } from '../components/Toast';
 
@@ -14,7 +14,7 @@ const FEATURED_BLOGS = [
     title: "10 Tips for Finding the Perfect Apartment in 2026",
     excerpt: "Discover expert strategies to find your ideal rental home in today's competitive market.",
     image: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    category: "apartment guide",
+    category: "Apartment Guide",
     date: "March 28, 2026",
     readTime: "5 min read",
     author: "Sarah Johnson"
@@ -24,7 +24,7 @@ const FEATURED_BLOGS = [
     title: "The Rise of Coliving Spaces: What You Need to Know",
     excerpt: "Explore the growing trend of coliving and how it's changing the rental landscape.",
     image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    category: "coliving",
+    category: "Coliving",
     date: "March 25, 2026",
     readTime: "4 min read",
     author: "Michael Chen"
@@ -37,7 +37,7 @@ const LATEST_ARTICLES = [
     title: "Local Guide: Best Neighborhoods in Los Angeles",
     excerpt: "Discover the most vibrant and livable neighborhoods in LA for renters.",
     image: "https://images.unsplash.com/photo-1502672023488-70e25813eb80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    category: "local guide",
+    category: "Local Guide",
     date: "March 30, 2026",
     readTime: "6 min read",
     author: "Emily Rodriguez"
@@ -47,7 +47,7 @@ const LATEST_ARTICLES = [
     title: "Home Rental News: Market Trends for 2026",
     excerpt: "Stay updated on the latest trends and predictions for the rental market.",
     image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    category: "home rental news",
+    category: "Home Rental News",
     date: "March 29, 2026",
     readTime: "3 min read",
     author: "David Wilson"
@@ -72,7 +72,7 @@ const ALL_ARTICLES = [
     title: "How to Negotiate Rent Like a Pro",
     excerpt: "Learn effective strategies to negotiate your rent and save money.",
     image: "https://images.unsplash.com/photo-1522156373667-4c7234bbd804?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    category: "apartment guide",
+    category: "Apartment Guide",
     date: "March 26, 2026",
     readTime: "4 min read",
     author: "Sarah Johnson"
@@ -82,7 +82,7 @@ const ALL_ARTICLES = [
     title: "Coliving vs. Traditional Rentals: Pros and Cons",
     excerpt: "Compare coliving arrangements with traditional rentals to find the best fit.",
     image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    category: "coliving",
+    category: "Coliving",
     date: "March 24, 2026",
     readTime: "5 min read",
     author: "Michael Chen"
@@ -92,7 +92,7 @@ const ALL_ARTICLES = [
     title: "Local Guide: Hidden Gems in San Francisco",
     excerpt: "Explore lesser-known neighborhoods and attractions in SF.",
     image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    category: "local guide",
+    category: "Local Guide",
     date: "March 23, 2026",
     readTime: "6 min read",
     author: "Emily Rodriguez"
@@ -102,7 +102,7 @@ const ALL_ARTICLES = [
     title: "Home Rental News: New Regulations in 2026",
     excerpt: "Stay informed about the latest rental regulations affecting tenants and landlords.",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
-    category: "home rental news",
+    category: "Home Rental News",
     date: "March 22, 2026",
     readTime: "3 min read",
     author: "David Wilson"
@@ -150,6 +150,12 @@ const BlogPage: React.FC<BlogPageProps> = ({
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
+  useEffect(() => {
+    const handleResize = () => { if (window.innerWidth >= 768) setIsHistoryOpen(false); };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const filteredArticles = selectedCategory === "All"
     ? ALL_ARTICLES
     : ALL_ARTICLES.filter(article => article.category === selectedCategory);
@@ -158,7 +164,7 @@ const BlogPage: React.FC<BlogPageProps> = ({
     <div
       className="h-[100dvh] w-full bg-[#FCF9F8] flex flex-col text-black font-sans overflow-y-auto scroll-smooth"
     >
-      <header className="w-full px-8 py-4 flex justify-between items-center z-[60] shrink-0 transition-all duration-300 sticky top-0 bg-white shadow-sm">
+      <header className="w-full px-4 md:px-8 py-4 flex justify-between items-center z-[60] shrink-0 transition-all duration-300 sticky top-0 bg-white shadow-sm">
         <div className="w-full flex justify-between items-center">
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/')}>
             <img src={LOGO_URL} alt="UnitPulse" className="h-8" />
@@ -215,11 +221,24 @@ const BlogPage: React.FC<BlogPageProps> = ({
       </header>
 
       {/* History Sidebar */}
-      {isHistoryOpen && (
-        <div className="fixed inset-0 bg-black/40 z-[65]" onClick={() => setIsHistoryOpen(false)} />
-      )}
-      {isHistoryOpen && (
-        <div className="fixed inset-y-0 left-0 w-80 bg-white shadow-2xl z-[70] border-r border-black/5 flex flex-col">
+      <AnimatePresence>
+        {isHistoryOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black/40 z-[65]"
+              onClick={() => setIsHistoryOpen(false)}
+            />
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
+              className="fixed inset-y-0 left-0 w-80 bg-white shadow-2xl z-[70] border-r border-black/5 flex flex-col"
+            >
           <div className="p-6 border-b border-black/5 flex justify-between items-center">
             <div className="flex items-center gap-2">
               <img src={LOGO_URL} alt="UnitPulse" className="h-6" />
@@ -231,7 +250,7 @@ const BlogPage: React.FC<BlogPageProps> = ({
           </div>
 
           <div className="flex-1 overflow-y-auto flex flex-col">
-            <div className="p-6 border-b border-black/5 flex flex-col gap-6 md:hidden">
+            <div className="p-6 border-b border-black/5 flex flex-col gap-6">
               {isLoggedIn ? (
                 <div className="flex items-center gap-4 p-4 bg-neutral-50 rounded-2xl border border-black/5">
                   <div className="w-12 h-12 rounded-full bg-[#4A5D23] text-white text-sm font-black flex items-center justify-center shadow-sm">FZ</div>
@@ -276,14 +295,6 @@ const BlogPage: React.FC<BlogPageProps> = ({
                     )}
                   </button>
                 )}
-                <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                  <Clock size={20} className="text-neutral-400" />
-                  Recently Viewed
-                </a>
-                <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                  <FileText size={20} className="text-neutral-400" />
-                  Applications
-                </a>
               </div>
 
               <div className="h-px bg-neutral-100 w-full"></div>
@@ -292,14 +303,6 @@ const BlogPage: React.FC<BlogPageProps> = ({
                 <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
                   <Building size={20} className="text-neutral-400" />
                   Become a partner
-                </a>
-                <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                  <Settings size={20} className="text-neutral-400" />
-                  Settings
-                </a>
-                <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                  <HelpCircle size={20} className="text-neutral-400" />
-                  Help
                 </a>
               </div>
 
@@ -317,10 +320,12 @@ const BlogPage: React.FC<BlogPageProps> = ({
               )}
             </div>
           </div>
-        </div>
-      )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
-      <main className="flex-1 flex flex-col items-center px-4 relative w-full">
+      <main className="flex-1 flex flex-col items-center relative w-full">
         {/* Hero Section */}
         <div className="w-full bg-[#4A5D23] text-white py-16 md:py-24">
           <div className="max-w-5xl mx-auto px-4">
@@ -367,7 +372,7 @@ const BlogPage: React.FC<BlogPageProps> = ({
               <motion.a
                 key={blog.id}
                 href={`/blog/${blog.id}`}
-                className="group block rounded-xl overflow-hidden shadow-lg border border-black/5 transition-all duration-500 hover:shadow-xl bg-white"
+                className="group block rounded-xl overflow-hidden border border-black/5 transition-all duration-500 hover:shadow-xl bg-white"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
@@ -399,7 +404,7 @@ const BlogPage: React.FC<BlogPageProps> = ({
         {/* All Articles */}
         <div className="w-full max-w-5xl mx-auto mt-16 px-4 mb-20">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-            <h2 className="text-2xl md:text-3xl font-bold">All articles</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">All Articles</h2>
             <div className="relative w-full md:w-64">
               <input 
                 type="text" 
@@ -435,7 +440,7 @@ const BlogPage: React.FC<BlogPageProps> = ({
               <motion.a
                 key={article.id}
                 href={`/blog/${article.id}`}
-                className="group block rounded-xl overflow-hidden shadow-md border border-neutral-100 transition-all duration-300 hover:shadow-lg hover:border-[#4A5D23]/30 bg-white"
+                className="group block rounded-xl overflow-hidden border border-black/5 transition-all duration-500 hover:shadow-xl bg-white"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -525,7 +530,7 @@ const BlogPage: React.FC<BlogPageProps> = ({
         </div>
 
         {/* Footer */}
-        <footer className="w-[calc(100%+2rem)] -mx-4 py-16 md:py-20 bg-[#F0EDEA] mt-16">
+        <footer className="w-full py-16 md:py-20 bg-[#F0EDEA] mt-16">
           <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-12 mb-12 md:mb-16">
               <div className="lg:col-span-1">
