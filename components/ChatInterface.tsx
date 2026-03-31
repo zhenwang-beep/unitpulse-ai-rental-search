@@ -883,7 +883,7 @@ const CompactPropertyCard = ({
         )}
 
         <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/60 backdrop-blur-md rounded text-xs font-semibold text-white uppercase tracking-wider flex items-baseline gap-1 z-10">
-          ${property.price.toLocaleString()}+
+          ${property.price.toLocaleString()}+ / mo
         </div>
       </div>
       <div className="p-4 space-y-2 flex-1">

@@ -8,6 +8,9 @@ import ChatPage from './pages/ChatPage';
 import SearchRedirect from './pages/SearchRedirect';
 import PropertyPanel from './pages/PropertyPanel';
 import PropertyDetailPage from './pages/PropertyDetailPage';
+import BlogPage from './pages/BlogPage';
+import BlogPostPage from './pages/BlogPostPage';
+import TestPage from './pages/TestPage';
 import FavoritesPage from './components/FavoritesPage';
 import Toast, { ToastData } from './components/Toast';
 import { Property } from './types';
@@ -160,6 +163,33 @@ const AppShell: React.FC = () => {
         </Route>
         <Route path="/property/:propertyId" element={<PropertyDetailPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
+        <Route
+          path="/blog"
+          element={
+            <BlogPage
+              isLoggedIn={isLoggedIn}
+              isDropdownOpen={isDropdownOpen}
+              setIsDropdownOpen={setIsDropdownOpen}
+              setShowLoginView={setShowLoginView}
+              handleLogout={handleLogout}
+              showToast={setToast}
+            />
+          }
+        />
+        <Route
+          path="/blog/:id"
+          element={
+            <BlogPostPage
+              isLoggedIn={isLoggedIn}
+              isDropdownOpen={isDropdownOpen}
+              setIsDropdownOpen={setIsDropdownOpen}
+              setShowLoginView={setShowLoginView}
+              handleLogout={handleLogout}
+              showToast={setToast}
+            />
+          }
+        />
+        <Route path="/test" element={<TestPage />} />
       </Routes>
     </>
   );

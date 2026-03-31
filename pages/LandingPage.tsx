@@ -214,12 +214,13 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
       <header className={`w-full px-8 py-4 flex justify-between items-center z-[60] shrink-0 transition-all duration-300 sticky top-0 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
         <div className="w-full flex justify-between items-center">
-          <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => {}}>
+          <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/')}>
             <img src={LOGO_URL} alt="UnitPulse" className="h-8" />
             <span className="font-heading font-bold text-xl tracking-wider">UnitPulse</span>
           </div>
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Find a home</a>
+            <a href="/" className="text-sm font-medium hover:text-black/60 transition-colors">Find a home</a>
+            <a href="/blog" className="text-sm font-medium hover:text-black/60 transition-colors">Blog</a>
             <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Become a partner</a>
             {isLoggedIn ? (
               <div className="relative" ref={dropdownRef}>
@@ -320,9 +321,13 @@ const LandingPage: React.FC<LandingPageProps> = ({
                   )}
 
                   <div className="flex flex-col gap-1">
-                    <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
+                    <a href="/" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
                       <Search size={20} className="text-neutral-400" />
                       Find a home
+                    </a>
+                    <a href="/blog" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
+                      <FileText size={20} className="text-neutral-400" />
+                      Blog
                     </a>
                     {isLoggedIn && (
                       <button
