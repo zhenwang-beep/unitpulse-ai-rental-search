@@ -401,7 +401,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     <div className="absolute inset-0 flex items-start pt-3 pointer-events-none">
                       <span
                         key={placeholderIndex}
-                        className="text-neutral-400 text-lg animate-fade-in-up truncate w-full text-left font-sans leading-normal tracking-normal"
+                        className="text-neutral-400 animate-fade-in-up truncate w-full text-left font-sans leading-normal tracking-normal"
                       >
                         {PLACEHOLDER_PROMPTS[placeholderIndex]}
                       </span>
@@ -412,7 +412,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                   {landingGhostText && isLandingFocused && (
                     <div className="absolute inset-0 px-2 pointer-events-none flex items-start pt-3">
                       <div className="w-full flex">
-                        <span className="text-lg opacity-0 whitespace-pre-wrap font-sans leading-normal tracking-normal break-words">{landingInput}</span>
+                        <span className="opacity-0 whitespace-pre-wrap font-sans leading-normal tracking-normal break-words">{landingInput}</span>
                         <span className="text-neutral-400/40 whitespace-pre-wrap break-words font-sans text-lg leading-normal tracking-normal">{landingGhostText.slice(landingInput.length)}</span>
                       </div>
                     </div>
@@ -427,7 +427,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     onKeyDown={handleLandingKeyDown}
                     placeholder=""
                     rows={1}
-                    className="flex-1 bg-transparent border-0 p-0 text-black focus:ring-0 focus:outline-none text-sm md:text-lg min-w-0 w-full relative z-10 resize-none overflow-hidden leading-normal font-sans self-start tracking-normal"
+                    className="flex-1 bg-transparent border-0 p-0 text-black focus:ring-0 focus:outline-none min-w-0 w-full relative z-10 resize-none overflow-hidden leading-normal font-sans self-start tracking-normal"
                     style={{ maxHeight: '200px' }}
                   />
                 </div>
@@ -441,7 +441,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                       setIsLiveMode(true);
                     }
                   }}
-                  className={`h-10 w-10 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 mb-1.5 ${
+                  className={`h-10 w-10 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 mb-1 ${
                     hasLandingText
                       ? 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
                       : 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
