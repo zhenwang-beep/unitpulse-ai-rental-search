@@ -162,7 +162,15 @@ const AppShell: React.FC = () => {
           <Route path="property/:propertyId" element={<PropertyPanel />} />
         </Route>
         <Route path="/property/:propertyId" element={<PropertyDetailPage />} />
-        <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="/favorites" element={
+          <FavoritesPage
+            isLoggedIn={isLoggedIn}
+            isDropdownOpen={isDropdownOpen}
+            setIsDropdownOpen={setIsDropdownOpen}
+            setShowLoginView={setShowLoginView}
+            handleLogout={handleLogout}
+          />
+        } />
         <Route
           path="/blog"
           element={
