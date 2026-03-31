@@ -36,6 +36,7 @@ const PropertyPanel: React.FC = () => {
       isFavorite={isFavorite}
       onToggleFavorite={handleToggleFavorite}
       isInline={true}
+      isLoggedIn={isLoggedIn}
     />
   );
 };

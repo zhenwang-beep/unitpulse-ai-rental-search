@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Property } from '../types';
 import { X, MapPin, Bed, Bath, Ruler, Sparkles, Heart, Check, Calendar, FileText, ChevronDown, Menu, ChevronLeft, ChevronRight, Building2, MessageSquare, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import ContactFormModal from './ContactFormModal';
 
 interface PropertyDetailsModalProps {
   property: Property | null;
@@ -12,6 +13,7 @@ interface PropertyDetailsModalProps {
   isInline?: boolean;
   isSigned?: boolean;
   onSignLease?: (id: string) => void;
+  isLoggedIn?: boolean;
 }
 
 const BUILDING_AMENITIES = [
@@ -59,12 +61,14 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
   isInline = false,
   isSigned = false,
   onSignLease,
+  isLoggedIn = false,
 }) => {
   const [expandedFloorPlan, setExpandedFloorPlan] = useState<string | null>(null);
   const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isAnalyzing, setIsAnalyzing] = useState(true);
+  const [contactMode, setContactMode] = useState<'tour' | 'inquire' | null>(null);
 
   useEffect(() => {
     if (property && !isInline) {
@@ -457,10 +461,16 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
           <span className="text-xs text-neutral-500 mt-0.5 truncate max-w-[140px] lg:max-w-none">Unit 402 • Avail. Mar 1st</span>
         </div>
         <div className="flex gap-2 shrink-0">
-          <button className="h-11 lg:h-12 px-4 lg:px-5 bg-neutral-100 text-black rounded-xl font-semibold text-sm lg:text-sm hover:bg-neutral-200 transition-all">
+          <button
+            onClick={() => setContactMode('inquire')}
+            className="h-11 lg:h-12 px-4 lg:px-5 bg-neutral-100 text-black rounded-xl font-semibold text-sm hover:bg-neutral-200 transition-all"
+          >
             Inquire
           </button>
-          <button className="h-11 lg:h-12 px-4 lg:px-5 bg-[#4A5D23] text-white rounded-xl font-semibold text-sm lg:text-sm hover:bg-[#3a4e1a] transition-all flex items-center gap-1.5">
+          <button
+            onClick={() => setContactMode('tour')}
+            className="h-11 lg:h-12 px-4 lg:px-5 bg-[#4A5D23] text-white rounded-xl font-semibold text-sm hover:bg-[#3a4e1a] transition-all flex items-center gap-1.5"
+          >
             <Calendar size={15} className="lg:hidden" />
             <Calendar size={16} className="hidden lg:block" />
             <span className="lg:hidden">Tour</span>
@@ -540,13 +550,35 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
     </div>
   );
 
-  if (isInline) return content;
+  if (isInline) return (
+    <>
+      {content}
+      {contactMode && (
+        <ContactFormModal
+          mode={contactMode}
+          property={property}
+          isLoggedIn={isLoggedIn}
+          onClose={() => setContactMode(null)}
+        />
+      )}
+    </>
+  );
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-8">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in" onClick={onClose} />
-      {content}
-    </div>
+    <>
+      <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-8">
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in" onClick={onClose} />
+        {content}
+      </div>
+      {contactMode && (
+        <ContactFormModal
+          mode={contactMode}
+          property={property}
+          isLoggedIn={isLoggedIn}
+          onClose={() => setContactMode(null)}
+        />
+      )}
+    </>
   );
 };
 
