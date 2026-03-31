@@ -23,7 +23,7 @@ const LOGO_URL = "https://tripalink-public.s3.us-east-2.amazonaws.com/Logo+-+Dar
 
 const AppShell: React.FC = () => {
   const navigate = useNavigate();
-  const { toggleFavorite } = useAppContext();
+  const { toggleFavorite, clearFavorites } = useAppContext();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginView, setShowLoginView] = useState(false);
@@ -52,6 +52,7 @@ const AppShell: React.FC = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setIsDropdownOpen(false);
+    clearFavorites();
   };
 
   return (
