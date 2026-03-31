@@ -10,6 +10,7 @@ import PropertyDetailsModal from '../components/PropertyDetailsModal';
 import { sendMessageToGemini } from '../services/geminiService';
 import { getFilteredProperties } from '../services/propertyService';
 import { useAppContext } from '../context/AppContext';
+import { ToastData } from '../components/Toast';
 import { ArrowRight, Search, Sun, TreePine, Music, PanelRightClose, PanelRightOpen, ChevronDown, RotateCcw, Loader2, AudioLines, MapPin, X, ShieldCheck, Heart, Bed, Bath, Ruler, Calendar, Phone, Sparkles, CheckCircle2, Zap, ChevronLeft, ChevronRight, Info, PenTool, FileText, Check, Menu, LogOut, User, ArrowLeftRight, Calculator, Target, Clock, Building, Settings, HelpCircle, Eye, EyeOff } from 'lucide-react';
 
 declare global {
@@ -22,23 +23,39 @@ declare global {
 interface ChatPageProps {
   isLoggedIn: boolean;
   setShowLoginView: (v: boolean) => void;
-  setShowFavorites: (v: boolean) => void;
+  setPendingFavoriteProperty: (p: Property | null) => void;
+  handleLogout: () => void;
+  showToast: (data: ToastData) => void;
 }
 
-const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setShowFavorites }) => {
+const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPendingFavoriteProperty, handleLogout, showToast }) => {
   const { chatId } = useParams<{ chatId: string }>();
   const navigate = useNavigate();
   const location = useLocation();
   const isPropertyPanelOpen = !!useMatch('/search/:chatId/property/:propertyId');
 
-  const { allThreads, updateThread, favorites, toggleFavorite, renameThread } = useAppContext();
+  const { allThreads, updateThread, favorites, toggleFavorite, renameThread, deleteThread, addThread } = useAppContext();
+
+  const handleResetChat = () => {
+    deleteThread(chatId!);
+    addThread(chatId!, 'UnitPulse');
+  };
 
   const handleToggleFavorite = (property: Property) => {
     if (!isLoggedIn) {
+      setPendingFavoriteProperty(property);
       setShowLoginView(true);
       return;
     }
+    const adding = !favorites.some(f => f.id === property.id);
     toggleFavorite(property);
+    if (adding) {
+      showToast({
+        message: 'Added to Favorites',
+        actionLabel: 'View Favorites →',
+        onAction: () => navigate('/favorites'),
+      });
+    }
   };
 
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
@@ -144,7 +161,19 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
   const [expandedFloorPlan, setExpandedFloorPlan] = useState<string | null>(null);
   const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const lastTriggered = useRef<Record<string, boolean>>({});
+
+  useEffect(() => {
+    if (!isDropdownOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (!dropdownRef.current?.contains(e.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [isDropdownOpen]);
 
   // Chat view scroll state (header hide/show)
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -303,33 +332,33 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
             <nav className="hidden md:flex items-center gap-8">
               <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Find a home</a>
               <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Become a partner</a>
-              <button
-                onClick={() => setShowFavorites(true)}
-                aria-label="View saved homes"
-                className="relative p-2 hover:bg-neutral-100 rounded-full transition-colors"
-              >
-                <Heart size={20} />
-                {favorites.length > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#4A5D23] text-white text-[9px] font-black rounded-full flex items-center justify-center">
-                    {favorites.length}
-                  </span>
-                )}
-              </button>
               {isLoggedIn ? (
-                <div className="relative">
+                <div className="relative" ref={dropdownRef}>
                   <div
                     className="w-10 h-10 rounded-full bg-neutral-100 border border-black/5 flex items-center justify-center overflow-hidden cursor-pointer hover:border-black transition-all"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" className="w-full h-full object-cover" />
+                    <span className="w-full h-full bg-[#4A5D23] text-white text-xs font-black flex items-center justify-center">FZ</span>
                   </div>
                   {isDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-black/5 py-2 z-50">
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-black/5 py-2 z-[70]">
                       <button
-                        onClick={() => { setShowFavorites(true); setIsDropdownOpen(false); }}
+                        onClick={() => { navigate('/favorites'); setIsDropdownOpen(false); }}
                         className="w-full text-left px-4 py-2 text-sm font-medium hover:bg-neutral-50 flex items-center gap-2"
                       >
-                        <Heart size={16} /> Favorites
+                        <Heart size={16} />
+                        Favorites
+                        {favorites.length > 0 && (
+                          <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                            {favorites.length}
+                          </span>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => { handleLogout(); setIsDropdownOpen(false); }}
+                        className="w-full text-left px-4 py-2 text-sm font-medium hover:bg-neutral-50 flex items-center gap-2 text-red-600"
+                      >
+                        <LogOut size={16} /> Logout
                       </button>
                     </div>
                   )}
@@ -379,10 +408,10 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                <div className="p-5 flex flex-col gap-5">
                  {isLoggedIn ? (
                    <div className="flex items-center gap-4 p-4 bg-neutral-50 rounded-2xl border border-black/5">
-                     <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" className="w-12 h-12 rounded-full border border-black/5 bg-white shadow-sm" />
+                     <div className="w-12 h-12 rounded-full bg-[#4A5D23] text-white text-sm font-black flex items-center justify-center shadow-sm">FZ</div>
                      <div className="flex flex-col">
                        <span className="text-sm font-bold text-neutral-900">Felix Zhou</span>
-                       <span className="text-xs font-medium text-neutral-500">Pro Member</span>
+                       <span className="text-xs font-medium text-neutral-500">felix.zhou@gmail.com</span>
                      </div>
                    </div>
                  ) : (
@@ -403,18 +432,20 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
                      <Search size={20} className="text-neutral-400" />
                      Find a home
                    </a>
-                   <button
-                     onClick={() => { setShowFavorites(true); setIsHistoryOpen(false); }}
-                     className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium w-full text-left"
-                   >
-                     <Heart size={20} className="text-neutral-400" />
-                     Saved Homes
-                     {favorites.length > 0 && (
-                       <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
-                         {favorites.length}
-                       </span>
-                     )}
-                   </button>
+                   {isLoggedIn && (
+                     <button
+                       onClick={() => { navigate('/favorites'); setIsHistoryOpen(false); }}
+                       className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium w-full text-left"
+                     >
+                       <Heart size={20} className="text-neutral-400" />
+                       Saved Homes
+                       {favorites.length > 0 && (
+                         <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                           {favorites.length}
+                         </span>
+                       )}
+                     </button>
+                   )}
                    <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
                      <Clock size={20} className="text-neutral-400" />
                      Recently Viewed
@@ -544,6 +575,8 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setSh
               onPropertyClick={handlePropertyClick}
               selectedProperty={null}
               onScroll={handleLandingScroll}
+              isLoggedIn={isLoggedIn}
+              onResetChat={handleResetChat}
             />
           </div>
 

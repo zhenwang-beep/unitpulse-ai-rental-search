@@ -7,6 +7,7 @@ import PropertyCard from '../components/PropertyCard';
 import LiveInterface from '../components/LiveInterface';
 import { useAppContext } from '../context/AppContext';
 import { ArrowRight, Search, AudioLines, ChevronDown, Loader2, Heart, LogOut, Menu, X, ArrowLeftRight, Calculator, Target, MessageSquare, Sparkles, Clock, FileText, Building, Settings, HelpCircle } from 'lucide-react';
+import { ToastData } from '../components/Toast';
 
 const PLACEHOLDER_PROMPTS = [
   "A modern loft in SoHo under $3000...",
@@ -27,8 +28,9 @@ interface LandingPageProps {
   isDropdownOpen: boolean;
   setIsDropdownOpen: (v: boolean) => void;
   setShowLoginView: (v: boolean) => void;
-  setShowFavorites: (v: boolean) => void;
+  setPendingFavoriteProperty: (p: Property | null) => void;
   handleLogout: () => void;
+  showToast: (data: ToastData) => void;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({
@@ -36,18 +38,28 @@ const LandingPage: React.FC<LandingPageProps> = ({
   isDropdownOpen,
   setIsDropdownOpen,
   setShowLoginView,
-  setShowFavorites,
+  setPendingFavoriteProperty,
   handleLogout,
+  showToast,
 }) => {
   const navigate = useNavigate();
   const { favorites, toggleFavorite } = useAppContext();
 
   const handleToggleFavorite = (property: Property) => {
     if (!isLoggedIn) {
+      setPendingFavoriteProperty(property);
       setShowLoginView(true);
       return;
     }
+    const adding = !favorites.some(f => f.id === property.id);
     toggleFavorite(property);
+    if (adding) {
+      showToast({
+        message: 'Added to Favorites',
+        actionLabel: 'View Favorites →',
+        onAction: () => navigate('/favorites'),
+      });
+    }
   };
 
   const [landingInput, setLandingInput] = useState('');
@@ -64,6 +76,18 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const [isLiveMode, setIsLiveMode] = useState(false);
   const [selectedCity, setSelectedCity] = useState('All');
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isDropdownOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (!dropdownRef.current?.contains(e.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [isDropdownOpen, setIsDropdownOpen]);
 
   const handleLandingScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const currentScrollY = e.currentTarget.scrollTop;
@@ -197,33 +221,27 @@ const LandingPage: React.FC<LandingPageProps> = ({
           <nav className="hidden md:flex items-center gap-8">
             <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Find a home</a>
             <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Become a partner</a>
-            <button
-              onClick={() => setShowFavorites(true)}
-              aria-label="View saved homes"
-              className="relative p-2 hover:bg-neutral-100 rounded-full transition-colors"
-            >
-              <Heart size={20} />
-              {favorites.length > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#4A5D23] text-white text-[9px] font-black rounded-full flex items-center justify-center">
-                  {favorites.length}
-                </span>
-              )}
-            </button>
             {isLoggedIn ? (
-              <div className="relative">
+              <div className="relative" ref={dropdownRef}>
                 <div
                   className="w-10 h-10 rounded-full bg-neutral-100 border border-black/5 flex items-center justify-center overflow-hidden cursor-pointer hover:border-black transition-all"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" className="w-full h-full object-cover" />
+                  <span className="w-full h-full bg-[#4A5D23] text-white text-xs font-black flex items-center justify-center">FZ</span>
                 </div>
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-black/5 py-2 z-50">
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-black/5 py-2 z-[70]">
                     <button
-                      onClick={() => { setShowFavorites(true); setIsDropdownOpen(false); }}
+                      onClick={() => { navigate('/favorites'); setIsDropdownOpen(false); }}
                       className="w-full text-left px-4 py-2 text-sm font-medium hover:bg-neutral-50 flex items-center gap-2"
                     >
-                      <Heart size={16} /> Favorites
+                      <Heart size={16} />
+                      Favorites
+                      {favorites.length > 0 && (
+                        <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                          {favorites.length}
+                        </span>
+                      )}
                     </button>
                     <button
                       onClick={handleLogout}
@@ -282,10 +300,10 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 <div className="p-6 border-b border-black/5 flex flex-col gap-6 md:hidden">
                   {isLoggedIn ? (
                     <div className="flex items-center gap-4 p-4 bg-neutral-50 rounded-2xl border border-black/5">
-                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" className="w-12 h-12 rounded-full border border-black/5 bg-white shadow-sm" />
+                      <div className="w-12 h-12 rounded-full bg-[#4A5D23] text-white text-sm font-black flex items-center justify-center shadow-sm">FZ</div>
                       <div className="flex flex-col">
                         <span className="text-sm font-bold text-neutral-900">Felix Zhou</span>
-                        <span className="text-xs font-medium text-neutral-500">Pro Member</span>
+                        <span className="text-xs font-medium text-neutral-500">felix.zhou@gmail.com</span>
                       </div>
                     </div>
                   ) : (
@@ -306,18 +324,20 @@ const LandingPage: React.FC<LandingPageProps> = ({
                       <Search size={20} className="text-neutral-400" />
                       Find a home
                     </a>
-                    <button
-                      onClick={() => { setShowFavorites(true); setIsHistoryOpen(false); }}
-                      className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium w-full text-left"
-                    >
-                      <Heart size={20} className="text-neutral-400" />
-                      Saved Homes
-                      {favorites.length > 0 && (
-                        <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
-                          {favorites.length}
-                        </span>
-                      )}
-                    </button>
+                    {isLoggedIn && (
+                      <button
+                        onClick={() => { navigate('/favorites'); setIsHistoryOpen(false); }}
+                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium w-full text-left"
+                      >
+                        <Heart size={20} className="text-neutral-400" />
+                        Favorites
+                        {favorites.length > 0 && (
+                          <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                            {favorites.length}
+                          </span>
+                        )}
+                      </button>
+                    )}
                     <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
                       <Clock size={20} className="text-neutral-400" />
                       Recently Viewed

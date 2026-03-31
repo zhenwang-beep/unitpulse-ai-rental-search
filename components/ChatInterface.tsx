@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ChatMessage, Property } from '../types';
 import { AI_AVATAR, SUGGESTION_CHIPS } from '../constants';
 import PropertyCard from './PropertyCard';
+import ContactFormModal from './ContactFormModal';
 
 interface ChatInterfaceProps {
   messages: ChatMessage[];
@@ -17,6 +18,8 @@ interface ChatInterfaceProps {
   onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
   onInputFocus?: () => void;
   isCollapsed?: boolean;
+  isLoggedIn?: boolean;
+  onResetChat?: () => void;
 }
 
 // --- INTERACTIVE COMPONENTS ---
@@ -789,46 +792,97 @@ const AI_STATUS_MESSAGES = [
   "AI is verifying availability..."
 ];
 
-const CompactPropertyCard = ({ 
-  property, 
-  isFavorite, 
-  onToggleFavorite, 
-  onClick 
-}: { 
-  property: Property; 
-  isFavorite: boolean; 
-  onToggleFavorite: (property: Property) => void; 
+const CompactPropertyCard = ({
+  property,
+  isFavorite,
+  onToggleFavorite,
+  onClick,
+  onTour,
+}: {
+  property: Property;
+  isFavorite: boolean;
+  onToggleFavorite: (property: Property) => void;
   onClick?: (property: Property) => void;
+  onTour?: (property: Property) => void;
 }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const images = property.images && property.images.length > 0 ? property.images : [property.image].filter(Boolean) as string[];
+
+  const prevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const nextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
   return (
-    <div 
+    <div
       onClick={() => onClick?.(property)}
       className="group relative bg-white rounded-2xl border border-black/5 overflow-hidden hover:shadow-xl transition-all duration-500 cursor-pointer flex flex-col h-full"
     >
-      <div className="relative h-32 overflow-hidden">
-        <img 
-          src={property.images?.[0] || property.image} 
-          alt={property.title} 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute top-2 right-2 flex gap-1">
-          <button 
+      <div className="relative h-44 overflow-hidden shrink-0">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={currentImageIndex}
+            src={images[currentImageIndex]}
+            alt={property.title}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            referrerPolicy="no-referrer"
+          />
+        </AnimatePresence>
+
+        {/* Carousel controls */}
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={prevImage}
+              aria-label="Previous image"
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 bg-black/20 hover:bg-black/50 backdrop-blur-md text-white rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-10"
+            >
+              <ChevronLeft size={14} />
+            </button>
+            <button
+              onClick={nextImage}
+              aria-label="Next image"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 bg-black/20 hover:bg-black/50 backdrop-blur-md text-white rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 z-10"
+            >
+              <ChevronRight size={14} />
+            </button>
+            <div className="absolute bottom-2 right-2 flex gap-1 z-10 items-center" style={{ height: '20px' }}>
+              {images.map((_, i) => (
+                <div
+                  key={i}
+                  className={`h-1 rounded-full transition-all ${i === currentImageIndex ? 'bg-white w-3' : 'bg-white/50 w-1'}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        <div className="absolute top-2 right-2 flex gap-1 z-10">
+          <button
             onClick={(e) => { e.stopPropagation(); onToggleFavorite(property); }}
-            className={`p-1.5 rounded-full backdrop-blur-md transition-all ${isFavorite ? 'bg-white text-red-500' : 'bg-white/20 text-white hover:bg-white hover:text-red-400'}`}
+            className={`p-1.5 rounded-full backdrop-blur-md transition-all duration-300 ${isFavorite ? 'bg-black text-white' : 'bg-white/20 text-white hover:bg-white hover:text-black'}`}
           >
             <Heart size={12} fill={isFavorite ? "currentColor" : "none"} />
           </button>
         </div>
-        
+
         {property.matchScore && (
-          <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/80 backdrop-blur-md rounded text-xs font-semibold text-white uppercase tracking-wider flex items-center gap-1">
+          <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/80 backdrop-blur-md rounded text-xs font-semibold text-white uppercase tracking-wider flex items-center gap-1 z-10">
             <Zap size={10} className="text-amber-400 fill-amber-400" />
             {property.matchScore}% Match
           </div>
         )}
 
-        <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/60 backdrop-blur-md rounded text-xs font-semibold text-white uppercase tracking-wider flex items-baseline gap-1">
+        <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/60 backdrop-blur-md rounded text-xs font-semibold text-white uppercase tracking-wider flex items-baseline gap-1 z-10">
           ${property.price.toLocaleString()}+
         </div>
       </div>
@@ -859,8 +913,8 @@ const CompactPropertyCard = ({
             <Phone size={10} />
             <span className="truncate">(123) 456-7890</span>
           </button>
-          <button 
-            onClick={(e) => { e.stopPropagation(); onClick?.(property); }}
+          <button
+            onClick={(e) => { e.stopPropagation(); onTour ? onTour(property) : onClick?.(property); }}
             className="flex-1 py-1.5 bg-[#4A5D23] hover:bg-[#3a4e1a] text-white rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5"
           >
             <Calendar size={10} />
@@ -1037,18 +1091,20 @@ const PropertyComparisonTable = ({
   );
 };
 
-const PropertyCarousel = ({ 
-  properties, 
-  favorites, 
+const PropertyCarousel = ({
+  properties,
+  favorites,
   onToggleFavorite,
   onPropertyClick,
-  onSendMessage
-}: { 
-  properties: Property[], 
-  favorites: Property[], 
+  onSendMessage,
+  onTour,
+}: {
+  properties: Property[],
+  favorites: Property[],
   onToggleFavorite: (property: Property) => void,
   onPropertyClick: (property: Property) => void,
-  onSendMessage: (text: string) => void
+  onSendMessage: (text: string) => void,
+  onTour?: (property: Property) => void,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -1123,11 +1179,12 @@ const PropertyCarousel = ({
           >
              {sortedProperties.map((property) => (
                <div key={property.id} className="min-w-[280px] max-w-[320px]">
-                 <CompactPropertyCard 
-                    property={property} 
+                 <CompactPropertyCard
+                    property={property}
                     isFavorite={favorites.some(f => f.id === property.id)}
                     onToggleFavorite={onToggleFavorite}
                     onClick={onPropertyClick}
+                    onTour={onTour}
                  />
                </div>
              ))}
@@ -1156,9 +1213,9 @@ const PropertyCarousel = ({
   );
 };
 
-const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
-  messages, 
-  onSendMessage, 
+const ChatInterface: React.FC<ChatInterfaceProps> = ({
+  messages,
+  onSendMessage,
   isLoading,
   onToggleFavorite,
   favorites,
@@ -1167,12 +1224,16 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   selectedProperty,
   onScroll,
   onInputFocus,
-  isCollapsed
+  isCollapsed,
+  isLoggedIn,
+  onResetChat,
 }) => {
   const [input, setInput] = useState('');
   const [ghostText, setGhostText] = useState('');
   const [hasInteractedWithFollowUp, setHasInteractedWithFollowUp] = useState(false);
   const [aiStatusIndex, setAiStatusIndex] = useState(0);
+  const [tourProperty, setTourProperty] = useState<Property | null>(null);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
@@ -1394,11 +1455,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
                         {msg.interactiveType === 'deep-dive' && msg.interactiveData && (
                           <div className="mt-4 max-w-[280px]">
-                            <CompactPropertyCard 
-                              property={msg.interactiveData} 
+                            <CompactPropertyCard
+                              property={msg.interactiveData}
                               isFavorite={favorites.some(f => f.id === msg.interactiveData.id)}
                               onToggleFavorite={onToggleFavorite}
                               onClick={onPropertyClick}
+                              onTour={setTourProperty}
                             />
                           </div>
                         )}
@@ -1442,12 +1504,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                       </div>
 
                      {msg.properties && msg.properties.length > 0 && (
-                       <PropertyCarousel 
+                       <PropertyCarousel
                          properties={msg.properties}
                          favorites={favorites}
                          onToggleFavorite={onToggleFavorite}
                          onPropertyClick={onPropertyClick}
                          onSendMessage={onSendMessage}
+                         onTour={setTourProperty}
                        />
                      )}
                    </div>
@@ -1559,6 +1622,48 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
              <div className={`flex items-center justify-between mt-1 pt-1 ${isCollapsed ? 'hidden' : ''}`}>
                <div className="flex items-center gap-2">
+                 {onResetChat && messages.length > 0 && (
+                   <div className="relative">
+                     <button
+                       type="button"
+                       onClick={() => setShowResetConfirm(v => !v)}
+                       title="Reset chat"
+                       className={`p-2 rounded-full transition-all ${showResetConfirm ? 'bg-neutral-100 text-black' : 'text-neutral-400 hover:text-black hover:bg-neutral-100'}`}
+                     >
+                       <RotateCcw size={16} />
+                     </button>
+                     <AnimatePresence>
+                       {showResetConfirm && (
+                         <motion.div
+                           initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                           animate={{ opacity: 1, y: 0, scale: 1 }}
+                           exit={{ opacity: 0, y: 6, scale: 0.95 }}
+                           transition={{ duration: 0.15 }}
+                           className="absolute bottom-full left-0 mb-2 w-52 bg-white rounded-xl shadow-xl border border-black/8 p-3 z-50"
+                         >
+                           <p className="text-xs font-semibold text-black mb-0.5">Reset conversation?</p>
+                           <p className="text-xs text-neutral-400 mb-3">This will clear all messages.</p>
+                           <div className="flex gap-2">
+                             <button
+                               type="button"
+                               onClick={() => setShowResetConfirm(false)}
+                               className="flex-1 py-1.5 text-xs font-semibold rounded-lg bg-neutral-100 hover:bg-neutral-200 text-black transition-all"
+                             >
+                               Cancel
+                             </button>
+                             <button
+                               type="button"
+                               onClick={() => { setShowResetConfirm(false); onResetChat(); }}
+                               className="flex-1 py-1.5 text-xs font-semibold rounded-lg bg-black hover:bg-neutral-800 text-white transition-all"
+                             >
+                               Reset
+                             </button>
+                           </div>
+                         </motion.div>
+                       )}
+                     </AnimatePresence>
+                   </div>
+                 )}
                </div>
 
                <div className="flex items-center gap-4">
@@ -1591,6 +1696,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
            </div>
          </div>
        </div>
+
+      {tourProperty && (
+        <ContactFormModal
+          mode="tour"
+          property={tourProperty}
+          isLoggedIn={isLoggedIn}
+          onClose={() => setTourProperty(null)}
+        />
+      )}
     </div>
   );
 };

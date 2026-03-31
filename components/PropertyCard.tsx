@@ -28,7 +28,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
 
   return (
     <div
-      className="group relative bg-white rounded-xl hover:shadow-xl transition-all duration-500 overflow-hidden border border-black/5 cursor-pointer h-full flex flex-col max-w-sm mx-auto"
+      className="group relative bg-white rounded-xl hover:shadow-xl transition-all duration-500 overflow-hidden border border-black/5 cursor-pointer h-full flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onClick?.(property)}
