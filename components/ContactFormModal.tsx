@@ -31,6 +31,7 @@ const minDate = () => {
 const ContactFormModal: React.FC<ContactFormModalProps> = ({ mode, property, isLoggedIn, onClose }) => {
   const [name, setName] = useState(isLoggedIn ? 'Felix Zhou' : '');
   const [email, setEmail] = useState(isLoggedIn ? 'felix.zhou@gmail.com' : '');
+  const [phone, setPhone] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [message, setMessage] = useState(
@@ -149,10 +150,23 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ mode, property, isL
                       onChange={e => setEmail(e.target.value)}
                       placeholder="you@email.com"
                       required
-                      readOnly={isLoggedIn}
-                      className={`w-full h-10 px-3 bg-neutral-50 border border-black/8 rounded-xl text-sm placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#4A5D23]/30 focus:border-[#4A5D23] transition-all ${isLoggedIn ? 'text-neutral-400 cursor-not-allowed' : 'text-black'}`}
+                      className="w-full h-10 px-3 bg-neutral-50 border border-black/8 rounded-xl text-sm text-black placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#4A5D23]/30 focus:border-[#4A5D23] transition-all"
                     />
                   </div>
+                </div>
+
+                {/* Phone (optional) */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-wider text-neutral-500">
+                    Phone <span className="font-medium normal-case tracking-normal text-neutral-400">(optional)</span>
+                  </label>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={e => setPhone(e.target.value)}
+                    placeholder="+1 (555) 000-0000"
+                    className="w-full h-10 px-3 bg-neutral-50 border border-black/8 rounded-xl text-sm text-black placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#4A5D23]/30 focus:border-[#4A5D23] transition-all"
+                  />
                 </div>
 
                 {isTour ? (
