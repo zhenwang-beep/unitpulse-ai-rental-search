@@ -427,7 +427,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     onKeyDown={handleLandingKeyDown}
                     placeholder=""
                     rows={1}
-                    className="flex-1 bg-transparent border-0 p-0 text-black focus:ring-0 focus:outline-none text-lg min-w-0 w-full relative z-10 resize-none overflow-hidden leading-normal font-sans self-start tracking-normal"
+                    className="flex-1 bg-transparent border-0 p-0 text-black focus:ring-0 focus:outline-none text-sm md:text-lg min-w-0 w-full relative z-10 resize-none overflow-hidden leading-normal font-sans self-start tracking-normal"
                     style={{ maxHeight: '200px' }}
                   />
                 </div>
