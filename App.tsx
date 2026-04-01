@@ -10,6 +10,7 @@ import PropertyPanel from './pages/PropertyPanel';
 import PropertyDetailPage from './pages/PropertyDetailPage';
 import BlogPage from './pages/BlogPage';
 import BlogPostPage from './pages/BlogPostPage';
+import FAQPage from './pages/FAQPage';
 import TestPage from './pages/TestPage';
 import FavoritesPage from './components/FavoritesPage';
 import Toast, { ToastData } from './components/Toast';
@@ -188,6 +189,19 @@ const AppShell: React.FC = () => {
           path="/blog/:id"
           element={
             <BlogPostPage
+              isLoggedIn={isLoggedIn}
+              isDropdownOpen={isDropdownOpen}
+              setIsDropdownOpen={setIsDropdownOpen}
+              setShowLoginView={setShowLoginView}
+              handleLogout={handleLogout}
+              showToast={setToast}
+            />
+          }
+        />
+        <Route
+          path="/faq"
+          element={
+            <FAQPage
               isLoggedIn={isLoggedIn}
               isDropdownOpen={isDropdownOpen}
               setIsDropdownOpen={setIsDropdownOpen}
