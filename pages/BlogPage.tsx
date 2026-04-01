@@ -516,9 +516,9 @@ const BlogPage: React.FC<BlogPageProps> = ({
               <input 
                 type="email" 
                 placeholder="Your email address" 
-                className="flex-1 px-6 py-4 rounded-full bg-white border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#4A5D23]"
+                className="flex-1 px-6 py-4 rounded-xl bg-white border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#4A5D23]"
               />
-              <button className="px-8 py-4 bg-[#4A5D23] text-white rounded-full font-bold hover:bg-[#3a4e1a] transition-all whitespace-nowrap shadow-lg shadow-[#4A5D23]/20 hover:shadow-xl hover:shadow-[#4A5D23]/30">
+              <button className="px-8 py-4 bg-[#4A5D23] text-white rounded-xl font-bold hover:bg-[#3a4e1a] transition-all whitespace-nowrap shadow-lg shadow-[#4A5D23]/20 hover:shadow-xl hover:shadow-[#4A5D23]/30">
                 Subscribe
               </button>
             </motion.div>
