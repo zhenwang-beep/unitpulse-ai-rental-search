@@ -278,11 +278,20 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                 >
                   <button
                     onClick={() => setExpandedFloorPlan(expandedFloorPlan === plan.type ? null : plan.type)}
-                    className="w-full p-5 flex items-center justify-between"
+                    className="w-full p-4 flex items-center gap-3"
                   >
-                    <div className="text-left space-y-1">
+                    {/* Floor plan thumbnail */}
+                    {plan.image && (
+                      <div
+                        className="w-16 h-12 rounded-lg overflow-hidden shrink-0 border border-black/8"
+                        onClick={(e) => { e.stopPropagation(); setSelectedImageIndex(0); setIsImageModalOpen(true); }}
+                      >
+                        <img src={plan.image} alt={`${plan.type} floor plan`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
+                      </div>
+                    )}
+                    <div className="text-left space-y-1 flex-1">
                       <span className="text-sm font-black text-black uppercase tracking-wider block">{plan.type}</span>
-                      <div className="flex items-center gap-3 text-xs font-bold text-neutral-400 uppercase tracking-wider">
+                      <div className="flex items-center gap-2 text-xs font-bold text-neutral-400 uppercase tracking-wider flex-wrap">
                         <span>{plan.priceRange}</span>
                         <span>•</span>
                         <span>{plan.sqft} sqft</span>
@@ -303,17 +312,6 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                         className="overflow-hidden"
                       >
                         <div className="px-4 pb-4 border-t border-black/5 space-y-3 pt-3">
-                          {/* Floor plan image */}
-                          {plan.image && (
-                            <div className="w-full rounded-xl overflow-hidden border border-black/5 bg-neutral-50">
-                              <img
-                                src={plan.image}
-                                alt={`${plan.type} floor plan`}
-                                className="w-full object-cover max-h-52"
-                                referrerPolicy="no-referrer"
-                              />
-                            </div>
-                          )}
                           {plan.units?.map((unit) => (
                             <div key={unit.id} className="space-y-3">
                               <div
@@ -333,7 +331,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                                     <div>
                                       <span className="text-xs font-black uppercase tracking-wider block">{unit.id}</span>
                                       <span className={`text-xs font-bold uppercase tracking-wider ${selectedUnit === unit.id ? 'text-white/60' : 'text-neutral-400'}`}>
-                                        {plan.type} • {unit.sqft || plan.sqft}
+                                        {plan.type} • {unit.sqft || plan.sqft} sqft
                                       </span>
                                     </div>
                                     <div className="text-right">
@@ -341,12 +339,12 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                                       <span className={`text-xs font-black uppercase tracking-wider ${selectedUnit === unit.id ? 'text-[#8aaa4d]' : 'text-[#4A5D23]'}`}>Available Now</span>
                                     </div>
                                   </div>
-                                  <div className="flex gap-2 mt-2">
-                                    <button className={`flex-1 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all ${selectedUnit === unit.id ? 'bg-white text-[#4A5D23]' : 'bg-[#4A5D23] text-white'}`}>
+                                  <div className="mt-2">
+                                    <button
+                                      onClick={(e) => { e.stopPropagation(); setContactMode('tour'); }}
+                                      className={`w-full py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all ${selectedUnit === unit.id ? 'bg-white text-[#4A5D23]' : 'bg-[#4A5D23] text-white'}`}
+                                    >
                                       Schedule Tour
-                                    </button>
-                                    <button className={`flex-1 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider border transition-all ${selectedUnit === unit.id ? 'border-white/30 text-white' : 'border-black/10 text-black'}`}>
-                                      Contact
                                     </button>
                                   </div>
                                 </div>
