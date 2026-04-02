@@ -1397,7 +1397,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
              {messages.length === 0 && !isLoading && !selectedProperty && (
                <div className="flex flex-col items-center justify-center min-h-[50vh] text-center animate-fade-in-up">
                  <div className="w-12 h-12 bg-black rounded-2xl flex items-center justify-center text-white font-black font-heading text-lg mb-4 shadow-lg">U</div>
-                 <h2 className="text-xl font-black font-heading text-black mb-1">Hi, I'm Lumina</h2>
+                 <h2 className="text-xl font-black font-heading text-black mb-1">Hi, welcome to UnitPulse</h2>
                  <p className="text-sm text-neutral-500 font-medium mb-8 max-w-xs">Your AI rental concierge. Tell me what you're looking for.</p>
                  <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
                    {SUGGESTION_CHIPS.map((chip) => (

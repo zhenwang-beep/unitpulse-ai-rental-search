@@ -25,7 +25,7 @@ const FAQ_CATEGORIES = [
     questions: [
       {
         q: "How does UnitPulse work?",
-        a: "UnitPulse uses AI to understand your lifestyle, budget, and preferences through a natural conversation. Instead of filling out forms and scrolling through hundreds of listings, you simply chat with our AI assistant, Lumina, who curates a shortlist of properties that genuinely match what you're looking for."
+        a: "UnitPulse uses AI to understand your lifestyle, budget, and preferences through a natural conversation. Instead of filling out forms and scrolling through hundreds of listings, you simply chat with our AI assistant who curates a shortlist of properties that genuinely match what you're looking for."
       },
       {
         q: "Do I need to create an account?",
@@ -60,7 +60,7 @@ const FAQ_CATEGORIES = [
       },
       {
         q: "Does the AI work with voice input?",
-        a: "Yes, UnitPulse supports voice-powered search through our Live mode. Click the microphone icon to have a natural spoken conversation with Lumina about your rental needs."
+        a: "Yes, UnitPulse supports voice-powered search through our Live mode. Click the microphone icon to have a natural spoken conversation about your rental needs."
       },
     ]
   },
@@ -417,13 +417,13 @@ const FAQPage: React.FC<FAQPageProps> = ({
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -ml-20 -mb-20" />
           <div className="relative z-10">
             <h2 className="text-3xl md:text-4xl font-black font-heading tracking-tighter mb-4">Still have questions?</h2>
-            <p className="text-white/70 text-lg mb-8 max-w-lg mx-auto">Our AI assistant Lumina is available 24/7 to answer any question about rentals, neighborhoods, or the platform.</p>
+            <p className="text-white/70 text-lg mb-8 max-w-lg mx-auto">Our AI assistant is available 24/7 to answer any question about rentals, neighborhoods, or the platform.</p>
             <button
               onClick={() => navigate('/search')}
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#4A5D23] rounded-2xl font-bold hover:shadow-xl transition-all"
             >
               <MessageSquare size={20} />
-              Chat with Lumina
+              Chat with us
               <ArrowRight size={16} />
             </button>
           </div>
