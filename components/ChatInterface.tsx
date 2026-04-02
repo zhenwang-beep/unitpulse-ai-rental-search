@@ -1443,7 +1443,29 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                           </div>
                         )}
                         {msg.text}
-                        
+
+                        {/* Sources */}
+                        {msg.sources && msg.sources.length > 0 && (
+                          <div className="mt-3 pt-3 border-t border-black/5">
+                            <p className="text-[10px] font-semibold uppercase tracking-widest text-neutral-400 mb-2">Sources</p>
+                            <div className="flex flex-wrap gap-2">
+                              {msg.sources.map((src, i) => (
+                                <a
+                                  key={i}
+                                  href={src.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  title={src.snippet}
+                                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 hover:text-neutral-900 text-xs font-medium transition-colors border border-black/5"
+                                >
+                                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-50 flex-shrink-0"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                  {src.title}
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
                         {/* Interactive Components */}
                         {msg.interactiveType === 'style-analysis' && (
                           <StyleAnalysis 
