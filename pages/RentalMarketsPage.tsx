@@ -277,8 +277,7 @@ const RentalMarketsPage: React.FC<RentalMarketsPageProps> = ({
                     </div>
                   </div>
                   <div className="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
-                    <span className="text-sm font-semibold text-[#4A5D23]">Explore market →</span>
-                    <ArrowRight size={16} className="text-[#4A5D23] group-hover:translate-x-1 transition-transform" />
+                    <span className="text-sm font-semibold text-[#4A5D23] group-hover:translate-x-0.5 transition-transform">Explore market →</span>
                   </div>
                 </div>
               </div>
