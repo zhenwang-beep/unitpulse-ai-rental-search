@@ -7,7 +7,7 @@ import { Property } from '../types';
 import PropertyCard from '../components/PropertyCard';
 import LiveInterface from '../components/LiveInterface';
 import { useAppContext } from '../context/AppContext';
-import { ArrowRight, Search, AudioLines, ChevronDown, Heart, LogOut, Menu, X, ArrowLeftRight, Calculator, Target, MessageSquare, Sparkles, Building } from 'lucide-react';
+import { ArrowRight, Search, AudioLines, ChevronDown, ChevronLeft, ChevronRight, Heart, LogOut, Menu, X, ArrowLeftRight, Calculator, Target, MessageSquare, Sparkles, Building } from 'lucide-react';
 import { ToastData } from '../components/Toast';
 import PageFooter from '../components/PageFooter';
 
@@ -107,6 +107,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const [isLiveMode, setIsLiveMode] = useState(false);
   const [selectedCity, setSelectedCity] = useState('All');
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const cityScrollRef = useRef<HTMLDivElement>(null);
+  const [cityScrollState, setCityScrollState] = useState({ canScrollLeft: false, canScrollRight: false });
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -186,6 +188,33 @@ const LandingPage: React.FC<LandingPageProps> = ({
   }, [landingInput, isLandingFocused]);
 
   useEffect(() => { setDropdownIndex(-1); }, [landingInput]);
+
+  const updateCityScroll = () => {
+    const el = cityScrollRef.current;
+    if (!el) return;
+    setCityScrollState({
+      canScrollLeft: el.scrollLeft > 2,
+      canScrollRight: el.scrollLeft < el.scrollWidth - el.clientWidth - 2,
+    });
+  };
+
+  useEffect(() => {
+    updateCityScroll();
+    const el = cityScrollRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', updateCityScroll, { passive: true });
+    window.addEventListener('resize', updateCityScroll);
+    return () => {
+      el.removeEventListener('scroll', updateCityScroll);
+      window.removeEventListener('resize', updateCityScroll);
+    };
+  }, []);
+
+  const scrollCityChips = (dir: 'left' | 'right') => {
+    const el = cityScrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir === 'left' ? -150 : 150, behavior: 'smooth' });
+  };
 
   const handleLandingSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -333,35 +362,33 @@ const LandingPage: React.FC<LandingPageProps> = ({
               onClick={() => setIsHistoryOpen(false)}
             />
             <motion.div
-              initial={{ x: '-100%' }}
+              initial={{ x: '100%' }}
               animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
+              exit={{ x: '100%' }}
               transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
-              className="fixed inset-y-0 left-0 w-80 bg-white shadow-2xl z-[70] border-r border-black/5 flex flex-col"
+              className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-[70] border-l border-black/5 flex flex-col"
             >
               <div className="p-6 border-b border-black/5 flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <img src={LOGO_URL} alt="UnitPulse" className="h-6" />
-                  <h2 className="font-heading font-bold text-lg tracking-wider">UnitPulse</h2>
-                </div>
+                {isLoggedIn ? (
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-[#4A5D23] text-white text-xs font-black flex items-center justify-center">FZ</div>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-bold text-neutral-900">Felix Zhou</span>
+                      <span className="text-xs text-neutral-500">felix.zhou@gmail.com</span>
+                    </div>
+                  </div>
+                ) : (
+                  <h2 className="font-heading font-bold text-lg tracking-wider">Welcome to UnitPulse</h2>
+                )}
                 <button onClick={() => setIsHistoryOpen(false)} aria-label="Close menu" className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
                   <X size={20} />
                 </button>
               </div>
 
               <div className="flex-1 overflow-y-auto flex flex-col">
-                <div className="p-6 border-b border-black/5 flex flex-col gap-6">
-                  {isLoggedIn ? (
-                    <div className="flex items-center gap-4 p-4 bg-neutral-50 rounded-2xl border border-black/5">
-                      <div className="w-12 h-12 rounded-full bg-[#4A5D23] text-white text-sm font-black flex items-center justify-center shadow-sm">FZ</div>
-                      <div className="flex flex-col">
-                        <span className="text-sm font-bold text-neutral-900">Felix Zhou</span>
-                        <span className="text-xs font-medium text-neutral-500">felix.zhou@gmail.com</span>
-                      </div>
-                    </div>
-                  ) : (
+                <div className="p-6 flex flex-col gap-6">
+                  {!isLoggedIn && (
                     <div className="flex flex-col gap-3">
-                      <h3 className="text-lg font-bold text-neutral-900">Welcome to UnitPulse</h3>
                       <p className="text-sm text-neutral-500">Sign in to save your favorite homes and track applications.</p>
                       <button
                         onClick={() => { setShowLoginView(true); setIsHistoryOpen(false); }}
@@ -391,11 +418,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
                         )}
                       </button>
                     )}
-                  </div>
-
-                  <div className="h-px bg-neutral-100 w-full"></div>
-
-                  <div className="flex flex-col gap-1">
                     <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
                       <Building size={20} className="text-neutral-400" />
                       Become a partner
@@ -447,10 +469,10 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
                   {/* Ghost Text Overlay */}
                   {landingGhostText && isLandingFocused && (
-                    <div className="absolute inset-0 pointer-events-none flex items-center">
-                      <div className="w-full flex">
-                        <span className="text-sm md:text-lg opacity-0 whitespace-pre font-sans leading-normal tracking-normal">{landingInput}</span>
-                        <span className="text-neutral-400/40 whitespace-pre font-sans text-sm md:text-lg leading-normal tracking-normal">{landingGhostText.slice(landingInput.length)}</span>
+                    <div className="absolute inset-0 pointer-events-none flex items-center overflow-hidden">
+                      <div className="w-full flex overflow-hidden">
+                        <span className="text-sm md:text-lg opacity-0 whitespace-pre font-sans leading-normal tracking-normal shrink-0">{landingInput}</span>
+                        <span className="text-neutral-400/40 whitespace-pre font-sans text-sm md:text-lg leading-normal tracking-normal truncate">{landingGhostText.slice(landingInput.length)}</span>
                       </div>
                     </div>
                   )}
@@ -471,7 +493,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
                 {/* Tab hint */}
                 {landingGhostText && isLandingFocused && (
-                  <div className="flex items-center shrink-0 z-10 pointer-events-none">
+                  <div className="hidden md:flex items-center shrink-0 z-10 pointer-events-none">
                     <span className="flex items-center gap-1 px-2 py-1 rounded-md bg-neutral-100 border border-black/8 text-neutral-400 text-xs font-medium">
                       <kbd className="font-sans">Tab</kbd>
                       <span>↵</span>
@@ -564,21 +586,52 @@ const LandingPage: React.FC<LandingPageProps> = ({
             <span className="text-xs font-bold tracking-wider uppercase mb-6 text-neutral-400">Explore</span>
 
             {/* City Filters */}
-            <div className="w-full overflow-x-auto scrollbar-hide px-4">
-              <div className="flex justify-start md:justify-center gap-2 mb-8">
-                {POPULAR_CITIES.map((city) => (
-                  <button
-                    key={city}
-                    onClick={() => setSelectedCity(city)}
-                    className={`px-4 py-1.5 rounded-full text-xs font-bold tracking-wider transition-all border shrink-0 ${
-                      selectedCity === city
-                        ? 'bg-black text-white border-black'
-                        : 'bg-white text-neutral-500 border-black/10 hover:border-black hover:text-black'
-                    }`}
-                  >
-                    {city}
-                  </button>
-                ))}
+            <div className="w-full relative mb-8">
+              {cityScrollState.canScrollLeft && (
+                <button
+                  onClick={() => scrollCityChips('left')}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-md border border-black/5 text-neutral-500 hover:text-black transition-colors md:hidden"
+                >
+                  <ChevronLeft size={16} />
+                </button>
+              )}
+              {cityScrollState.canScrollRight && (
+                <button
+                  onClick={() => scrollCityChips('right')}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-md border border-black/5 text-neutral-500 hover:text-black transition-colors md:hidden"
+                >
+                  <ChevronRight size={16} />
+                </button>
+              )}
+              <div
+                className="relative overflow-hidden"
+                style={{
+                  maskImage: (cityScrollState.canScrollLeft || cityScrollState.canScrollRight)
+                    ? `linear-gradient(to right, ${cityScrollState.canScrollLeft ? 'transparent, black 32px' : 'black, black'}, ${cityScrollState.canScrollRight ? 'black calc(100% - 32px), transparent' : 'black, black'})`
+                    : undefined,
+                  WebkitMaskImage: (cityScrollState.canScrollLeft || cityScrollState.canScrollRight)
+                    ? `linear-gradient(to right, ${cityScrollState.canScrollLeft ? 'transparent, black 32px' : 'black, black'}, ${cityScrollState.canScrollRight ? 'black calc(100% - 32px), transparent' : 'black, black'})`
+                    : undefined,
+                }}
+              >
+                <div
+                  ref={cityScrollRef}
+                  className="flex justify-start md:justify-center gap-2 overflow-x-auto scrollbar-hide px-4"
+                >
+                  {POPULAR_CITIES.map((city) => (
+                    <button
+                      key={city}
+                      onClick={() => setSelectedCity(city)}
+                      className={`px-4 py-1.5 rounded-full text-xs font-bold tracking-wider transition-all border shrink-0 ${
+                        selectedCity === city
+                          ? 'bg-black text-white border-black'
+                          : 'bg-white text-neutral-500 border-black/10 hover:border-black hover:text-black'
+                      }`}
+                    >
+                      {city}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

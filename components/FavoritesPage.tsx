@@ -109,17 +109,14 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
               onClick={() => setIsMenuOpen(false)}
             />
             <motion.div
-              initial={{ x: '-100%' }}
+              initial={{ x: '100%' }}
               animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
+              exit={{ x: '100%' }}
               transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
-              className="fixed inset-y-0 left-0 w-80 bg-white shadow-2xl z-[70] border-r border-black/5 flex flex-col"
+              className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-[70] border-l border-black/5 flex flex-col"
             >
               <div className="p-6 border-b border-black/5 flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <img src={LOGO_URL} alt="UnitPulse" className="h-6" />
-                  <h2 className="font-heading font-bold text-lg tracking-wider">UnitPulse</h2>
-                </div>
+                <h2 className="font-heading font-bold text-lg tracking-wider">Menu</h2>
                 <button onClick={() => setIsMenuOpen(false)} aria-label="Close menu" className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
                   <X size={20} />
                 </button>
@@ -148,9 +145,6 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
                         {favorites.length > 0 && <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">{favorites.length}</span>}
                       </button>
                     )}
-                  </div>
-                  <div className="h-px bg-neutral-100 w-full" />
-                  <div className="flex flex-col gap-1">
                     <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium"><Building size={20} className="text-neutral-400" />Become a partner</a>
                   </div>
                   {isLoggedIn && (
