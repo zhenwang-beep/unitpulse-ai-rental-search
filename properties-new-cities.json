@@ -1,0 +1,1078 @@
+[
+  {
+    "id": "tp-sea-001",
+    "title": "Clara Apartments",
+    "location": "Seattle",
+    "price": 1115,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "sqft": 480,
+    "bedsRange": "Studio - 2",
+    "bathsRange": "1",
+    "sqftRange": "380 - 750 SF",
+    "type": "Apartment",
+    "description": "Modern apartment community in Seattle's University District, just steps from the UW campus. Studio to 2-bedroom units with parking and private balconies. Ideal for students and young professionals near the heart of U-District.",
+    "amenities": ["Walk To Campus", "Parking", "Balcony", "Dishwasher", "On-site Laundry", "Bike Storage"],
+    "image": "https://picsum.photos/seed/clara-seattle/800/600",
+    "images": [
+      "https://picsum.photos/seed/clara-seattle-1/800/600",
+      "https://picsum.photos/seed/clara-seattle-2/800/600",
+      "https://picsum.photos/seed/clara-seattle-3/800/600",
+      "https://picsum.photos/seed/clara-seattle-4/800/600"
+    ],
+    "imageSeed": "clara-seattle",
+    "coordinates": { "lat": 47.664030, "lng": -122.306965 },
+    "rating": 4.5,
+    "matchReason": "Tripalink: University District",
+    "floorPlans": [
+      {
+        "type": "Studio",
+        "priceRange": "$1,115 - $1,250",
+        "sqft": "380 - 450",
+        "available": 4,
+        "units": [
+          { "id": "Unit 201", "price": "$1,115", "sqft": "380", "amenities": ["Balcony", "Dishwasher", "On-site Laundry"], "image": "https://picsum.photos/seed/clara-u201/800/600", "images": ["https://picsum.photos/seed/clara-u201/800/600", "https://picsum.photos/seed/clara-u201b/800/600"] }
+        ]
+      },
+      {
+        "type": "2B1B",
+        "priceRange": "$1,600 - $1,850",
+        "sqft": "650 - 750",
+        "available": 2,
+        "units": [
+          { "id": "Unit 305", "price": "$1,650", "sqft": "700", "amenities": ["Balcony", "Parking", "Dishwasher"], "image": "https://picsum.photos/seed/clara-u305/800/600", "images": ["https://picsum.photos/seed/clara-u305/800/600"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $1,115/mo",
+      "deposit": "$500",
+      "applicationFee": "$45",
+      "petFee": "Not allowed",
+      "utilities": "Water & Trash included"
+    }
+  },
+  {
+    "id": "tp-sea-002",
+    "title": "U20 Apartments",
+    "location": "Seattle",
+    "price": 1299,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "sqft": 420,
+    "bedsRange": "Studio",
+    "bathsRange": "1",
+    "sqftRange": "380 - 450 SF",
+    "type": "Studio",
+    "description": "Sleek studio apartments in the University District near UW. Each unit features modern finishes, a package locker, and dedicated parking. Walking distance to campus, shops, and restaurants along University Way.",
+    "amenities": ["Walk To Campus", "Parking", "Package Locker", "Stove", "On-site Laundry"],
+    "image": "https://picsum.photos/seed/u20-seattle/800/600",
+    "images": [
+      "https://picsum.photos/seed/u20-seattle-1/800/600",
+      "https://picsum.photos/seed/u20-seattle-2/800/600",
+      "https://picsum.photos/seed/u20-seattle-3/800/600"
+    ],
+    "imageSeed": "u20-seattle",
+    "coordinates": { "lat": 47.662485, "lng": -122.306259 },
+    "rating": 4.4,
+    "matchReason": "Tripalink: University District",
+    "pricingAndFees": {
+      "rent": "From $1,299/mo",
+      "deposit": "$500",
+      "applicationFee": "$45",
+      "petFee": "Not allowed",
+      "utilities": "Water & Trash included"
+    }
+  },
+  {
+    "id": "tp-sea-003",
+    "title": "MontClair Apartments",
+    "location": "Seattle",
+    "price": 1325,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "sqft": 400,
+    "bedsRange": "Studio - 1",
+    "bathsRange": "1",
+    "sqftRange": "350 - 520 SF",
+    "type": "Apartment",
+    "description": "Furnished studio and one-bedroom apartments in the University District. MontClair offers comfortable living with package lockers and a short walk to UW campus. Great for students who want a move-in-ready experience.",
+    "amenities": ["Walk To Campus", "Furnished", "Package Locker", "On-site Laundry", "Bed Included"],
+    "image": "https://picsum.photos/seed/montclair-seattle/800/600",
+    "images": [
+      "https://picsum.photos/seed/montclair-seattle-1/800/600",
+      "https://picsum.photos/seed/montclair-seattle-2/800/600",
+      "https://picsum.photos/seed/montclair-seattle-3/800/600"
+    ],
+    "imageSeed": "montclair-seattle",
+    "coordinates": { "lat": 47.663910, "lng": -122.315580 },
+    "rating": 4.3,
+    "matchReason": "Tripalink: University District",
+    "pricingAndFees": {
+      "rent": "From $1,325/mo",
+      "deposit": "$500",
+      "applicationFee": "$45",
+      "petFee": "Not allowed",
+      "utilities": "Water & Trash included"
+    }
+  },
+  {
+    "id": "tp-sea-004",
+    "title": "Fifty-Two Apartments",
+    "location": "Seattle",
+    "price": 1378,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "sqft": 450,
+    "bedsRange": "Studio",
+    "bathsRange": "1",
+    "sqftRange": "400 - 500 SF",
+    "type": "Studio",
+    "description": "Fully furnished studio apartments with in-unit washer/dryer near UW. Fifty-Two offers premium finishes, parking, and walkability to campus. A top choice for graduate students and young professionals in Seattle's U-District.",
+    "amenities": ["Walk To Campus", "Parking", "Furnished", "In-Unit W/D", "Dishwasher"],
+    "image": "https://picsum.photos/seed/fiftytwo-seattle/800/600",
+    "images": [
+      "https://picsum.photos/seed/fiftytwo-seattle-1/800/600",
+      "https://picsum.photos/seed/fiftytwo-seattle-2/800/600",
+      "https://picsum.photos/seed/fiftytwo-seattle-3/800/600"
+    ],
+    "imageSeed": "fiftytwo-seattle",
+    "coordinates": { "lat": 47.663503, "lng": -122.306232 },
+    "rating": 4.6,
+    "matchReason": "Tripalink: University District",
+    "pricingAndFees": {
+      "rent": "From $1,378/mo",
+      "deposit": "$500",
+      "applicationFee": "$45",
+      "petFee": "Not allowed",
+      "utilities": "Internet included"
+    }
+  },
+  {
+    "id": "tp-sea-005",
+    "title": "The Rocket",
+    "location": "Seattle",
+    "price": 1824,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "sqft": 520,
+    "bedsRange": "Studio",
+    "bathsRange": "1",
+    "sqftRange": "450 - 580 SF",
+    "type": "Apartment",
+    "description": "Upscale furnished studios in Seattle's Wallingford neighborhood. The Rocket features in-unit washer/dryer, a dog park, and package lockers. A vibrant neighborhood with craft breweries, boutique shops, and easy access to Green Lake.",
+    "amenities": ["Furnished", "Package Locker", "Dog Park", "In-Unit W/D", "Pet Friendly", "Bike Storage"],
+    "image": "https://picsum.photos/seed/rocket-seattle/800/600",
+    "images": [
+      "https://picsum.photos/seed/rocket-seattle-1/800/600",
+      "https://picsum.photos/seed/rocket-seattle-2/800/600",
+      "https://picsum.photos/seed/rocket-seattle-3/800/600",
+      "https://picsum.photos/seed/rocket-seattle-4/800/600"
+    ],
+    "imageSeed": "rocket-seattle",
+    "coordinates": { "lat": 47.662617, "lng": -122.341324 },
+    "rating": 4.7,
+    "matchReason": "Tripalink: Wallingford",
+    "floorPlans": [
+      {
+        "type": "Studio",
+        "priceRange": "$1,824 - $2,050",
+        "sqft": "450 - 580",
+        "available": 3,
+        "units": [
+          { "id": "Unit 102", "price": "$1,824", "sqft": "460", "amenities": ["In-Unit W/D", "Furnished", "Dog Park Access"], "image": "https://picsum.photos/seed/rocket-u102/800/600", "images": ["https://picsum.photos/seed/rocket-u102/800/600"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $1,824/mo",
+      "deposit": "$750",
+      "applicationFee": "$45",
+      "petFee": "$250 (one-time)",
+      "utilities": "Water & Trash included"
+    }
+  },
+  {
+    "id": "tp-sea-006",
+    "title": "The Stax",
+    "location": "Seattle",
+    "price": 856,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "sqft": 320,
+    "bedsRange": "Studio",
+    "bathsRange": "1",
+    "sqftRange": "280 - 380 SF",
+    "type": "Studio",
+    "description": "Affordable micro-studios in Seattle's University District with bike storage and on-site laundry. The Stax is perfect for budget-conscious students at UW who want walkable campus access and public transit nearby.",
+    "amenities": ["Walk To Campus", "Bike Storage", "On-site Laundry", "Heater", "Public Transit"],
+    "image": "https://picsum.photos/seed/stax-seattle/800/600",
+    "images": [
+      "https://picsum.photos/seed/stax-seattle-1/800/600",
+      "https://picsum.photos/seed/stax-seattle-2/800/600",
+      "https://picsum.photos/seed/stax-seattle-3/800/600"
+    ],
+    "imageSeed": "stax-seattle",
+    "coordinates": { "lat": 47.665200, "lng": -122.314444 },
+    "rating": 4.1,
+    "matchReason": "Tripalink: University District",
+    "pricingAndFees": {
+      "rent": "From $856/mo",
+      "deposit": "$400",
+      "applicationFee": "$35",
+      "petFee": "Not allowed",
+      "utilities": "Water & Trash included"
+    }
+  },
+  {
+    "id": "tp-chi-001",
+    "title": "Addams Coliving",
+    "location": "Chicago",
+    "price": 1160,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "sqft": 1200,
+    "bedsRange": "2 - 4",
+    "bathsRange": "2 - 4",
+    "sqftRange": "900 - 1,800 SF",
+    "type": "Apartment",
+    "description": "Prime co-living community near UIC offering fully furnished private bedrooms with upscale amenities. Features a roof terrace, fitness center, study room, and lounge. 1.5 months free promotion available. Great for UIC students and medical professionals.",
+    "amenities": ["Parking", "Furnished", "Private Bathroom", "TV", "In-Unit W/D", "Public Area Wifi", "Roof Terrace", "Fitness Center", "Study Room", "Lounge"],
+    "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/202311302001534940.jpg",
+    "images": [
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/202311302001534940.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/202305312158413026.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/202305160258123447.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/202305312158413393.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/202305312158413730.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/202305312158418049.jpg"
+    ],
+    "imageSeed": "addams-chicago",
+    "coordinates": { "lat": 41.8612685, "lng": -87.6620432 },
+    "rating": 4.6,
+    "matchReason": "Tripalink: UIC",
+    "floorPlans": [
+      {
+        "type": "2B2B",
+        "priceRange": "$1,160 - $1,400",
+        "sqft": "900 - 1,100",
+        "available": 5,
+        "units": [
+          { "id": "Room A1", "price": "$1,160", "sqft": "950", "amenities": ["Private Bathroom", "Furnished", "In-Unit W/D", "TV"], "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/202305160258123447.jpg", "images": ["https://tripalink-property.s3.us-west-1.amazonaws.com/202305160258123447.jpg", "https://tripalink-property.s3.us-west-1.amazonaws.com/202305160258122095.jpg"] }
+        ]
+      },
+      {
+        "type": "4B4B",
+        "priceRange": "$1,050 - $1,200",
+        "sqft": "1,400 - 1,800",
+        "available": 3,
+        "units": [
+          { "id": "Room B2", "price": "$1,050", "sqft": "1,600", "amenities": ["Private Bathroom", "Furnished", "Roof Terrace", "Study Room"], "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/202305312158418049.jpg", "images": ["https://tripalink-property.s3.us-west-1.amazonaws.com/202305312158418049.jpg"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $1,160/mo per room",
+      "deposit": "$500",
+      "applicationFee": "$50",
+      "petFee": "Not allowed",
+      "utilities": "All utilities included"
+    }
+  },
+  {
+    "id": "tp-chi-002",
+    "title": "Letterman Chicago",
+    "location": "Chicago",
+    "price": 1080,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "sqft": 550,
+    "bedsRange": "Studio - 4",
+    "bathsRange": "1 - 2",
+    "sqftRange": "400 - 1,600 SF",
+    "type": "Apartment",
+    "description": "Urban co-living in Chicago's trendy West Loop neighborhood. Letterman offers fully furnished private bedrooms with access to a gym, lounge, and laundry room. 1 month free promotion. Steps from Restaurant Row and the Chicago Loop.",
+    "amenities": ["Walk To Campus", "Pet Friendly", "Furnished", "Private Bathroom", "TV", "Lounge", "Gym", "Laundry Room"],
+    "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/5169_20250717170756.png",
+    "images": [
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/5169_20250717170756.png",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/1091_20250717170756.png",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/696_20250717170756.png",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/6053_20250717170756.png",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/7820_20250717170756.png",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/4652_20250717171032.png"
+    ],
+    "imageSeed": "letterman-chicago",
+    "coordinates": { "lat": 41.87622, "lng": -87.65213 },
+    "rating": 4.5,
+    "matchReason": "Tripalink: West Loop",
+    "floorPlans": [
+      {
+        "type": "Studio",
+        "priceRange": "$1,080 - $1,350",
+        "sqft": "400 - 550",
+        "available": 6,
+        "units": [
+          { "id": "Unit S1", "price": "$1,080", "sqft": "420", "amenities": ["Furnished", "Gym Access", "Laundry"], "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/696_20250717170756.png", "images": ["https://tripalink-property.s3.us-west-1.amazonaws.com/696_20250717170756.png", "https://tripalink-property.s3.us-west-1.amazonaws.com/6053_20250717170756.png"] }
+        ]
+      },
+      {
+        "type": "4B2B",
+        "priceRange": "$950 - $1,100",
+        "sqft": "1,400 - 1,600",
+        "available": 4,
+        "units": [
+          { "id": "Room 4A", "price": "$980", "sqft": "1,500", "amenities": ["Private Bathroom", "Furnished", "TV", "Lounge Access"], "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/4652_20250717171032.png", "images": ["https://tripalink-property.s3.us-west-1.amazonaws.com/4652_20250717171032.png"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $1,080/mo",
+      "deposit": "$500",
+      "applicationFee": "$50",
+      "petFee": "$300 (one-time)",
+      "utilities": "All utilities included"
+    }
+  },
+  {
+    "id": "chi-lux-001",
+    "title": "One Bennett Park",
+    "location": "Chicago",
+    "price": 3200,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqft": 850,
+    "bedsRange": "1 - 3",
+    "bathsRange": "1 - 2.5",
+    "sqftRange": "750 - 2,400 SF",
+    "type": "Apartment",
+    "description": "Ultra-luxury high-rise in Streeterville designed by Robert A.M. Stern. Soaring ceilings, floor-to-ceiling windows with Lake Michigan views, white oak flooring, and Miele appliances. Amenities include a 60th-floor sky lounge, indoor pool, and private wine storage.",
+    "amenities": ["Doorman", "Indoor Pool", "Sky Lounge", "Fitness Center", "Wine Storage", "Concierge", "Dog Run", "Resident Lounge", "Parking Garage"],
+    "image": "https://picsum.photos/seed/bennett-park-chi/800/600",
+    "images": [
+      "https://picsum.photos/seed/bennett-park-chi-1/800/600",
+      "https://picsum.photos/seed/bennett-park-chi-2/800/600",
+      "https://picsum.photos/seed/bennett-park-chi-3/800/600",
+      "https://picsum.photos/seed/bennett-park-chi-4/800/600"
+    ],
+    "imageSeed": "bennett-park-chicago",
+    "coordinates": { "lat": 41.8925, "lng": -87.6212 },
+    "rating": 4.9,
+    "matchReason": "Luxury: Streeterville",
+    "floorPlans": [
+      {
+        "type": "1B1B",
+        "priceRange": "$3,200 - $4,100",
+        "sqft": "750 - 950",
+        "available": 3,
+        "units": [
+          { "id": "Unit 4201", "price": "$3,200", "sqft": "780", "amenities": ["Lake View", "Floor-to-Ceiling Windows", "Miele Appliances", "White Oak Floors"], "image": "https://picsum.photos/seed/bennett-4201/800/600", "images": ["https://picsum.photos/seed/bennett-4201/800/600"] }
+        ]
+      },
+      {
+        "type": "2B2B",
+        "priceRange": "$5,500 - $7,200",
+        "sqft": "1,300 - 1,800",
+        "available": 2,
+        "units": [
+          { "id": "Unit 5605", "price": "$5,800", "sqft": "1,450", "amenities": ["Panoramic Lake View", "Chef's Kitchen", "Walk-in Closet", "Private Balcony"], "image": "https://picsum.photos/seed/bennett-5605/800/600", "images": ["https://picsum.photos/seed/bennett-5605/800/600"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $3,200/mo",
+      "deposit": "1 month rent",
+      "applicationFee": "$75",
+      "petFee": "$500 + $50/mo",
+      "utilities": "Not included"
+    }
+  },
+  {
+    "id": "chi-lux-002",
+    "title": "NEMA Chicago",
+    "location": "Chicago",
+    "price": 2450,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "sqft": 560,
+    "bedsRange": "Studio - 3",
+    "bathsRange": "1 - 2",
+    "sqftRange": "500 - 1,800 SF",
+    "type": "Apartment",
+    "description": "76-story luxury tower in the South Loop with panoramic city and lake views. NEMA features a 6th-floor amenity deck with a resort pool, co-working spaces, a screening room, and a golf simulator. High-end finishes throughout with quartz countertops and hardwood floors.",
+    "amenities": ["Resort Pool", "Co-working Space", "Screening Room", "Golf Simulator", "Fitness Center", "Doorman", "Package Room", "Dog Run", "Rooftop Deck"],
+    "image": "https://picsum.photos/seed/nema-chicago/800/600",
+    "images": [
+      "https://picsum.photos/seed/nema-chicago-1/800/600",
+      "https://picsum.photos/seed/nema-chicago-2/800/600",
+      "https://picsum.photos/seed/nema-chicago-3/800/600",
+      "https://picsum.photos/seed/nema-chicago-4/800/600"
+    ],
+    "imageSeed": "nema-chicago",
+    "coordinates": { "lat": 41.8725, "lng": -87.6248 },
+    "rating": 4.8,
+    "matchReason": "Luxury: South Loop",
+    "floorPlans": [
+      {
+        "type": "Studio",
+        "priceRange": "$2,450 - $2,900",
+        "sqft": "500 - 600",
+        "available": 5,
+        "units": [
+          { "id": "Unit 3102", "price": "$2,450", "sqft": "530", "amenities": ["City View", "Quartz Countertops", "Hardwood Floors"], "image": "https://picsum.photos/seed/nema-3102/800/600", "images": ["https://picsum.photos/seed/nema-3102/800/600"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $2,450/mo",
+      "deposit": "1 month rent",
+      "applicationFee": "$65",
+      "petFee": "$400 + $40/mo",
+      "utilities": "Not included"
+    }
+  },
+  {
+    "id": "chi-lux-003",
+    "title": "The Paragon",
+    "location": "Chicago",
+    "price": 2100,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqft": 720,
+    "bedsRange": "1 - 2",
+    "bathsRange": "1 - 2",
+    "sqftRange": "650 - 1,200 SF",
+    "type": "Apartment",
+    "description": "Contemporary luxury apartments in Chicago's River North neighborhood. The Paragon offers modern kitchens with stainless steel appliances, floor-to-ceiling windows, and a rooftop deck with stunning skyline views. Steps from the Magnificent Mile and Riverwalk.",
+    "amenities": ["Rooftop Deck", "Fitness Center", "Doorman", "Package Locker", "In-Unit W/D", "Stainless Steel Appliances", "Floor-to-Ceiling Windows"],
+    "image": "https://picsum.photos/seed/paragon-chicago/800/600",
+    "images": [
+      "https://picsum.photos/seed/paragon-chicago-1/800/600",
+      "https://picsum.photos/seed/paragon-chicago-2/800/600",
+      "https://picsum.photos/seed/paragon-chicago-3/800/600"
+    ],
+    "imageSeed": "paragon-chicago",
+    "coordinates": { "lat": 41.8920, "lng": -87.6310 },
+    "rating": 4.7,
+    "matchReason": "Luxury: River North",
+    "pricingAndFees": {
+      "rent": "From $2,100/mo",
+      "deposit": "1 month rent",
+      "applicationFee": "$60",
+      "petFee": "$350 + $35/mo",
+      "utilities": "Not included"
+    }
+  },
+  {
+    "id": "tp-hou-001",
+    "title": "West Oaks Landing",
+    "location": "Houston",
+    "price": 821,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqft": 680,
+    "bedsRange": "1 - 2",
+    "bathsRange": "1 - 2",
+    "sqftRange": "600 - 1,050 SF",
+    "type": "Apartment",
+    "description": "Pet-friendly apartment community in Houston's Briar Village neighborhood. West Oaks Landing offers spacious 1- and 2-bedroom units with AC, private balconies, garbage disposal, and on-site maintenance. Conveniently located near Westheimer Road shopping and dining.",
+    "amenities": ["Pet Friendly", "Maintenance on Site", "AC", "Garbage Disposal", "Balcony", "Dishwasher", "On-site Laundry"],
+    "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/38efb6961f44055aa32d207ce2745b8b.jpg",
+    "images": [
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/38efb6961f44055aa32d207ce2745b8b.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/d894d7f1eafc5873e15ed7a55a8d7912.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/d339d8d209bf52f3100b3d7a5e7d7d2b.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/d0e1b855188ad96ba576b33cb6686828.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/694361f0a21fa457d53f6e9f87024b8a.jpg"
+    ],
+    "imageSeed": "west-oaks-houston",
+    "coordinates": { "lat": 29.721, "lng": -95.6574 },
+    "rating": 4.2,
+    "matchReason": "Tripalink: Briar Village",
+    "floorPlans": [
+      {
+        "type": "1B1B",
+        "priceRange": "$821 - $950",
+        "sqft": "600 - 750",
+        "available": 8,
+        "units": [
+          { "id": "Unit 112", "price": "$821", "sqft": "650", "amenities": ["AC", "Balcony", "Dishwasher", "Garbage Disposal"], "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/d894d7f1eafc5873e15ed7a55a8d7912.jpg", "images": ["https://tripalink-property.s3.us-west-1.amazonaws.com/d894d7f1eafc5873e15ed7a55a8d7912.jpg", "https://tripalink-property.s3.us-west-1.amazonaws.com/d339d8d209bf52f3100b3d7a5e7d7d2b.jpg"] }
+        ]
+      },
+      {
+        "type": "2B2B",
+        "priceRange": "$1,000 - $1,200",
+        "sqft": "900 - 1,050",
+        "available": 5,
+        "units": [
+          { "id": "Unit 205", "price": "$1,050", "sqft": "980", "amenities": ["AC", "Balcony", "Walk-in Closet", "Dishwasher"], "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/d0e1b855188ad96ba576b33cb6686828.jpg", "images": ["https://tripalink-property.s3.us-west-1.amazonaws.com/d0e1b855188ad96ba576b33cb6686828.jpg"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $821/mo",
+      "deposit": "$300",
+      "applicationFee": "$40",
+      "petFee": "$200 + $25/mo",
+      "utilities": "Not included"
+    }
+  },
+  {
+    "id": "tp-hou-002",
+    "title": "Mansions Of Shadowbriar",
+    "location": "Houston",
+    "price": 899,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqft": 720,
+    "bedsRange": "1 - 2",
+    "bathsRange": "1 - 2",
+    "sqftRange": "650 - 1,100 SF",
+    "type": "Apartment",
+    "description": "Charming apartment community in Houston's Briar Forest area. Mansions Of Shadowbriar features pet-friendly units with AC, oven, dishwasher, and on-site maintenance. A quiet residential setting with easy access to the Energy Corridor and Westchase District.",
+    "amenities": ["Pet Friendly", "Maintenance on Site", "AC", "Oven", "Garbage Disposal", "Dishwasher", "On-site Laundry", "Covered Parking"],
+    "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/bb75abb1ff1718d797b4151ae449773d.jpg",
+    "images": [
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/bb75abb1ff1718d797b4151ae449773d.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/8abaa87a21124b8f75884aa578181301.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/077a5f3d9adc04919a0539f722ac1791.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/fafaed052b111e286725139956c898e3.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/16311023e284fc08efe4552694fb6b60.jpg"
+    ],
+    "imageSeed": "shadowbriar-houston",
+    "coordinates": { "lat": 29.73828, "lng": -95.60292 },
+    "rating": 4.3,
+    "matchReason": "Tripalink: Briar Forest",
+    "floorPlans": [
+      {
+        "type": "1B1B",
+        "priceRange": "$899 - $1,050",
+        "sqft": "650 - 800",
+        "available": 6,
+        "units": [
+          { "id": "Unit 108", "price": "$899", "sqft": "700", "amenities": ["AC", "Dishwasher", "Oven", "Garbage Disposal"], "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/8abaa87a21124b8f75884aa578181301.jpg", "images": ["https://tripalink-property.s3.us-west-1.amazonaws.com/8abaa87a21124b8f75884aa578181301.jpg", "https://tripalink-property.s3.us-west-1.amazonaws.com/077a5f3d9adc04919a0539f722ac1791.jpg"] }
+        ]
+      },
+      {
+        "type": "2B2B",
+        "priceRange": "$1,100 - $1,300",
+        "sqft": "950 - 1,100",
+        "available": 4,
+        "units": [
+          { "id": "Unit 214", "price": "$1,150", "sqft": "1,000", "amenities": ["AC", "Walk-in Closet", "Covered Parking", "Pet Friendly"], "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/fafaed052b111e286725139956c898e3.jpg", "images": ["https://tripalink-property.s3.us-west-1.amazonaws.com/fafaed052b111e286725139956c898e3.jpg"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $899/mo",
+      "deposit": "$300",
+      "applicationFee": "$40",
+      "petFee": "$200 + $25/mo",
+      "utilities": "Not included"
+    }
+  },
+  {
+    "id": "hou-lux-001",
+    "title": "The Carter at Museum District",
+    "location": "Houston",
+    "price": 1450,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqft": 780,
+    "bedsRange": "Studio - 2",
+    "bathsRange": "1 - 2",
+    "sqftRange": "550 - 1,250 SF",
+    "type": "Apartment",
+    "description": "Modern luxury apartments in Houston's Museum District. The Carter features resort-style amenities including a saltwater pool, outdoor kitchen, and sky lounge. Walk to the Museum of Fine Arts, Hermann Park, and the Houston Zoo. Quartz countertops and stainless steel appliances in every unit.",
+    "amenities": ["Saltwater Pool", "Sky Lounge", "Outdoor Kitchen", "Fitness Center", "EV Charging", "Package Locker", "In-Unit W/D", "Pet Friendly"],
+    "image": "https://picsum.photos/seed/carter-houston/800/600",
+    "images": [
+      "https://picsum.photos/seed/carter-houston-1/800/600",
+      "https://picsum.photos/seed/carter-houston-2/800/600",
+      "https://picsum.photos/seed/carter-houston-3/800/600",
+      "https://picsum.photos/seed/carter-houston-4/800/600"
+    ],
+    "imageSeed": "carter-houston",
+    "coordinates": { "lat": 29.7220, "lng": -95.3899 },
+    "rating": 4.6,
+    "matchReason": "Luxury: Museum District",
+    "pricingAndFees": {
+      "rent": "From $1,450/mo",
+      "deposit": "$500",
+      "applicationFee": "$50",
+      "petFee": "$300 + $25/mo",
+      "utilities": "Water & Trash included"
+    }
+  },
+  {
+    "id": "hou-lux-002",
+    "title": "Midtown Commons",
+    "location": "Houston",
+    "price": 1250,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqft": 720,
+    "bedsRange": "Studio - 2",
+    "bathsRange": "1 - 2",
+    "sqftRange": "500 - 1,100 SF",
+    "type": "Apartment",
+    "description": "Stylish apartments in the heart of Houston's Midtown, surrounded by bars, restaurants, and nightlife. Midtown Commons offers a rooftop pool, co-working lounge, and controlled-access parking. Minutes from Downtown Houston and the Texas Medical Center via METRORail.",
+    "amenities": ["Rooftop Pool", "Co-working Lounge", "Controlled Access", "Parking Garage", "In-Unit W/D", "Stainless Steel Appliances", "Pet Friendly"],
+    "image": "https://picsum.photos/seed/midtown-houston/800/600",
+    "images": [
+      "https://picsum.photos/seed/midtown-houston-1/800/600",
+      "https://picsum.photos/seed/midtown-houston-2/800/600",
+      "https://picsum.photos/seed/midtown-houston-3/800/600"
+    ],
+    "imageSeed": "midtown-houston",
+    "coordinates": { "lat": 29.7410, "lng": -95.3832 },
+    "rating": 4.4,
+    "matchReason": "Luxury: Midtown",
+    "pricingAndFees": {
+      "rent": "From $1,250/mo",
+      "deposit": "$400",
+      "applicationFee": "$50",
+      "petFee": "$300 + $25/mo",
+      "utilities": "Water & Trash included"
+    }
+  },
+  {
+    "id": "hou-med-001",
+    "title": "Elan Med Center",
+    "location": "Houston",
+    "price": 1100,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqft": 700,
+    "bedsRange": "1 - 2",
+    "bathsRange": "1 - 2",
+    "sqftRange": "620 - 1,050 SF",
+    "type": "Apartment",
+    "description": "Well-appointed apartments adjacent to the Texas Medical Center, ideal for healthcare professionals and Rice University students. Features a resort-style pool, 24-hour fitness center, and pet-friendly community. Easy access to NRG Stadium and Hermann Park.",
+    "amenities": ["Resort Pool", "24-Hour Fitness", "Pet Friendly", "Controlled Access", "On-site Laundry", "Covered Parking", "Balcony"],
+    "image": "https://picsum.photos/seed/elan-houston/800/600",
+    "images": [
+      "https://picsum.photos/seed/elan-houston-1/800/600",
+      "https://picsum.photos/seed/elan-houston-2/800/600",
+      "https://picsum.photos/seed/elan-houston-3/800/600"
+    ],
+    "imageSeed": "elan-houston",
+    "coordinates": { "lat": 29.7069, "lng": -95.3996 },
+    "rating": 4.3,
+    "matchReason": "Medical Center Area",
+    "pricingAndFees": {
+      "rent": "From $1,100/mo",
+      "deposit": "$350",
+      "applicationFee": "$50",
+      "petFee": "$250 + $20/mo",
+      "utilities": "Water & Trash included"
+    }
+  },
+  {
+    "id": "tp-irv-001",
+    "title": "113 Schick",
+    "location": "Irvine",
+    "price": 1301,
+    "bedrooms": 4,
+    "bathrooms": 3,
+    "sqft": 1800,
+    "bedsRange": "4",
+    "bathsRange": "3.5",
+    "sqftRange": "1,600 - 2,000 SF",
+    "type": "House",
+    "description": "Spacious 4-bedroom co-living townhouse near UC Irvine. Features private parking, AC, in-unit washer/dryer, and a modern kitchen with island table and oven. Last room available — ideal for UCI students looking for an affordable private room in a shared home.",
+    "amenities": ["Parking", "Sofa", "AC", "Island Table", "Oven", "In-Unit W/D"],
+    "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/314bd1a24066fe05.jpg",
+    "images": [
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/314bd1a24066fe05.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/982b530cd58d7b78.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/43617ba26dd25f20.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/c3c1c69e3df611d4.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/8355bad280b8bb28.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/4fc9ada4d521d29d.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/d60ec766af94f1e6.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/1a61f4eb4d099f98.jpg"
+    ],
+    "imageSeed": "113-schick-irvine",
+    "coordinates": { "lat": 33.686113, "lng": -117.850982 },
+    "rating": 4.4,
+    "matchReason": "Tripalink: UCI Area",
+    "floorPlans": [
+      {
+        "type": "4B3.5B Townhouse",
+        "priceRange": "$1,301 - $1,500/room",
+        "sqft": "1,600 - 2,000",
+        "available": 1,
+        "units": [
+          { "id": "Room D", "price": "$1,301", "sqft": "1,800", "amenities": ["Private Room", "AC", "In-Unit W/D", "Parking"], "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/982b530cd58d7b78.jpg", "images": ["https://tripalink-property.s3.us-west-1.amazonaws.com/982b530cd58d7b78.jpg", "https://tripalink-property.s3.us-west-1.amazonaws.com/43617ba26dd25f20.jpg"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $1,301/mo per room",
+      "deposit": "$500",
+      "applicationFee": "$40",
+      "petFee": "Not allowed",
+      "utilities": "All utilities included"
+    }
+  },
+  {
+    "id": "tp-irv-002",
+    "title": "2340 Synergy",
+    "location": "Irvine",
+    "price": 1640,
+    "bedrooms": 3,
+    "bathrooms": 3,
+    "sqft": 1600,
+    "bedsRange": "3",
+    "bathsRange": "3.5",
+    "sqftRange": "1,400 - 1,800 SF",
+    "type": "House",
+    "description": "Modern 3-bedroom townhouse with private bathrooms near UC Irvine. Features a private garden, AC, in-unit washer/dryer, and garbage disposal. Located in Irvine's planned community with parks, trails, and top-rated schools nearby. Last room available.",
+    "amenities": ["Parking", "Private Bathroom", "Garden", "AC", "In-Unit W/D", "Garbage Disposal"],
+    "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/b6d3dda716e26ff3.png",
+    "images": [
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/b6d3dda716e26ff3.png",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/202306112123277808.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/202306112123275303.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/20230611212327273.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/202306112123276204.jpg",
+      "https://tripalink-property.s3.us-west-1.amazonaws.com/202306112123276388.jpg"
+    ],
+    "imageSeed": "2340-synergy-irvine",
+    "coordinates": { "lat": 33.690814, "lng": -117.838746 },
+    "rating": 4.5,
+    "matchReason": "Tripalink: UCI Area",
+    "floorPlans": [
+      {
+        "type": "3B3.5B Townhouse",
+        "priceRange": "$1,640 - $1,800/room",
+        "sqft": "1,400 - 1,800",
+        "available": 1,
+        "units": [
+          { "id": "Room B", "price": "$1,640", "sqft": "1,600", "amenities": ["Private Bathroom", "Garden", "AC", "In-Unit W/D"], "image": "https://tripalink-property.s3.us-west-1.amazonaws.com/202306112123277808.jpg", "images": ["https://tripalink-property.s3.us-west-1.amazonaws.com/202306112123277808.jpg", "https://tripalink-property.s3.us-west-1.amazonaws.com/202306112123275303.jpg"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $1,640/mo per room",
+      "deposit": "$500",
+      "applicationFee": "$40",
+      "petFee": "Not allowed",
+      "utilities": "All utilities included"
+    }
+  },
+  {
+    "id": "irv-lux-001",
+    "title": "Irvine Company Apartments — Park Place",
+    "location": "Irvine",
+    "price": 2800,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqft": 780,
+    "bedsRange": "Studio - 3",
+    "bathsRange": "1 - 2",
+    "sqftRange": "550 - 1,450 SF",
+    "type": "Apartment",
+    "description": "Premium apartments in Irvine's Park Place community by Irvine Company. Resort-style pool, outdoor lounge, fitness center with yoga studio, and dedicated bike storage. Walking distance to South Coast Plaza and the Irvine Spectrum. Bright, open floor plans with premium finishes.",
+    "amenities": ["Resort Pool", "Fitness Center", "Yoga Studio", "Bike Storage", "Clubhouse", "In-Unit W/D", "EV Charging", "Controlled Access"],
+    "image": "https://picsum.photos/seed/parkplace-irvine/800/600",
+    "images": [
+      "https://picsum.photos/seed/parkplace-irvine-1/800/600",
+      "https://picsum.photos/seed/parkplace-irvine-2/800/600",
+      "https://picsum.photos/seed/parkplace-irvine-3/800/600",
+      "https://picsum.photos/seed/parkplace-irvine-4/800/600"
+    ],
+    "imageSeed": "parkplace-irvine",
+    "coordinates": { "lat": 33.6846, "lng": -117.8387 },
+    "rating": 4.7,
+    "matchReason": "Luxury: Park Place",
+    "pricingAndFees": {
+      "rent": "From $2,800/mo",
+      "deposit": "1 month rent",
+      "applicationFee": "$49",
+      "petFee": "$500 + $60/mo",
+      "utilities": "Water & Trash included"
+    }
+  },
+  {
+    "id": "irv-lux-002",
+    "title": "Portola Court",
+    "location": "Irvine",
+    "price": 3100,
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "sqft": 1050,
+    "bedsRange": "1 - 3",
+    "bathsRange": "1 - 2",
+    "sqftRange": "700 - 1,400 SF",
+    "type": "Apartment",
+    "description": "Upscale apartments in Irvine's Great Park neighborhood with mountain and park views. Features a large pool courtyard, outdoor fireplace, BBQ grills, and a tech-enabled fitness center. Close to the Orange County Great Park and Jeffrey Open Space Trail.",
+    "amenities": ["Pool Courtyard", "Outdoor Fireplace", "BBQ Grills", "Fitness Center", "In-Unit W/D", "Walk-in Closet", "Garage Parking", "Pet Friendly"],
+    "image": "https://picsum.photos/seed/portola-irvine/800/600",
+    "images": [
+      "https://picsum.photos/seed/portola-irvine-1/800/600",
+      "https://picsum.photos/seed/portola-irvine-2/800/600",
+      "https://picsum.photos/seed/portola-irvine-3/800/600"
+    ],
+    "imageSeed": "portola-irvine",
+    "coordinates": { "lat": 33.6695, "lng": -117.7620 },
+    "rating": 4.6,
+    "matchReason": "Luxury: Great Park",
+    "pricingAndFees": {
+      "rent": "From $3,100/mo",
+      "deposit": "1 month rent",
+      "applicationFee": "$49",
+      "petFee": "$500 + $60/mo",
+      "utilities": "Water & Trash included"
+    }
+  },
+  {
+    "id": "irv-mid-001",
+    "title": "Woodbury Lane",
+    "location": "Irvine",
+    "price": 2500,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqft": 750,
+    "bedsRange": "1 - 2",
+    "bathsRange": "1 - 2",
+    "sqftRange": "650 - 1,200 SF",
+    "type": "Apartment",
+    "description": "Contemporary apartments in Irvine's Woodbury community. Open-concept layouts with quartz countertops, vinyl plank flooring, and large windows. Community features include a lap pool, spa, playground, and dog park. Near top-rated Irvine Unified schools.",
+    "amenities": ["Lap Pool", "Spa", "Playground", "Dog Park", "In-Unit W/D", "Quartz Countertops", "Garage Parking"],
+    "image": "https://picsum.photos/seed/woodbury-irvine/800/600",
+    "images": [
+      "https://picsum.photos/seed/woodbury-irvine-1/800/600",
+      "https://picsum.photos/seed/woodbury-irvine-2/800/600",
+      "https://picsum.photos/seed/woodbury-irvine-3/800/600"
+    ],
+    "imageSeed": "woodbury-irvine",
+    "coordinates": { "lat": 33.7180, "lng": -117.7681 },
+    "rating": 4.5,
+    "matchReason": "Woodbury Community",
+    "pricingAndFees": {
+      "rent": "From $2,500/mo",
+      "deposit": "1 month rent",
+      "applicationFee": "$49",
+      "petFee": "$400 + $50/mo",
+      "utilities": "Water & Trash included"
+    }
+  },
+  {
+    "id": "nyc-lux-001",
+    "title": "MiMA",
+    "location": "New York",
+    "price": 4200,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "sqft": 520,
+    "bedsRange": "Studio - 3",
+    "bathsRange": "1 - 2",
+    "sqftRange": "450 - 1,800 SF",
+    "type": "Apartment",
+    "description": "Iconic luxury tower at 450 West 42nd Street in Midtown Manhattan with 44,000 sq ft of amenities. Features a private Equinox fitness club, heated lap pool, basketball court, and resident lounge. Floor-to-ceiling windows with stunning Hudson River and city skyline views. Steps from Times Square and Hudson Yards.",
+    "amenities": ["Equinox Fitness Club", "Heated Lap Pool", "Basketball Court", "Resident Lounge", "Doorman 24/7", "Concierge", "Rooftop Terrace", "Children's Playroom", "Bike Storage"],
+    "image": "https://picsum.photos/seed/mima-nyc/800/600",
+    "images": [
+      "https://picsum.photos/seed/mima-nyc-1/800/600",
+      "https://picsum.photos/seed/mima-nyc-2/800/600",
+      "https://picsum.photos/seed/mima-nyc-3/800/600",
+      "https://picsum.photos/seed/mima-nyc-4/800/600",
+      "https://picsum.photos/seed/mima-nyc-5/800/600"
+    ],
+    "imageSeed": "mima-nyc",
+    "coordinates": { "lat": 40.7589, "lng": -73.9951 },
+    "rating": 4.8,
+    "matchReason": "Luxury: Midtown Manhattan",
+    "floorPlans": [
+      {
+        "type": "Studio",
+        "priceRange": "$4,200 - $5,100",
+        "sqft": "450 - 560",
+        "available": 4,
+        "units": [
+          { "id": "Unit 32A", "price": "$4,200", "sqft": "480", "amenities": ["City View", "Floor-to-Ceiling Windows", "Equinox Access"], "image": "https://picsum.photos/seed/mima-32a/800/600", "images": ["https://picsum.photos/seed/mima-32a/800/600"] }
+        ]
+      },
+      {
+        "type": "1B1B",
+        "priceRange": "$5,500 - $7,500",
+        "sqft": "650 - 850",
+        "available": 3,
+        "units": [
+          { "id": "Unit 45B", "price": "$5,800", "sqft": "720", "amenities": ["Hudson River View", "Walk-in Closet", "Chef's Kitchen"], "image": "https://picsum.photos/seed/mima-45b/800/600", "images": ["https://picsum.photos/seed/mima-45b/800/600"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $4,200/mo",
+      "deposit": "1 month rent",
+      "applicationFee": "$75",
+      "petFee": "$500 + $100/mo",
+      "utilities": "Not included"
+    }
+  },
+  {
+    "id": "nyc-lux-002",
+    "title": "The Westport",
+    "location": "New York",
+    "price": 3800,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "sqft": 480,
+    "bedsRange": "Studio - 2",
+    "bathsRange": "1 - 2",
+    "sqftRange": "420 - 1,200 SF",
+    "type": "Apartment",
+    "description": "Luxury rentals at 500 West 56th Street in Midtown Manhattan, steps from Central Park and Columbus Circle. Features a half-sized basketball court, party room, rooftop terrace, and state-of-the-art fitness center. Modern units with high ceilings, hardwood floors, and Bosch appliances.",
+    "amenities": ["Basketball Court", "Party Room", "Rooftop Terrace", "Fitness Center", "Doorman 24/7", "Concierge", "Children's Playroom", "Package Room", "Bike Storage"],
+    "image": "https://picsum.photos/seed/westport-nyc/800/600",
+    "images": [
+      "https://picsum.photos/seed/westport-nyc-1/800/600",
+      "https://picsum.photos/seed/westport-nyc-2/800/600",
+      "https://picsum.photos/seed/westport-nyc-3/800/600",
+      "https://picsum.photos/seed/westport-nyc-4/800/600"
+    ],
+    "imageSeed": "westport-nyc",
+    "coordinates": { "lat": 40.7685, "lng": -73.9918 },
+    "rating": 4.7,
+    "matchReason": "Luxury: Midtown West",
+    "floorPlans": [
+      {
+        "type": "Studio",
+        "priceRange": "$3,800 - $4,500",
+        "sqft": "420 - 530",
+        "available": 5,
+        "units": [
+          { "id": "Unit 18C", "price": "$3,800", "sqft": "450", "amenities": ["Hardwood Floors", "Bosch Appliances", "Fitness Center Access"], "image": "https://picsum.photos/seed/westport-18c/800/600", "images": ["https://picsum.photos/seed/westport-18c/800/600"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $3,800/mo",
+      "deposit": "1 month rent",
+      "applicationFee": "$75",
+      "petFee": "$500 + $75/mo",
+      "utilities": "Not included"
+    }
+  },
+  {
+    "id": "nyc-lux-003",
+    "title": "The Westminster",
+    "location": "New York",
+    "price": 7280,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqft": 750,
+    "bedsRange": "1 - 4",
+    "bathsRange": "1 - 3",
+    "sqftRange": "650 - 2,400 SF",
+    "type": "Apartment",
+    "description": "Designed by Robert A.M. Stern Architects, The Westminster at 180 West 20th Street in Chelsea is the epitome of classic New York luxury. Features a roof terrace, 24-hour doorman, private gym, and elegantly appointed residences with oversized windows, custom cabinetry, and marble bathrooms.",
+    "amenities": ["Roof Terrace", "24-Hour Doorman", "Private Gym", "Concierge", "Marble Bathrooms", "Custom Cabinetry", "Bike Storage", "Children's Playroom"],
+    "image": "https://picsum.photos/seed/westminster-nyc/800/600",
+    "images": [
+      "https://picsum.photos/seed/westminster-nyc-1/800/600",
+      "https://picsum.photos/seed/westminster-nyc-2/800/600",
+      "https://picsum.photos/seed/westminster-nyc-3/800/600",
+      "https://picsum.photos/seed/westminster-nyc-4/800/600"
+    ],
+    "imageSeed": "westminster-nyc",
+    "coordinates": { "lat": 40.7408, "lng": -73.9973 },
+    "rating": 4.9,
+    "matchReason": "Luxury: Chelsea",
+    "floorPlans": [
+      {
+        "type": "1B1B",
+        "priceRange": "$7,280 - $9,500",
+        "sqft": "650 - 850",
+        "available": 2,
+        "units": [
+          { "id": "Unit 9V", "price": "$7,280", "sqft": "720", "amenities": ["Custom Cabinetry", "Marble Bathroom", "Oversized Windows"], "image": "https://picsum.photos/seed/westminster-9v/800/600", "images": ["https://picsum.photos/seed/westminster-9v/800/600"] }
+        ]
+      },
+      {
+        "type": "3B2B",
+        "priceRange": "$15,000 - $22,000",
+        "sqft": "1,500 - 2,000",
+        "available": 1,
+        "units": [
+          { "id": "Unit PH1", "price": "$18,500", "sqft": "1,850", "amenities": ["Terrace", "Park View", "Chef's Kitchen", "Walk-in Closets"], "image": "https://picsum.photos/seed/westminster-ph1/800/600", "images": ["https://picsum.photos/seed/westminster-ph1/800/600"] }
+        ]
+      }
+    ],
+    "pricingAndFees": {
+      "rent": "From $7,280/mo",
+      "deposit": "1 month rent + last month",
+      "applicationFee": "$100",
+      "petFee": "Case by case",
+      "utilities": "Not included"
+    }
+  },
+  {
+    "id": "nyc-lux-004",
+    "title": "The Caledonia",
+    "location": "New York",
+    "price": 5200,
+    "bedrooms": 1,
+    "bathrooms": 1,
+    "sqft": 680,
+    "bedsRange": "Studio - 3",
+    "bathsRange": "1 - 2",
+    "sqftRange": "480 - 1,600 SF",
+    "type": "Apartment",
+    "description": "Full-service luxury building at 450 West 17th Street in West Chelsea. The Caledonia features a fully furnished conference room, high-speed internet, and on-site Dog City. Equinox access included. Located along the High Line with easy access to Chelsea Market and the Meatpacking District.",
+    "amenities": ["Equinox Access", "Dog City On-site", "Conference Room", "High-Speed Internet", "Doorman 24/7", "Concierge", "Roof Deck", "Fitness Center", "Children's Playroom"],
+    "image": "https://picsum.photos/seed/caledonia-nyc/800/600",
+    "images": [
+      "https://picsum.photos/seed/caledonia-nyc-1/800/600",
+      "https://picsum.photos/seed/caledonia-nyc-2/800/600",
+      "https://picsum.photos/seed/caledonia-nyc-3/800/600",
+      "https://picsum.photos/seed/caledonia-nyc-4/800/600"
+    ],
+    "imageSeed": "caledonia-nyc",
+    "coordinates": { "lat": 40.7437, "lng": -74.0065 },
+    "rating": 4.8,
+    "matchReason": "Luxury: West Chelsea",
+    "pricingAndFees": {
+      "rent": "From $5,200/mo",
+      "deposit": "1 month rent",
+      "applicationFee": "$75",
+      "petFee": "$500 + $100/mo",
+      "utilities": "Not included"
+    }
+  },
+  {
+    "id": "nyc-mid-001",
+    "title": "The Tate",
+    "location": "New York",
+    "price": 4600,
+    "bedrooms": 0,
+    "bathrooms": 1,
+    "sqft": 500,
+    "bedsRange": "Studio - 2",
+    "bathsRange": "1 - 2",
+    "sqftRange": "430 - 1,100 SF",
+    "type": "Apartment",
+    "description": "Modern luxury residences at 535 West 23rd Street in Chelsea, close to Chelsea Piers, Hudson River Park, and the High Line. The Tate features a rooftop deck with skyline views, state-of-the-art fitness center, and high-speed internet throughout. Polished interiors with hardwood floors and chef's kitchens.",
+    "amenities": ["Rooftop Deck", "Fitness Center", "High-Speed Internet", "Conference Room", "Doorman 24/7", "Bike Storage", "Package Room", "Hardwood Floors"],
+    "image": "https://picsum.photos/seed/tate-nyc/800/600",
+    "images": [
+      "https://picsum.photos/seed/tate-nyc-1/800/600",
+      "https://picsum.photos/seed/tate-nyc-2/800/600",
+      "https://picsum.photos/seed/tate-nyc-3/800/600"
+    ],
+    "imageSeed": "tate-nyc",
+    "coordinates": { "lat": 40.7478, "lng": -74.0035 },
+    "rating": 4.7,
+    "matchReason": "Luxury: Chelsea",
+    "pricingAndFees": {
+      "rent": "From $4,600/mo",
+      "deposit": "1 month rent",
+      "applicationFee": "$75",
+      "petFee": "$500 + $75/mo",
+      "utilities": "Not included"
+    }
+  }
+]
