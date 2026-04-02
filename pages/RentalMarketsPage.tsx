@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, LogOut, Menu, X, Search, FileText, Building, HelpCircle, TrendingUp, MapPin, ArrowRight, DollarSign, Home, Users } from 'lucide-react';
+import { Heart, LogOut, Menu, X, Search, FileText, Building, TrendingUp, ArrowRight, DollarSign, Home, Users } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { AnimatePresence } from 'motion/react';
 import { ToastData } from '../components/Toast';
+import PageFooter from '../components/PageFooter';
 
 const LOGO_URL = "https://tripalink-public.s3.us-east-2.amazonaws.com/Logo+-+Dark.png";
 
@@ -123,7 +124,7 @@ const RentalMarketsPage: React.FC<RentalMarketsPageProps> = ({
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-[#FCF9F8] flex flex-col text-black font-sans">
+    <div className="w-full bg-[#FCF9F8] text-black font-sans">
       {/* Header */}
       <header className="w-full px-4 md:px-8 py-4 flex justify-between items-center z-[60] shrink-0 sticky top-0 bg-white shadow-sm">
         <div className="w-full flex justify-between items-center">
@@ -134,8 +135,7 @@ const RentalMarketsPage: React.FC<RentalMarketsPageProps> = ({
           <nav className="hidden md:flex items-center gap-8">
             <a href="/" className="text-sm font-medium hover:text-black/60 transition-colors">Find a home</a>
             <a href="/blog" className="text-sm font-medium hover:text-black/60 transition-colors">Blog</a>
-            <a href="/rentals" className="text-sm font-medium text-[#4A5D23] transition-colors">Rental Markets</a>
-            <a href="/faq" className="text-sm font-medium hover:text-black/60 transition-colors">FAQ</a>
+            <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Become a partner</a>
             {isLoggedIn ? (
               <div className="relative" ref={dropdownRef}>
                 <div className="w-10 h-10 rounded-full bg-neutral-100 border border-black/5 flex items-center justify-center overflow-hidden cursor-pointer hover:border-black transition-all" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
@@ -169,154 +169,109 @@ const RentalMarketsPage: React.FC<RentalMarketsPageProps> = ({
               <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-1">
                 <a href="/" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium"><Search size={20} className="text-neutral-400" /> Find a home</a>
                 <a href="/blog" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium"><FileText size={20} className="text-neutral-400" /> Blog</a>
-                <a href="/rentals" className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 text-[#4A5D23] transition-colors font-medium"><Building size={20} /> Rental Markets</a>
-                <a href="/faq" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium"><HelpCircle size={20} className="text-neutral-400" /> FAQ</a>
+                <div className="h-px bg-neutral-100 w-full my-1"></div>
+                <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium"><Building size={20} className="text-neutral-400" /> Become a partner</a>
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
 
-      <main className="flex-1">
-        {/* Hero */}
-        <div className="w-full max-w-6xl mx-auto px-4 pt-16 pb-10 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#4A5D23]/10 text-[#4A5D23] text-xs font-black uppercase tracking-wider mb-6">
-              <TrendingUp size={14} />
-              Market Insights
-            </div>
-            <h1 className="text-4xl md:text-6xl font-black font-heading tracking-tighter text-black mb-6">
-              Rental Markets <span style={{ color: '#4A5D23' }}>by City</span>
-            </h1>
-            <p className="text-neutral-500 text-lg max-w-2xl mx-auto leading-relaxed">
-              Explore rental trends, average prices, and neighborhood guides for top US cities. Find the perfect market for your next home.
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Market Overview Stats */}
-        <div className="w-full max-w-6xl mx-auto px-4 mb-16">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { icon: Building, label: 'Cities Covered', value: '6+', color: 'bg-[#4A5D23]/10 text-[#4A5D23]' },
-              { icon: Home, label: 'Active Listings', value: '4,730+', color: 'bg-blue-50 text-blue-600' },
-              { icon: DollarSign, label: 'Avg National Rent', value: '$2,467', color: 'bg-amber-50 text-amber-600' },
-              { icon: Users, label: 'Renters Helped', value: '12,000+', color: 'bg-purple-50 text-purple-600' },
-            ].map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.08 }}
-                className="p-5 bg-white rounded-2xl border border-black/5 text-center"
-              >
-                <div className={`w-10 h-10 rounded-xl ${stat.color} flex items-center justify-center mx-auto mb-3`}>
-                  <stat.icon size={20} />
-                </div>
-                <div className="text-2xl font-black text-black mb-1">{stat.value}</div>
-                <div className="text-xs font-medium text-neutral-500 uppercase tracking-wider">{stat.label}</div>
-              </motion.div>
-            ))}
+      {/* Hero */}
+      <div className="w-full max-w-6xl mx-auto px-4 pt-16 pb-10 text-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#4A5D23]/10 text-[#4A5D23] text-xs font-black uppercase tracking-wider mb-6">
+            <TrendingUp size={14} />
+            Market Insights
           </div>
-        </div>
+          <h1 className="text-4xl md:text-6xl font-black font-heading tracking-tighter text-black mb-6">
+            Rental Markets <span style={{ color: '#4A5D23' }}>by City</span>
+          </h1>
+          <p className="text-neutral-500 text-lg max-w-2xl mx-auto leading-relaxed">
+            Explore rental trends, average prices, and neighborhood guides for top US cities. Find the perfect market for your next home.
+          </p>
+        </motion.div>
+      </div>
 
-        {/* City Grid */}
-        <div className="w-full max-w-6xl mx-auto px-4 pb-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {CITY_DATA.map((city, i) => (
-              <motion.div
-                key={city.slug}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 + i * 0.08 }}
+      {/* Market Overview Stats */}
+      <div className="w-full max-w-6xl mx-auto px-4 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { icon: Building, label: 'Cities Covered', value: '6+', color: 'bg-[#4A5D23]/10 text-[#4A5D23]' },
+            { icon: Home, label: 'Active Listings', value: '4,730+', color: 'bg-blue-50 text-blue-600' },
+            { icon: DollarSign, label: 'Avg National Rent', value: '$2,467', color: 'bg-amber-50 text-amber-600' },
+            { icon: Users, label: 'Renters Helped', value: '12,000+', color: 'bg-purple-50 text-purple-600' },
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.08 }}
+              className="p-5 bg-white rounded-2xl border border-black/5 text-center"
+            >
+              <div className={`w-10 h-10 rounded-xl ${stat.color} flex items-center justify-center mx-auto mb-3`}>
+                <stat.icon size={20} />
+              </div>
+              <div className="text-2xl font-black text-black mb-1">{stat.value}</div>
+              <div className="text-xs font-medium text-neutral-500 uppercase tracking-wider">{stat.label}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* City Grid */}
+      <div className="w-full max-w-6xl mx-auto px-4 pb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {CITY_DATA.map((city, i) => (
+            <motion.div
+              key={city.slug}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 + i * 0.08 }}
+            >
+              <div
+                onClick={() => navigate(`/rentals/${city.slug}`)}
+                className="group cursor-pointer bg-white rounded-[1.5rem] border border-black/5 overflow-hidden hover:shadow-xl transition-all duration-300"
               >
-                <div
-                  onClick={() => navigate(`/rentals/${city.slug}`)}
-                  className="group cursor-pointer bg-white rounded-[1.5rem] border border-black/5 overflow-hidden hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={city.image}
-                      alt={`${city.name} rental market`}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                    <div className="absolute bottom-4 left-4">
-                      <h3 className="text-2xl font-black text-white tracking-tight">{city.name}</h3>
-                      <span className="text-white/70 text-sm font-medium">{city.state}</span>
-                    </div>
-                    <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold ${city.trendUp ? 'bg-green-500/90 text-white' : 'bg-red-500/90 text-white'}`}>
-                      {city.trend} YoY
-                    </div>
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={city.image}
+                    alt={`${city.name} rental market`}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <h3 className="text-2xl font-black text-white tracking-tight">{city.name}</h3>
+                    <span className="text-white/70 text-sm font-medium">{city.state}</span>
                   </div>
-                  <div className="p-5">
-                    <p className="text-neutral-500 text-sm leading-relaxed mb-4">{city.description}</p>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Avg Rent</div>
-                        <div className="text-xl font-black text-black">${city.avgRent.toLocaleString()}<span className="text-sm font-medium text-neutral-400">/mo</span></div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Listings</div>
-                        <div className="text-xl font-black text-black">{city.listings.toLocaleString()}</div>
-                      </div>
-                    </div>
-                    <div className="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
-                      <span className="text-sm font-semibold text-[#4A5D23]">Explore market →</span>
-                      <ArrowRight size={16} className="text-[#4A5D23] group-hover:translate-x-1 transition-transform" />
-                    </div>
+                  <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold ${city.trendUp ? 'bg-green-500/90 text-white' : 'bg-red-500/90 text-white'}`}>
+                    {city.trend} YoY
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+                <div className="p-5">
+                  <p className="text-neutral-500 text-sm leading-relaxed mb-4">{city.description}</p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Avg Rent</div>
+                      <div className="text-xl font-black text-black">${city.avgRent.toLocaleString()}<span className="text-sm font-medium text-neutral-400">/mo</span></div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Listings</div>
+                      <div className="text-xl font-black text-black">{city.listings.toLocaleString()}</div>
+                    </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
+                    <span className="text-sm font-semibold text-[#4A5D23]">Explore market →</span>
+                    <ArrowRight size={16} className="text-[#4A5D23] group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
+      </div>
 
-        {/* Footer */}
-        <footer className="w-full py-16 md:py-20 bg-[#F0EDEA]">
-          <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-12 mb-12 md:mb-16">
-              <div className="lg:col-span-1">
-                <div className="flex items-center gap-2 mb-4">
-                  <img src={LOGO_URL} alt="UnitPulse" className="h-5" />
-                  <span className="font-heading font-bold text-lg tracking-wider">UnitPulse</span>
-                </div>
-                <p className="text-sm text-neutral-600 mb-3 font-semibold">AI-powered rental operations for modern landlords.</p>
-                <p className="text-sm text-neutral-500 mb-8 leading-relaxed">UnitPulse helps landlords and property managers streamline leasing with AI. From listing optimization to tenant engagement and application workflows, we turn rental operations into a faster, smarter, and more data-driven experience.</p>
-              </div>
-              <div className="lg:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-8">
-                <div>
-                  <h4 className="font-bold text-black mb-4 text-sm uppercase tracking-wider">Resources</h4>
-                  <ul className="space-y-3 text-sm text-neutral-500">
-                    <li><a href="/blog" className="hover:text-black transition-colors">Blog</a></li>
-                    <li><a href="/faq" className="hover:text-black transition-colors">FAQ</a></li>
-                    <li><a href="/rentals" className="hover:text-black transition-colors">Rental Markets</a></li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-bold text-black mb-4 text-sm uppercase tracking-wider">Company</h4>
-                  <ul className="space-y-3 text-sm text-neutral-500">
-                    <li><a href="#" className="hover:text-black transition-colors">About Us</a></li>
-                    <li><a href="#" className="hover:text-black transition-colors">Careers</a></li>
-                    <li><a href="#" className="hover:text-black transition-colors">Contact</a></li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-bold text-black mb-4 text-sm uppercase tracking-wider">Legal</h4>
-                  <ul className="space-y-3 text-sm text-neutral-500">
-                    <li><a href="#" className="hover:text-black transition-colors">Privacy Policy</a></li>
-                    <li><a href="#" className="hover:text-black transition-colors">Terms of Service</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="pt-8 border-t border-black/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-              <p className="text-sm text-neutral-400">&copy; 2026 UnitPulse. All rights reserved.</p>
-              <p className="text-xs text-neutral-400">AI-powered rental search</p>
-            </div>
-          </div>
-        </footer>
-      </main>
+      <PageFooter />
     </div>
   );
 };
