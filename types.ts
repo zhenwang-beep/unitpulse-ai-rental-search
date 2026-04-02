@@ -3,6 +3,7 @@ export interface FloorPlan {
   priceRange: string;
   sqft: string;
   available: number;
+  image?: string;
   units?: Unit[];
 }
 

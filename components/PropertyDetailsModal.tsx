@@ -40,15 +40,15 @@ const BUILDING_AMENITIES = [
 ];
 
 const DEFAULT_FLOOR_PLANS = (seed: string | number) => [
-  { type: 'Studio', priceRange: '$1,800 - $2,100', sqft: '450 - 550', available: 3, units: [
+  { type: 'Studio', priceRange: '$1,800 - $2,100', sqft: '450 - 550', available: 3, image: `https://picsum.photos/seed/${seed}-fp-studio/800/560`, units: [
     { id: 'Unit 101', price: '$1,850', sqft: '480', amenities: ['City View', 'Modern Kitchen'], image: `https://picsum.photos/seed/${seed}s1/400/300`, images: [`https://picsum.photos/seed/${seed}s1/1200/800`] },
     { id: 'Unit 205', price: '$1,950', sqft: '510', amenities: ['High Floor', 'Balcony'], image: `https://picsum.photos/seed/${seed}s2/400/300`, images: [`https://picsum.photos/seed/${seed}s2/1200/800`] },
   ]},
-  { type: '1B1B', priceRange: '$2,400 - $2,800', sqft: '700 - 850', available: 5, units: [
+  { type: '1B1B', priceRange: '$2,400 - $2,800', sqft: '700 - 850', available: 5, image: `https://picsum.photos/seed/${seed}-fp-1b1b/800/560`, units: [
     { id: 'Unit 102', price: '$2,450', sqft: '720', amenities: ['Walk-in Closet', 'In-unit Laundry'], image: `https://picsum.photos/seed/${seed}1b1/400/300`, images: [`https://picsum.photos/seed/${seed}1b1/1200/800`] },
     { id: 'Unit 201', price: '$2,550', sqft: '780', amenities: ['Garden View', 'Quiet Side'], image: `https://picsum.photos/seed/${seed}1b2/400/300`, images: [`https://picsum.photos/seed/${seed}1b2/1200/800`] },
   ]},
-  { type: '2B2B', priceRange: '$3,500 - $4,200', sqft: '1,100 - 1,300', available: 2, units: [
+  { type: '2B2B', priceRange: '$3,500 - $4,200', sqft: '1,100 - 1,300', available: 2, image: `https://picsum.photos/seed/${seed}-fp-2b2b/800/560`, units: [
     { id: 'Unit 601', price: '$3,600', sqft: '1,150', amenities: ['Penthouse Level', 'Private Terrace'], image: `https://picsum.photos/seed/${seed}2b1/400/300`, images: [`https://picsum.photos/seed/${seed}2b1/1200/800`] },
   ]},
 ];
@@ -303,6 +303,17 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                         className="overflow-hidden"
                       >
                         <div className="px-4 pb-4 border-t border-black/5 space-y-3 pt-3">
+                          {/* Floor plan image */}
+                          {plan.image && (
+                            <div className="w-full rounded-xl overflow-hidden border border-black/5 bg-neutral-50">
+                              <img
+                                src={plan.image}
+                                alt={`${plan.type} floor plan`}
+                                className="w-full object-cover max-h-52"
+                                referrerPolicy="no-referrer"
+                              />
+                            </div>
+                          )}
                           {plan.units?.map((unit) => (
                             <div key={unit.id} className="space-y-3">
                               <div
