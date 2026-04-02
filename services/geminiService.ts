@@ -62,6 +62,16 @@ When a user sends a message:
    - "tour-scheduling": When the user wants to schedule a viewing or tour of a property.
 8. Generate 3-4 "suggestedReplies" that the user might want to say next.
 9. Populate "sources" with reference links whenever you use external/contextual knowledge.
+10. PREFERENCE EXTRACTION: Extract any NEW rental preferences the user has expressed in this message. Categories:
+   - "location": neighborhoods, cities, areas (e.g. "near UCLA", "Koreatown")
+   - "budget": price range or constraints (e.g. "under $1,200/mo")
+   - "size": bedrooms, bathrooms, sqft (e.g. "2 bedrooms", "at least 800 sqft")
+   - "style": aesthetic preferences (e.g. "modern", "industrial loft")
+   - "amenities": specific features (e.g. "in-unit laundry", "pet-friendly")
+   - "commute": workplace/school proximity (e.g. "20 min to downtown")
+   - "lifestyle": living habits (e.g. "quiet neighborhood", "walkable")
+   - "other": anything else relevant
+   Set "confidence" to "precise" if it has a concrete value, or "vague" if it's a general feeling. Only include NEW preferences from the current message. Return empty array if none.
 
 Output JSON format strictly.
 `;
@@ -224,6 +234,32 @@ ONLY set "intentToSearch" to true if the user explicitly asks to search for OTHE
                     snippet: { type: Type.STRING, description: "One-sentence summary of what the source shows" }
                   },
                   required: ["title", "url"]
+                }
+              },
+              extractedPreferences: {
+                type: Type.ARRAY,
+                description: "New user preferences extracted from this message only. Empty array if none.",
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    category: {
+                      type: Type.STRING,
+                      enum: ["location", "budget", "size", "style", "amenities", "commute", "lifestyle", "other"],
+                    },
+                    label: {
+                      type: Type.STRING,
+                      description: "Human-readable label, e.g. 'Under $1,200/mo' or 'Likes modern style'"
+                    },
+                    confidence: {
+                      type: Type.STRING,
+                      enum: ["precise", "vague"],
+                    },
+                    value: {
+                      type: Type.STRING,
+                      description: "Machine-readable value when precise"
+                    }
+                  },
+                  required: ["category", "label", "confidence"]
                 }
               },
               filters: {

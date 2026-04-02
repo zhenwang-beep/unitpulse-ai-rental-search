@@ -34,7 +34,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
   const location = useLocation();
   const isPropertyPanelOpen = !!useMatch('/search/:chatId/property/:propertyId');
 
-  const { allThreads, updateThread, favorites, toggleFavorite, renameThread, deleteThread, addThread } = useAppContext();
+  const { allThreads, updateThread, favorites, toggleFavorite, renameThread, deleteThread, addThread, userPreferences, addPreferences } = useAppContext();
 
   const handleResetChat = () => {
     deleteThread(chatId!);
@@ -243,9 +243,15 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
         styleTitle: response.styleTitle,
         styleAvatar: response.styleAvatar,
         styleSummary: response.styleSummary,
-        sources: response.sources
+        sources: response.sources,
+        extractedPreferences: response.extractedPreferences
       };
       setMessages(prev => [...prev, aiMsg]);
+
+      // Accumulate extracted preferences
+      if (response.extractedPreferences && response.extractedPreferences.length > 0) {
+        addPreferences(response.extractedPreferences);
+      }
     }
 
     // Auto-title thread from first user message
@@ -595,6 +601,8 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
               isLoggedIn={isLoggedIn}
               onResetChat={handleResetChat}
               onStop={handleStop}
+              userPreferences={userPreferences}
+              onPreferenceLoginPrompt={() => setShowLoginView(true)}
             />
           </div>
 
