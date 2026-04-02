@@ -27,15 +27,14 @@ const PageFooter: React.FC = () => (
             <h4 className="font-bold text-black mb-4 text-sm uppercase tracking-wider">Company</h4>
             <ul className="space-y-3 text-sm text-neutral-500">
               <li><a href="#" className="hover:text-black transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-black transition-colors">Careers</a></li>
               <li><a href="#" className="hover:text-black transition-colors">Contact</a></li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold text-black mb-4 text-sm uppercase tracking-wider">Legal</h4>
             <ul className="space-y-3 text-sm text-neutral-500">
-              <li><a href="#" className="hover:text-black transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-black transition-colors">Terms of Service</a></li>
+              <li><a href="/privacy" className="hover:text-black transition-colors">Privacy Policy</a></li>
+              <li><a href="/terms" className="hover:text-black transition-colors">Terms of Service</a></li>
             </ul>
           </div>
         </div>

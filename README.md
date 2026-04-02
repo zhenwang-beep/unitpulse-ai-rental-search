@@ -1,5 +1,5 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+<img width="1200" alt="UnitPulse Homepage" src="public/homepage-screenshot.png" />
 </div>
 
 # UnitPulse — AI-Powered Rental Search
@@ -17,6 +17,7 @@ A conversational rental search experience powered by Google Gemini. Users chat w
 - **React Router v7**
 - **Google Gemini API** (`@google/genai` — model: `gemini-3-pro-preview`)
 - **Lucide React** (icons)
+- **html-to-image** (profile card export)
 
 ---
 
@@ -58,10 +59,26 @@ npm run dev
 - Active thread highlighting in sidebar
 - Reset conversation (clear current thread)
 
+### Gamified Renter Profile
+- Circular progress ring showing preference completion level
+- Level system (Lv.1–5) with fun profile names (Casual Browser → Dream Home Hunter)
+- 8 preference categories: Location, Budget, Bedrooms, Move-in, Amenities, Lifestyle, Pets, Commute
+- Click unfilled categories to trigger AI-authored questions with quick-reply suggestions
+- Expand filled categories to view details or remove preferences
+- Celebration toast animation when new preferences are collected
+- Download profile card as PNG image
+- Preferences persisted to `localStorage`
+
 ### Property Search & Filtering
 - Filter by location, price range, bedrooms, amenities, and property type
 - Pseudo-match score based on amenity overlap
 - 20 mock properties across 6 cities (Los Angeles, Seattle, New York, Chicago, Houston, Irvine)
+
+### Property Sharing
+- Share button on property detail modal
+- Share modal with multiple channels: Copy link, Email, Message, native Web Share API
+- Short display URLs (unitpulse.ai/p/{id})
+- Portal-based modal rendering to avoid z-index stacking issues
 
 ### Chat UI States
 | State | Description |
@@ -81,6 +98,7 @@ npm run dev
 - Tour scheduling modal
 - Call property button
 - Favorites toggle (heart icon)
+- Responsive price footer (one-line on desktop with larger price)
 
 ### Favorites
 - Toggle favorites from any property card
@@ -108,11 +126,19 @@ npm run dev
 - Blog post page with full prose styling (`@tailwindcss/typography`)
 - Sidebar with related posts and author info
 
+### SEO & Content Pages
+- FAQ page with structured data (JSON-LD) for search engines
+- Rental Markets page with city-level rental data
+- City-specific rental pages with neighborhood guides
+- Privacy Policy page
+- Terms of Service page
+
 ### Navigation & Shell
-- Consistent header across all pages (Landing, Chat, Blog, Favorites)
+- Consistent header across all pages with scroll hide/show behavior
 - Mobile hamburger drawer with full nav
 - Toast notification system with action buttons
 - Responsive split-pane layout on chat page (resizable desktop, tab-switch mobile)
+- Footer with Resources, Company, and Legal sections
 
 ---
 
@@ -132,7 +158,7 @@ npm run dev
 - **Move-in checklist**: State is defined but checklist content and completion tracking are missing.
 - **Tour scheduling**: State is defined but no calendar integration or booking confirmation exists.
 - **Lifestyle comparison section**: The system prompt references a "Lifestyle Comparison" section for top match results but it is not rendered in the chat UI.
-- **User preference persistence**: No mechanism to remember style preferences across sessions.
+- **Short links**: Property share URLs display `unitpulse.ai/p/{id}` but no URL shortener service is implemented.
 
 ### Low Priority — Polish & Performance
 
@@ -144,6 +170,7 @@ npm run dev
 - **Error differentiation**: API timeout and quota-exceeded errors are handled identically — quota errors should surface a clear user message.
 - **Logo fallback**: `LOGO_URL` points to a hardcoded S3 URL with no fallback if the CDN is unavailable.
 - **Blog content source**: Blog posts are hardcoded. Consider a headless CMS (Contentful, Sanity) or markdown-based system for editorial management.
+- **Extract shared navigation**: Header and mobile menu are duplicated across 10+ page components. Extract into a reusable `PageHeader` component.
 - **Add `.env.example`**: Document required environment variables for new contributors.
 
 ---
@@ -157,19 +184,27 @@ npm run dev
 │   ├── ChatPage.tsx           # Chat layout, thread management, AI response handling
 │   ├── PropertyPanel.tsx      # Sidebar property detail (nested route)
 │   ├── PropertyDetailPage.tsx # Full-page property detail
-│   ├── BlogPage.tsx
-│   └── BlogPostPage.tsx
+│   ├── BlogPage.tsx           # Blog listing with category filters
+│   ├── BlogPostPage.tsx       # Blog post with prose styling
+│   ├── FAQPage.tsx            # FAQ with JSON-LD structured data
+│   ├── RentalMarketsPage.tsx  # City rental market overview
+│   ├── CityRentalPage.tsx     # City-specific rental guide
+│   ├── PrivacyPage.tsx        # Privacy Policy
+│   └── TermsPage.tsx          # Terms of Service
 ├── components/
 │   ├── ChatInterface.tsx      # Chat UI, message list, stop button, input
 │   ├── PropertyCard.tsx       # Property card with carousel and tour modal
+│   ├── PropertyDetailsModal.tsx # Property detail modal with sharing
+│   ├── RenterProfilePopover.tsx # Gamified preference profile with progress
 │   ├── ContactFormModal.tsx   # Tour scheduling / contact form modal
 │   ├── FavoritesPage.tsx      # Saved properties page
+│   ├── PageFooter.tsx         # Shared footer component
 │   └── Toast.tsx              # Toast notification system
 ├── services/
 │   ├── geminiService.ts       # Gemini API integration + mock fallback
 │   └── propertyService.ts     # Property data contract (pending real integration)
 ├── context/
-│   └── AppContext.tsx         # Favorites + thread state (localStorage-backed)
+│   └── AppContext.tsx         # Favorites, threads, preferences (localStorage-backed)
 ├── constants.ts               # MOCK_PROPERTIES database
 └── types.ts                   # Shared TypeScript types
 ```
