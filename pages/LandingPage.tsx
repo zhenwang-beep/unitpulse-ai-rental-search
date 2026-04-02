@@ -292,7 +292,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
           <nav className="hidden md:flex items-center gap-8">
             <a href="/" className="text-sm font-medium hover:text-black/60 transition-colors">Find a home</a>
             <a href="/blog" className="text-sm font-medium hover:text-black/60 transition-colors">Blog</a>
-            <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Become a partner</a>
+            <a href="/rentals" className="text-sm font-medium hover:text-black/60 transition-colors">Rental Markets</a>
+            <a href="/faq" className="text-sm font-medium hover:text-black/60 transition-colors">FAQ</a>
             {isLoggedIn ? (
               <div className="relative" ref={dropdownRef}>
                 <div
@@ -399,6 +400,14 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     <a href="/blog" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
                       <FileText size={20} className="text-neutral-400" />
                       Blog
+                    </a>
+                    <a href="/rentals" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
+                      <Building size={20} className="text-neutral-400" />
+                      Rental Markets
+                    </a>
+                    <a href="/faq" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
+                      <MessageSquare size={20} className="text-neutral-400" />
+                      FAQ
                     </a>
                     {isLoggedIn && (
                       <button
@@ -741,9 +750,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 <div>
                   <h4 className="font-bold text-black mb-4 text-sm uppercase tracking-wider">Resources</h4>
                   <ul className="space-y-3 text-sm text-neutral-500">
-                    <li><a href="#" className="hover:text-black transition-colors">Blog</a></li>
-                    <li><a href="#" className="hover:text-black transition-colors">Help Center</a></li>
-                    <li><a href="#" className="hover:text-black transition-colors">API Docs</a></li>
+                    <li><a href="/blog" className="hover:text-black transition-colors">Blog</a></li>
+                    <li><a href="/faq" className="hover:text-black transition-colors">FAQ</a></li>
+                    <li><a href="/rentals" className="hover:text-black transition-colors">Rental Markets</a></li>
                   </ul>
                 </div>
                 <div>
