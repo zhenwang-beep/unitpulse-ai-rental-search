@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Navigate, Outlet, useLocation, useMatch, useNavigate, useParams } from 'react-router-dom';
-import { MOCK_PROPERTIES, SUGGESTION_CHIPS } from '../constants';
+import { SUGGESTION_CHIPS } from '../constants';
 import { Property, ChatMessage, SearchFilters } from '../types';
 import PropertyCard from '../components/PropertyCard';
 import ChatInterface, { RichMediaCanvas } from '../components/ChatInterface';
 import LiveInterface from '../components/LiveInterface';
 import PropertyDetailsModal from '../components/PropertyDetailsModal';
 import { sendMessageToGemini } from '../services/geminiService';
-import { getFilteredProperties } from '../services/propertyService';
+import { getFilteredProperties, getAllProperties } from '../services/propertyService';
 import { useAppContext } from '../context/AppContext';
 import { ToastData } from '../components/Toast';
 import { ArrowRight, Search, Sun, TreePine, Music, PanelRightClose, PanelRightOpen, ChevronDown, RotateCcw, Loader2, AudioLines, MapPin, X, ShieldCheck, Heart, Bed, Bath, Ruler, Calendar, Phone, Sparkles, CheckCircle2, Zap, ChevronLeft, ChevronRight, Info, PenTool, FileText, Check, Menu, LogOut, User, ArrowLeftRight, Calculator, Target, Clock, Building, Settings, HelpCircle, Eye, EyeOff } from 'lucide-react';
@@ -66,6 +66,11 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
       return typeof newMessages === 'function' ? newMessages(prev) : newMessages;
     });
   };
+
+  const [allDbProperties, setAllDbProperties] = useState<Property[]>([]);
+  useEffect(() => {
+    getAllProperties().then(setAllDbProperties).catch(console.error);
+  }, []);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -209,7 +214,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
     setMessages(prev => [...prev, userMsg]);
 
     const history = messages.slice(-6).map(m => ({ role: m.role, text: m.text }));
-    const response = await sendMessageToGemini(text, history, null, controller.signal);
+    const response = await sendMessageToGemini(text, history, null, controller.signal, allDbProperties);
 
     if (controller.signal.aborted) return;
     setIsLoading(false);
@@ -222,7 +227,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
       if (shouldSearch) {
         const newFilters = { ...currentFilters, ...response.filters };
         setCurrentFilters(newFilters);
-        results = getFilteredProperties(newFilters);
+        results = await getFilteredProperties(newFilters);
       }
 
       const aiMsg: ChatMessage = {
@@ -237,7 +242,8 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
         interactiveData: (response.interactiveType === 'deep-dive' || response.interactiveType === 'contract' || response.interactiveType === 'application-form') ? undefined : undefined,
         styleTitle: response.styleTitle,
         styleAvatar: response.styleAvatar,
-        styleSummary: response.styleSummary
+        styleSummary: response.styleSummary,
+        sources: response.sources
       };
       setMessages(prev => [...prev, aiMsg]);
     }

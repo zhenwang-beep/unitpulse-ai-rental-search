@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { MOCK_PROPERTIES, SUGGESTION_CHIPS } from '../constants';
+import { SUGGESTION_CHIPS } from '../constants';
+import { getAllProperties } from '../services/propertyService';
 import { Property } from '../types';
 import PropertyCard from '../components/PropertyCard';
 import LiveInterface from '../components/LiveInterface';
@@ -84,6 +85,11 @@ const LandingPage: React.FC<LandingPageProps> = ({
       });
     }
   };
+
+  const [landingProperties, setLandingProperties] = useState<Property[]>([]);
+  useEffect(() => {
+    getAllProperties().then(setLandingProperties).catch(console.error);
+  }, []);
 
   const [landingInput, setLandingInput] = useState('');
   const [landingGhostText, setLandingGhostText] = useState('');
@@ -184,7 +190,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setLandingVisibleCount((prev) => Math.min(prev + 3, MOCK_PROPERTIES.length));
+          setLandingVisibleCount((prev) => Math.min(prev + 3, landingProperties.length));
         }
       },
       { threshold: 0.1, rootMargin: '100px' }
@@ -600,7 +606,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {MOCK_PROPERTIES
+            {landingProperties
               .filter(p => selectedCity === 'All' || p.location === selectedCity)
               .slice(0, landingVisibleCount).map((p, i) => (
               <div key={p.id} className={`transform transition-all duration-700 animate-fade-in-up`}>
@@ -614,7 +620,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
             ))}
           </div>
 
-          {landingVisibleCount < MOCK_PROPERTIES.length && (
+          {landingVisibleCount < landingProperties.length && (
             <div ref={loadMoreRef} className="w-full h-20 flex items-center justify-center mt-10">
               <Loader2 className="animate-spin text-neutral-300" size={24} />
             </div>

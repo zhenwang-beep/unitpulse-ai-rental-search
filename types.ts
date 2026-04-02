@@ -58,6 +58,12 @@ export interface SearchFilters {
   propertyType?: string;
 }
 
+export interface Source {
+  title: string;
+  url: string;
+  snippet?: string;
+}
+
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
@@ -72,6 +78,7 @@ export interface ChatMessage {
   styleTitle?: string;
   styleAvatar?: string;
   styleSummary?: string;
+  sources?: Source[];
 }
 
 export interface GeminiResponse {
@@ -85,4 +92,5 @@ export interface GeminiResponse {
   styleTitle?: string;
   styleAvatar?: string;
   styleSummary?: string;
+  sources?: Source[];
 }
