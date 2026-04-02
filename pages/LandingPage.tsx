@@ -95,6 +95,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const [landingInput, setLandingInput] = useState('');
   const [landingGhostText, setLandingGhostText] = useState('');
   const [isLandingFocused, setIsLandingFocused] = useState(false);
+  const [isMultiline, setIsMultiline] = useState(false);
   const [dropdownIndex, setDropdownIndex] = useState(-1);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -196,7 +197,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const handleLandingInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setLandingInput(e.target.value);
     e.target.style.height = 'auto';
-    e.target.style.height = `${Math.min(e.target.scrollHeight, 200)}px`;
+    const newHeight = Math.min(e.target.scrollHeight, 200);
+    e.target.style.height = `${newHeight}px`;
+    setIsMultiline(newHeight > 36);
   };
 
   const handleLandingKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -432,9 +435,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
           </h1>
 
           <form onSubmit={handleLandingSubmit} className="w-full max-w-3xl relative group opacity-0 animate-fade-in-up z-10" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-            <div className={`transition-all duration-500 rounded-3xl border-2 ${isLandingFocused ? 'shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-[#4A5D23]' : 'shadow-[0_10px_20px_rgba(0,0,0,0.05)] border-transparent'}`}>
-              <div className="relative bg-white rounded-3xl pl-6 p-2 pr-4 flex items-center gap-2 overflow-hidden min-h-[4rem] z-10">
-                <div className="flex-1 relative flex items-center min-w-0 py-3">
+            <div className={`border-2 ${isLandingFocused ? 'shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-[#4A5D23]' : 'shadow-[0_10px_20px_rgba(0,0,0,0.05)] border-transparent'}`} style={{ borderRadius: isMultiline ? 16 : 9999, transition: 'border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s, border-color 0.3s' }}>
+              <div className={`relative bg-white pl-6 p-2 pr-4 flex gap-2 overflow-hidden z-10 ${isMultiline ? 'items-end' : 'items-center'}`} style={{ borderRadius: isMultiline ? 14 : 9999, transition: 'border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)' }}>
+                <div className={`flex-1 relative flex items-center min-w-0 ${isMultiline ? 'py-3' : 'py-2'}`}>
                   {/* Rotating Placeholder */}
                   {!landingInput && (
                     <div className="absolute inset-0 flex items-center pointer-events-none">
@@ -490,7 +493,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                       setIsLiveMode(true);
                     }
                   }}
-                  className={`h-10 w-10 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 ${
+                  className={`h-10 w-10 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 ${isMultiline ? 'mb-1' : ''} ${
                     hasLandingText
                       ? 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
                       : 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
@@ -543,18 +546,18 @@ const LandingPage: React.FC<LandingPageProps> = ({
             </AnimatePresence>
           </form>
 
-          <div className="w-full overflow-x-auto scrollbar-hide px-4">
-            <div className="flex justify-start md:justify-center gap-3 mt-8 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
+          <div className="w-full px-4">
+            <div className="flex flex-wrap justify-center gap-2 mt-8 max-w-3xl mx-auto opacity-0 animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
               {SUGGESTION_CHIPS.map((chip, index) => (
                 <button
                   key={index}
                   onClick={() => navigate('/search', { state: { query: chip.query } })}
-                  className="group relative flex items-center gap-3 px-5 py-3 bg-white/80 backdrop-blur-md border border-black/5 rounded-2xl hover:bg-[#4A5D23] hover:text-white transition-all duration-500 hover:shadow-2xl hover:shadow-[#4A5D23]/20 hover:-translate-y-1 shrink-0"
+                  className="group flex items-center gap-2 px-3 py-2 bg-white/80 backdrop-blur-md border border-black/5 rounded-full hover:bg-[#4A5D23] hover:text-white transition-all duration-500 hover:shadow-lg hover:shadow-[#4A5D23]/20 hover:-translate-y-0.5"
                 >
-                  <div className="w-8 h-8 rounded-xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500 shadow-sm border border-black/5">
+                  <div className="w-6 h-6 rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500 border border-black/5">
                     <img src={chip.image} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                   </div>
-                  <span className="text-xs font-black capitalize tracking-wider whitespace-nowrap">{chip.label}</span>
+                  <span className="text-xs font-medium whitespace-nowrap">{chip.label}</span>
                 </button>
               ))}
             </div>

@@ -798,25 +798,25 @@ export const PERSISTENT_THREAD_ID = 'main';
 
 export const SUGGESTION_CHIPS = [
   {
-    label: 'Modern Apartment',
+    label: 'Pet-friendly with a yard',
     icon: 'Square',
-    query: 'Find me a modern apartment in Koreatown or Hollywood with in-unit laundry.',
+    query: 'Find me a pet-friendly apartment with outdoor space or a yard in Los Angeles.',
     image: 'https://tripalink-property.s3.us-west-1.amazonaws.com/7229_20251022224747.jpg',
   },
   {
-    label: 'USC Student Housing',
+    label: 'Near USC under $1,200',
     icon: 'TreePine',
-    query: 'Show me affordable rooms near USC campus with utilities included.',
+    query: 'Show me affordable rooms near USC campus under $1,200 with utilities included.',
     image: 'https://tripalink-property.s3.us-west-1.amazonaws.com/5c51a31161c7a053.jpeg',
   },
   {
-    label: 'Co-Living',
+    label: 'Furnished move-in ready',
     icon: 'Music',
-    query: 'I want a furnished co-living room with community amenities under $1,500/month.',
+    query: 'I need a furnished place I can move into this month with WiFi and laundry included.',
     image: 'https://tripalink-property.s3.us-west-1.amazonaws.com/202403252238328664.JPG',
   },
   {
-    label: 'Skyline Views',
+    label: 'Rooftop with city views',
     icon: 'Sun',
     query: 'Looking for a studio or 1-bedroom with rooftop access and city views in LA.',
     image: 'https://tripalink-property.s3.us-west-1.amazonaws.com/202304062321381214.jpg',
