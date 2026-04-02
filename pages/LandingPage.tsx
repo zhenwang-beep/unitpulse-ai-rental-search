@@ -105,6 +105,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const [isAtTop, setIsAtTop] = useState(true);
   const [isLiveMode, setIsLiveMode] = useState(false);
   const [selectedCity, setSelectedCity] = useState('All');
+  const handleCitySelect = (city: string) => { setSelectedCity(city); setLandingVisibleCount(6); };
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -190,7 +191,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setLandingVisibleCount((prev) => Math.min(prev + 3, landingProperties.length));
+          setLandingVisibleCount((prev) => prev + 3);
         }
       },
       { threshold: 0.1, rootMargin: '100px' }
@@ -591,7 +592,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 {POPULAR_CITIES.map((city) => (
                   <button
                     key={city}
-                    onClick={() => setSelectedCity(city)}
+                    onClick={() => handleCitySelect(city)}
                     className={`px-4 py-1.5 rounded-full text-xs font-bold tracking-wider transition-all border shrink-0 ${
                       selectedCity === city
                         ? 'bg-black text-white border-black'
@@ -605,26 +606,30 @@ const LandingPage: React.FC<LandingPageProps> = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {landingProperties
-              .filter(p => selectedCity === 'All' || p.location === selectedCity)
-              .slice(0, landingVisibleCount).map((p, i) => (
-              <div key={p.id} className={`transform transition-all duration-700 animate-fade-in-up`}>
-                <PropertyCard
-                  property={p}
-                  isFavorite={favorites.some(f => f.id === p.id)}
-                  onToggleFavorite={handleToggleFavorite}
-                  onClick={(property: Property) => navigate('/search', { state: { propertyId: property.id } })}
-                />
-              </div>
-            ))}
-          </div>
-
-          {landingVisibleCount < landingProperties.length && (
-            <div ref={loadMoreRef} className="w-full h-20 flex items-center justify-center mt-10">
-              <Loader2 className="animate-spin text-neutral-300" size={24} />
-            </div>
-          )}
+          {(() => {
+            const filteredProperties = landingProperties.filter(p => selectedCity === 'All' || p.location === selectedCity);
+            return (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredProperties.slice(0, landingVisibleCount).map((p) => (
+                    <div key={p.id} className="transform transition-all duration-700 animate-fade-in-up">
+                      <PropertyCard
+                        property={p}
+                        isFavorite={favorites.some(f => f.id === p.id)}
+                        onToggleFavorite={handleToggleFavorite}
+                        onClick={(property: Property) => navigate('/search', { state: { propertyId: property.id } })}
+                      />
+                    </div>
+                  ))}
+                </div>
+                {landingVisibleCount < filteredProperties.length && (
+                  <div ref={loadMoreRef} className="w-full h-20 flex items-center justify-center mt-10">
+                    <Loader2 className="animate-spin text-neutral-300" size={24} />
+                  </div>
+                )}
+              </>
+            );
+          })()}
         </div>
 
         {/* AI Capabilities Section */}
