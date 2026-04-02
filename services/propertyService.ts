@@ -75,7 +75,7 @@ export const getFilteredProperties = async (filters: SearchFilters): Promise<Pro
 
 export const getAllProperties = async (): Promise<Property[]> => {
   try {
-    const resp = await fetch(`${SUPABASE_URL}/rest/v1/properties?select=*&limit=50`, { headers: dbHeaders });
+    const resp = await fetch(`${SUPABASE_URL}/rest/v1/properties?select=*&limit=100`, { headers: dbHeaders });
     if (!resp.ok) {
       console.error('getAllProperties failed:', resp.status);
       return [];

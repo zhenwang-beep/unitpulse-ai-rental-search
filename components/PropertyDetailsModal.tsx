@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Property, FloorPlan, FloorPlanModel, Unit } from '../types';
+import { Property, FloorPlan, Unit } from '../types';
 import { X, MapPin, Bed, Bath, Ruler, Sparkles, Heart, Check, Calendar, FileText, ChevronDown, Menu, ChevronLeft, ChevronRight, Building2, MessageSquare, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import ContactFormModal from './ContactFormModal';
@@ -63,8 +63,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
   onSignLease,
   isLoggedIn = false,
 }) => {
-  const [activePlanType, setActivePlanType] = useState<string | null>(null);
-  const [activeModel, setActiveModel] = useState<string | null>(null);
+  const [activePlanType, setActivePlanType] = useState<string>('All');
   const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -88,12 +87,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
 
   useEffect(() => {
     if (property) {
-      const plans = property.floorPlans?.length ? property.floorPlans : DEFAULT_FLOOR_PLANS(property.imageSeed);
-      if (plans.length > 0) {
-        setActivePlanType(plans[0].type);
-        const firstModel = plans[0].models?.[0]?.name ?? null;
-        setActiveModel(firstModel);
-      }
+      setActivePlanType('All');
       setSelectedUnit(null);
     }
   }, [property?.id]);
@@ -277,13 +271,36 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
 
           {/* Floor Plans */}
           {(() => {
-            const currentPlan = floorPlans.find(p => p.type === activePlanType) ?? floorPlans[0];
             const totalAvailable = floorPlans.reduce((sum, p) => sum + p.available, 0);
-            // Resolve which units to show: models > direct units
-            const currentModel = currentPlan?.models?.find(m => m.name === activeModel) ?? currentPlan?.models?.[0];
-            const visibleUnits: Unit[] = currentModel ? currentModel.units : (currentPlan?.units ?? []);
-            const visibleImage = currentModel ? (currentModel.image ?? currentPlan?.image) : currentPlan?.image;
-            const visibleSqft = currentModel ? currentModel.sqft : currentPlan?.sqft;
+            const visiblePlans = activePlanType === 'All' ? floorPlans : floorPlans.filter(p => p.type === activePlanType);
+            const planTypes = ['All', ...floorPlans.map(p => p.type)];
+
+            // Build flat list of "model sections" to render inline
+            type ModelSection = { planType: string; modelName: string | null; sqft: string; priceRange: string; image?: string; units: Unit[] };
+            const sections: ModelSection[] = [];
+            for (const plan of visiblePlans) {
+              if (plan.models && plan.models.length > 0) {
+                for (const model of plan.models) {
+                  sections.push({
+                    planType: plan.type,
+                    modelName: model.name,
+                    sqft: model.sqft,
+                    priceRange: plan.priceRange,
+                    image: model.image ?? plan.image,
+                    units: model.units,
+                  });
+                }
+              } else {
+                sections.push({
+                  planType: plan.type,
+                  modelName: null,
+                  sqft: plan.sqft,
+                  priceRange: plan.priceRange,
+                  image: plan.image,
+                  units: plan.units ?? [],
+                });
+              }
+            }
 
             return (
               <div className="space-y-4">
@@ -295,122 +312,98 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                   </span>
                 </div>
 
-                {/* Plan type tabs */}
-                <div className="flex gap-2 flex-wrap">
-                  {floorPlans.map((plan) => (
-                    <button
-                      key={plan.type}
-                      onClick={() => {
-                        setActivePlanType(plan.type);
-                        setActiveModel(plan.models?.[0]?.name ?? null);
-                        setSelectedUnit(null);
-                      }}
-                      className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-black uppercase tracking-wider transition-all ${
-                        activePlanType === plan.type
-                          ? 'bg-black text-white'
-                          : 'bg-white text-neutral-500 border border-black/10 hover:border-black/30'
-                      }`}
-                    >
-                      {plan.type}
-                      <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full ${
-                        activePlanType === plan.type ? 'bg-white/20 text-white' : 'bg-neutral-100 text-neutral-400'
-                      }`}>
-                        {plan.available}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-
-                {/* Model sub-tabs (only if plan has multiple models) */}
-                {currentPlan?.models && currentPlan.models.length > 1 && (
-                  <div className="flex gap-2 flex-wrap">
-                    {currentPlan.models.map((model) => (
+                {/* Full-width segmented control */}
+                <div className="flex rounded-xl border border-black/10 overflow-hidden bg-neutral-50">
+                  {planTypes.map((type, i) => {
+                    const count = type === 'All' ? totalAvailable : (floorPlans.find(p => p.type === type)?.available ?? 0);
+                    return (
                       <button
-                        key={model.name}
-                        onClick={() => { setActiveModel(model.name); setSelectedUnit(null); }}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wide transition-all ${
-                          activeModel === model.name
-                            ? 'bg-[#4A5D23] text-white'
-                            : 'bg-[#F4F1EE] text-neutral-500 hover:bg-neutral-200'
+                        key={type}
+                        onClick={() => { setActivePlanType(type); setSelectedUnit(null); }}
+                        className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold tracking-wide transition-all ${
+                          i > 0 ? 'border-l border-black/10' : ''
+                        } ${
+                          activePlanType === type
+                            ? 'bg-black text-white'
+                            : 'text-neutral-500 hover:bg-neutral-100'
                         }`}
                       >
-                        {model.name}
-                        <span className={`text-[9px] ${activeModel === model.name ? 'text-white/70' : 'text-neutral-400'}`}>
-                          · {model.sqft}
+                        {type}
+                        <span className={`text-[9px] font-bold ${
+                          activePlanType === type ? 'text-white/60' : 'text-neutral-400'
+                        }`}>
+                          {count}
                         </span>
                       </button>
-                    ))}
-                  </div>
-                )}
+                    );
+                  })}
+                </div>
 
-                {/* Floor plan image */}
-                {visibleImage && (
-                  <div
-                    className="relative w-full rounded-2xl overflow-hidden border border-black/5 cursor-pointer group"
-                    style={{ aspectRatio: '16/7' }}
-                    onClick={() => { setSelectedImageIndex(0); setIsImageModalOpen(true); }}
-                  >
-                    <img src={visibleImage} alt="Floor plan" className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" referrerPolicy="no-referrer" />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                    <div className="absolute bottom-3 right-3 flex items-center gap-1.5 px-3 py-1.5 bg-black/70 backdrop-blur-sm rounded-full text-white text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <span>View full plan</span>
-                      <ChevronRight size={10} />
-                    </div>
-                  </div>
-                )}
-
-                {/* Plan stats */}
-                {currentPlan && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-base font-black text-black">{currentPlan.priceRange}</span>
-                    <span className="text-xs font-semibold text-neutral-400 bg-neutral-100 px-2.5 py-1 rounded-full">{visibleSqft} sqft</span>
-                  </div>
-                )}
-
-                {/* Unit list */}
-                {visibleUnits.length > 0 && (
-                  <div>
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="h-px flex-1 bg-neutral-200" />
-                      <span className="text-[9px] font-black uppercase tracking-widest text-neutral-400">{visibleUnits.length} {visibleUnits.length === 1 ? 'Unit' : 'Units'} Available</span>
-                      <div className="h-px flex-1 bg-neutral-200" />
-                    </div>
-                    <div className="divide-y divide-black/5">
-                      {visibleUnits.map((unit, idx) => (
-                        <div key={unit.id} className="py-3.5 flex items-center gap-3">
-                          {/* Thumbnail */}
-                          <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-[#E8EDE0]">
-                            <img src={unit.image} alt={unit.id} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                          </div>
+                {/* Inline model sections */}
+                <div className="space-y-4">
+                  {sections.map((section, idx) => {
+                    const sqftDisplay = section.sqft.toLowerCase().includes('sqft') ? section.sqft : `${section.sqft} sqft`;
+                    return (
+                      <div key={`${section.planType}-${section.modelName ?? idx}`} className="rounded-2xl border border-black/5 bg-white overflow-hidden">
+                        {/* Model header: info left + thumbnail right */}
+                        <div className="flex items-center gap-4 p-4 border-b border-black/5 bg-[#FAFAF8]">
                           {/* Info */}
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-baseline gap-1.5">
-                              <span className="text-sm font-black text-black">{unit.id}</span>
-                            </div>
-                            <div className="text-[11px] font-medium text-neutral-400 mt-0.5">
-                              {currentPlan?.type} · {unit.sqft ? `${unit.sqft} sqft` : visibleSqft}
-                            </div>
-                            <div className="flex gap-1.5 mt-1.5 flex-wrap">
-                              {unit.amenities.slice(0, 2).map(am => (
-                                <span key={am} className="text-[9px] font-medium text-neutral-500 bg-neutral-100 px-1.5 py-0.5 rounded-md">{am}</span>
-                              ))}
-                            </div>
-                          </div>
-                          {/* Price + CTA */}
-                          <div className="flex flex-col items-end gap-2 shrink-0">
-                            <span className="text-sm font-black text-black">{unit.price}</span>
+                            <span className="text-sm font-black text-black uppercase tracking-wide">
+                              {section.modelName ? `${section.modelName}` : section.planType}
+                            </span>
+                            <div className="text-base font-black text-black mt-0.5">{section.priceRange}</div>
+                            <div className="text-[11px] font-medium text-neutral-400 mt-0.5">{sqftDisplay}</div>
                             <button
                               onClick={() => setContactMode('tour')}
-                              className="px-3 py-1.5 bg-[#4A5D23] text-white rounded-full text-[10px] font-bold hover:bg-[#3a4e1a] transition-colors whitespace-nowrap"
+                              className="mt-2 px-3.5 py-1.5 bg-[#4A5D23] text-white rounded-full text-[10px] font-bold hover:bg-[#3a4e1a] transition-colors"
                             >
                               Schedule Tour
                             </button>
                           </div>
+                          {/* Thumbnail on right */}
+                          {section.image && (
+                            <div
+                              className="w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-black/5 cursor-pointer group"
+                              onClick={() => { setSelectedImageIndex(0); setIsImageModalOpen(true); }}
+                            >
+                              <img src={section.image} alt="Floor plan" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" referrerPolicy="no-referrer" />
+                            </div>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+
+                        {/* Unit table */}
+                        {section.units.length > 0 && (
+                          <div>
+                            {/* Table header */}
+                            <div className="grid grid-cols-[1fr_60px_90px_70px] gap-x-2 px-4 py-2 border-b border-black/5 bg-neutral-50/50">
+                              <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Unit</span>
+                              <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider text-center">Sq Ft</span>
+                              <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider text-right">Price</span>
+                              <span></span>
+                            </div>
+                            {/* Table rows */}
+                            <div className="divide-y divide-black/5">
+                              {section.units.map((unit) => (
+                                <div key={unit.id} className="grid grid-cols-[1fr_60px_90px_70px] gap-x-2 items-center px-4 py-3 hover:bg-neutral-50/50 transition-colors">
+                                  <span className="text-xs font-bold text-black">{unit.id}</span>
+                                  <span className="text-xs font-medium text-neutral-500 text-center tabular-nums">{unit.sqft || section.sqft}</span>
+                                  <span className="text-xs font-black text-black text-right tabular-nums">{unit.price}</span>
+                                  <button
+                                    onClick={() => setContactMode('inquire')}
+                                    className="text-[10px] font-bold text-[#4A5D23] hover:underline text-right"
+                                  >
+                                    Inquire
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             );
           })()}
