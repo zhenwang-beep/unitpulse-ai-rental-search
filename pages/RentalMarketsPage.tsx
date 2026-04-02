@@ -124,7 +124,7 @@ const RentalMarketsPage: React.FC<RentalMarketsPageProps> = ({
   }, []);
 
   return (
-    <div className="w-full bg-[#FCF9F8] text-black font-sans">
+    <div className="h-[100dvh] w-full bg-[#FCF9F8] text-black font-sans overflow-y-auto scroll-smooth">
       {/* Header */}
       <header className="w-full px-4 md:px-8 py-4 flex justify-between items-center z-[60] shrink-0 sticky top-0 bg-white shadow-sm">
         <div className="w-full flex justify-between items-center">
