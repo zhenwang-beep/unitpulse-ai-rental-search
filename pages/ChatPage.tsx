@@ -34,7 +34,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
   const location = useLocation();
   const isPropertyPanelOpen = !!useMatch('/search/:chatId/property/:propertyId');
 
-  const { allThreads, updateThread, favorites, toggleFavorite, renameThread, deleteThread, addThread, userPreferences, addPreferences } = useAppContext();
+  const { allThreads, updateThread, favorites, toggleFavorite, renameThread, deleteThread, addThread, userPreferences, addPreferences, removePreference } = useAppContext();
 
   const handleResetChat = () => {
     deleteThread(chatId!);
@@ -196,6 +196,18 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
   const handleStop = () => {
     abortRef.current?.abort();
     setIsLoading(false);
+  };
+
+  // Add an AI-authored message (e.g. preference prompt) without triggering a real API call
+  const handleAiPrompt = (text: string, suggestedReplies?: string[]) => {
+    const aiMsg: ChatMessage = {
+      id: Date.now().toString(),
+      role: 'assistant',
+      text,
+      timestamp: Date.now(),
+      suggestedReplies,
+    };
+    setMessages(prev => [...prev, aiMsg]);
   };
 
   const handleSendMessage = async (text: string) => {
@@ -602,6 +614,8 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
               onResetChat={handleResetChat}
               onStop={handleStop}
               userPreferences={userPreferences}
+              onRemovePreference={removePreference}
+              onAiPrompt={handleAiPrompt}
               onPreferenceLoginPrompt={() => setShowLoginView(true)}
             />
           </div>

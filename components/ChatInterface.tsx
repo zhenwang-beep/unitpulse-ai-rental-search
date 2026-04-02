@@ -5,6 +5,7 @@ import { ChatMessage, Property, UserPreference } from '../types';
 import { AI_AVATAR, SUGGESTION_CHIPS } from '../constants';
 import PropertyCard from './PropertyCard';
 import ContactFormModal from './ContactFormModal';
+import RenterProfilePopover, { CircularProgress } from './RenterProfilePopover';
 
 interface ChatInterfaceProps {
   messages: ChatMessage[];
@@ -22,6 +23,8 @@ interface ChatInterfaceProps {
   onResetChat?: () => void;
   onStop?: () => void;
   userPreferences?: UserPreference[];
+  onRemovePreference?: (category: string, label: string) => void;
+  onAiPrompt?: (text: string, suggestedReplies?: string[]) => void;
   onPreferenceLoginPrompt?: () => void;
 }
 
@@ -1232,6 +1235,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onResetChat,
   onStop,
   userPreferences,
+  onRemovePreference,
+  onAiPrompt,
   onPreferenceLoginPrompt,
 }) => {
   const [input, setInput] = useState('');
@@ -1243,11 +1248,33 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [dismissedContextPropertyId, setDismissedContextPropertyId] = useState<string | null>(null);
   const [contextProperty, setContextProperty] = useState<Property | null>(null);
   const [showPrefsPopover, setShowPrefsPopover] = useState(false);
+  const [prefToast, setPrefToast] = useState<string | null>(null);
+  const prevPrefCountRef = useRef((userPreferences ?? []).length);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+
+  // Detect new preferences and show celebration toast
+  useEffect(() => {
+    const currentCount = (userPreferences ?? []).length;
+    if (currentCount > prevPrefCountRef.current && prevPrefCountRef.current > 0) {
+      const newPref = (userPreferences ?? [])[currentCount - 1];
+      const filledCats = new Set((userPreferences ?? []).map(p => p.category)).size;
+      const messages = [
+        `+1 ${newPref?.label ?? 'preference'}!`,
+        `${filledCats}/8 categories filled!`,
+        'Getting closer to your dream home!',
+        'Nice! Keep going!',
+      ];
+      const msg = filledCats === 8 ? 'Profile complete!' : messages[Math.min(filledCats - 1, messages.length - 1)];
+      setPrefToast(msg);
+      const timer = setTimeout(() => setPrefToast(null), 2500);
+      return () => clearTimeout(timer);
+    }
+    prevPrefCountRef.current = currentCount;
+  }, [userPreferences]);
 
   useEffect(() => {
     if (isLoading) {
@@ -1696,16 +1723,67 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
              </div>
 
              <div className={`flex items-center justify-between mt-1 pt-1 ${isCollapsed ? 'hidden' : ''}`}>
-               <div className="flex items-center gap-2">
+               <div className="flex items-center gap-1">
+                 {/* Renter profile / preference indicator */}
+                 <div className="relative">
+                   <button
+                     type="button"
+                     onClick={() => setShowPrefsPopover(v => !v)}
+                     className={`relative flex items-center justify-center w-8 h-8 rounded-full transition-all ${
+                       showPrefsPopover
+                         ? 'bg-[#4A5D23]/10'
+                         : 'hover:bg-neutral-100'
+                     }`}
+                     title="Renter Profile"
+                   >
+                     <CircularProgress
+                       percentage={Math.round(((new Set((userPreferences ?? []).map(p => p.category))).size / 8) * 100)}
+                       size={28}
+                     />
+                     <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-[#4A5D23]">
+                       {(new Set((userPreferences ?? []).map(p => p.category))).size}
+                     </span>
+                   </button>
+                   {/* Preference toast */}
+                   <AnimatePresence>
+                     {prefToast && !showPrefsPopover && (
+                       <motion.div
+                         initial={{ opacity: 0, y: 4, scale: 0.9 }}
+                         animate={{ opacity: 1, y: 0, scale: 1 }}
+                         exit={{ opacity: 0, y: -2, scale: 0.95 }}
+                         transition={{ duration: 0.2 }}
+                         className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap px-3 py-1.5 bg-[#4A5D23] text-white text-[10px] font-bold rounded-full shadow-lg pointer-events-none z-50"
+                       >
+                         {prefToast}
+                       </motion.div>
+                     )}
+                   </AnimatePresence>
+                   <AnimatePresence>
+                     {showPrefsPopover && (
+                       <RenterProfilePopover
+                         userPreferences={userPreferences}
+                         isLoggedIn={isLoggedIn}
+                         onPreferenceLoginPrompt={onPreferenceLoginPrompt}
+                         onClose={() => setShowPrefsPopover(false)}
+                         onSendMessage={(text) => {
+                           onSendMessage(text);
+                         }}
+                         onAiPrompt={onAiPrompt}
+                         onRemovePreference={onRemovePreference}
+                       />
+                     )}
+                   </AnimatePresence>
+                 </div>
+
                  {onResetChat && messages.length > 0 && (
                    <div className="relative">
                      <button
                        type="button"
                        onClick={() => setShowResetConfirm(v => !v)}
                        title="Reset chat"
-                       className={`p-2 rounded-full transition-all ${showResetConfirm ? 'bg-neutral-100 text-black' : 'text-neutral-400 hover:text-black hover:bg-neutral-100'}`}
+                       className={`p-1.5 rounded-full transition-all ${showResetConfirm ? 'bg-neutral-100 text-black' : 'text-neutral-300 hover:text-neutral-500 hover:bg-neutral-100'}`}
                      >
-                       <RotateCcw size={16} />
+                       <RotateCcw size={14} />
                      </button>
                      <AnimatePresence>
                        {showResetConfirm && (
@@ -1734,70 +1812,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                                Reset
                              </button>
                            </div>
-                         </motion.div>
-                       )}
-                     </AnimatePresence>
-                   </div>
-                 )}
-
-                 {/* Preference indicator */}
-                 {(userPreferences?.length ?? 0) > 0 && (
-                   <div className="relative">
-                     <button
-                       type="button"
-                       onClick={() => setShowPrefsPopover(v => !v)}
-                       className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition-all ${
-                         showPrefsPopover
-                           ? 'bg-[#4A5D23]/10 text-[#4A5D23]'
-                           : 'bg-neutral-50 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600'
-                       }`}
-                       title="Your preferences"
-                     >
-                       <Sparkles size={13} />
-                       <span>{userPreferences!.length}</span>
-                     </button>
-                     <AnimatePresence>
-                       {showPrefsPopover && (
-                         <motion.div
-                           initial={{ opacity: 0, y: 6, scale: 0.95 }}
-                           animate={{ opacity: 1, y: 0, scale: 1 }}
-                           exit={{ opacity: 0, y: 6, scale: 0.95 }}
-                           transition={{ duration: 0.15 }}
-                           className="absolute bottom-full left-0 mb-2 w-72 bg-white rounded-xl shadow-xl border border-black/8 p-4 z-50"
-                         >
-                           <div className="flex items-center justify-between mb-3">
-                             <p className="text-xs font-bold text-black uppercase tracking-wider">Your Preferences</p>
-                             <button onClick={() => setShowPrefsPopover(false)} className="text-neutral-400 hover:text-black transition-colors">
-                               <X size={14} />
-                             </button>
-                           </div>
-                           <div className="space-y-2 max-h-64 overflow-y-auto">
-                             {userPreferences!.map((pref, i) => (
-                               <div key={i} className="flex items-start gap-2.5">
-                                 <span className="text-xs mt-0.5 shrink-0">
-                                   {({ location: '📍', budget: '💰', size: '📐', style: '🎨', amenities: '✨', commute: '🚗', lifestyle: '🏡', other: '📝' } as Record<string, string>)[pref.category] || '📝'}
-                                 </span>
-                                 <span className={`text-xs leading-relaxed ${
-                                   pref.confidence === 'precise'
-                                     ? 'font-semibold text-black'
-                                     : 'text-neutral-500 italic'
-                                 }`}>
-                                   {pref.label}
-                                 </span>
-                               </div>
-                             ))}
-                           </div>
-                           {!isLoggedIn && (
-                             <div className="mt-3 pt-3 border-t border-black/5">
-                               <p className="text-[10px] text-neutral-400 mb-2">Sign in to save your preferences</p>
-                               <button
-                                 onClick={() => { setShowPrefsPopover(false); onPreferenceLoginPrompt?.(); }}
-                                 className="w-full py-2 text-xs font-semibold rounded-lg bg-[#4A5D23] text-white hover:bg-[#3a4e1a] transition-all"
-                               >
-                                 Sign in
-                               </button>
-                             </div>
-                           )}
                          </motion.div>
                        )}
                      </AnimatePresence>
