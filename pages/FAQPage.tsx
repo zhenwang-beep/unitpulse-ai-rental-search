@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { Search, ChevronDown, Heart, LogOut, Menu, X, FileText, Building, Sparkles, MessageSquare, Shield, CreditCard, Home, ArrowRight, HelpCircle } from 'lucide-react';
+import { Search, ChevronDown, Heart, LogOut, Menu, X, Building, Sparkles, MessageSquare, Shield, CreditCard, Home, ArrowRight, HelpCircle } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { ToastData } from '../components/Toast';
 import PageFooter from '../components/PageFooter';
@@ -235,7 +235,6 @@ const FAQPage: React.FC<FAQPageProps> = ({
           </div>
           <nav className="hidden md:flex items-center gap-8">
             <a href="/" className="text-sm font-medium hover:text-black/60 transition-colors">Find a home</a>
-            <a href="/blog" className="text-sm font-medium hover:text-black/60 transition-colors">Blog</a>
             <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Become a partner</a>
             {isLoggedIn ? (
               <div className="relative" ref={dropdownRef}>
@@ -282,7 +281,6 @@ const FAQPage: React.FC<FAQPageProps> = ({
               </div>
               <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-1">
                 <a href="/" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium"><Search size={20} className="text-neutral-400" /> Find a home</a>
-                <a href="/blog" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium"><FileText size={20} className="text-neutral-400" /> Blog</a>
                 <div className="h-px bg-neutral-100 w-full my-1"></div>
                 <a href="#" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium"><Building size={20} className="text-neutral-400" /> Become a partner</a>
               </div>

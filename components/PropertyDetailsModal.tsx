@@ -589,7 +589,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
     </div>
   );
 
-  const shareUrl = `unitpulse.co/p/${property.id}`;
+  const shareUrl = `unitpulse.ai/p/${property.id}`;
   const fullShareUrl = `${window.location.origin}/#/property/${property.id}`;
   const shareText = `Check out ${property.title} in ${property.location} — $${property.price.toLocaleString()}/mo on UnitPulse!`;
 

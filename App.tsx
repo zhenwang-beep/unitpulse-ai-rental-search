@@ -13,6 +13,8 @@ import BlogPostPage from './pages/BlogPostPage';
 import FAQPage from './pages/FAQPage';
 import RentalMarketsPage from './pages/RentalMarketsPage';
 import CityRentalPage from './pages/CityRentalPage';
+import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
 import TestPage from './pages/TestPage';
 import FavoritesPage from './components/FavoritesPage';
 import Toast, { ToastData } from './components/Toast';
@@ -239,6 +241,26 @@ const AppShell: React.FC = () => {
             />
           }
         />
+        <Route path="/privacy" element={
+          <PrivacyPage
+            isLoggedIn={isLoggedIn}
+            isDropdownOpen={isDropdownOpen}
+            setIsDropdownOpen={setIsDropdownOpen}
+            setShowLoginView={setShowLoginView}
+            handleLogout={handleLogout}
+            showToast={setToast}
+          />
+        } />
+        <Route path="/terms" element={
+          <TermsPage
+            isLoggedIn={isLoggedIn}
+            isDropdownOpen={isDropdownOpen}
+            setIsDropdownOpen={setIsDropdownOpen}
+            setShowLoginView={setShowLoginView}
+            handleLogout={handleLogout}
+            showToast={setToast}
+          />
+        } />
         <Route path="/test" element={<TestPage />} />
       </Routes>
     </>

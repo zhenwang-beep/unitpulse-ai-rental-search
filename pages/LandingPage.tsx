@@ -7,7 +7,7 @@ import { Property } from '../types';
 import PropertyCard from '../components/PropertyCard';
 import LiveInterface from '../components/LiveInterface';
 import { useAppContext } from '../context/AppContext';
-import { ArrowRight, Search, AudioLines, ChevronDown, Heart, LogOut, Menu, X, ArrowLeftRight, Calculator, Target, MessageSquare, Sparkles, FileText, Building } from 'lucide-react';
+import { ArrowRight, Search, AudioLines, ChevronDown, Heart, LogOut, Menu, X, ArrowLeftRight, Calculator, Target, MessageSquare, Sparkles, Building } from 'lucide-react';
 import { ToastData } from '../components/Toast';
 import PageFooter from '../components/PageFooter';
 
@@ -273,7 +273,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
           </div>
           <nav className="hidden md:flex items-center gap-8">
             <a href="/" className="text-sm font-medium hover:text-black/60 transition-colors">Find a home</a>
-            <a href="/blog" className="text-sm font-medium hover:text-black/60 transition-colors">Blog</a>
             <a href="#" className="text-sm font-medium hover:text-black/60 transition-colors">Become a partner</a>
             {isLoggedIn ? (
               <div className="relative" ref={dropdownRef}>
@@ -377,10 +376,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     <a href="/" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
                       <Search size={20} className="text-neutral-400" />
                       Find a home
-                    </a>
-                    <a href="/blog" className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-50 text-neutral-700 transition-colors font-medium">
-                      <FileText size={20} className="text-neutral-400" />
-                      Blog
                     </a>
                     {isLoggedIn && (
                       <button
