@@ -73,6 +73,13 @@ export interface Source {
   snippet?: string;
 }
 
+export interface UserPreference {
+  category: 'location' | 'budget' | 'size' | 'style' | 'amenities' | 'commute' | 'lifestyle' | 'other';
+  label: string;
+  confidence: 'precise' | 'vague';
+  value?: string;
+}
+
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
@@ -88,6 +95,7 @@ export interface ChatMessage {
   styleAvatar?: string;
   styleSummary?: string;
   sources?: Source[];
+  extractedPreferences?: UserPreference[];
 }
 
 export interface GeminiResponse {
@@ -102,4 +110,5 @@ export interface GeminiResponse {
   styleAvatar?: string;
   styleSummary?: string;
   sources?: Source[];
+  extractedPreferences?: UserPreference[];
 }

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowUp, Loader2, ChevronRight, ChevronLeft, AudioLines, RotateCcw, Check, MapPin, Star, Wifi, Car, Coffee, ShieldCheck, Upload, CreditCard, PenTool, Key, Zap, ClipboardCheck, Heart, Sparkles, Plus, Phone, Calendar, ArrowUpDown, Square, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChatMessage, Property } from '../types';
+import { ChatMessage, Property, UserPreference } from '../types';
 import { AI_AVATAR, SUGGESTION_CHIPS } from '../constants';
 import PropertyCard from './PropertyCard';
 import ContactFormModal from './ContactFormModal';
@@ -21,6 +21,8 @@ interface ChatInterfaceProps {
   isLoggedIn?: boolean;
   onResetChat?: () => void;
   onStop?: () => void;
+  userPreferences?: UserPreference[];
+  onPreferenceLoginPrompt?: () => void;
 }
 
 // --- INTERACTIVE COMPONENTS ---
@@ -1229,6 +1231,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   isLoggedIn,
   onResetChat,
   onStop,
+  userPreferences,
+  onPreferenceLoginPrompt,
 }) => {
   const [input, setInput] = useState('');
   const [ghostText, setGhostText] = useState('');
@@ -1238,6 +1242,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [dismissedContextPropertyId, setDismissedContextPropertyId] = useState<string | null>(null);
   const [contextProperty, setContextProperty] = useState<Property | null>(null);
+  const [showPrefsPopover, setShowPrefsPopover] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
@@ -1729,6 +1734,70 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                                Reset
                              </button>
                            </div>
+                         </motion.div>
+                       )}
+                     </AnimatePresence>
+                   </div>
+                 )}
+
+                 {/* Preference indicator */}
+                 {(userPreferences?.length ?? 0) > 0 && (
+                   <div className="relative">
+                     <button
+                       type="button"
+                       onClick={() => setShowPrefsPopover(v => !v)}
+                       className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition-all ${
+                         showPrefsPopover
+                           ? 'bg-[#4A5D23]/10 text-[#4A5D23]'
+                           : 'bg-neutral-50 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600'
+                       }`}
+                       title="Your preferences"
+                     >
+                       <Sparkles size={13} />
+                       <span>{userPreferences!.length}</span>
+                     </button>
+                     <AnimatePresence>
+                       {showPrefsPopover && (
+                         <motion.div
+                           initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                           animate={{ opacity: 1, y: 0, scale: 1 }}
+                           exit={{ opacity: 0, y: 6, scale: 0.95 }}
+                           transition={{ duration: 0.15 }}
+                           className="absolute bottom-full left-0 mb-2 w-72 bg-white rounded-xl shadow-xl border border-black/8 p-4 z-50"
+                         >
+                           <div className="flex items-center justify-between mb-3">
+                             <p className="text-xs font-bold text-black uppercase tracking-wider">Your Preferences</p>
+                             <button onClick={() => setShowPrefsPopover(false)} className="text-neutral-400 hover:text-black transition-colors">
+                               <X size={14} />
+                             </button>
+                           </div>
+                           <div className="space-y-2 max-h-64 overflow-y-auto">
+                             {userPreferences!.map((pref, i) => (
+                               <div key={i} className="flex items-start gap-2.5">
+                                 <span className="text-xs mt-0.5 shrink-0">
+                                   {({ location: '📍', budget: '💰', size: '📐', style: '🎨', amenities: '✨', commute: '🚗', lifestyle: '🏡', other: '📝' } as Record<string, string>)[pref.category] || '📝'}
+                                 </span>
+                                 <span className={`text-xs leading-relaxed ${
+                                   pref.confidence === 'precise'
+                                     ? 'font-semibold text-black'
+                                     : 'text-neutral-500 italic'
+                                 }`}>
+                                   {pref.label}
+                                 </span>
+                               </div>
+                             ))}
+                           </div>
+                           {!isLoggedIn && (
+                             <div className="mt-3 pt-3 border-t border-black/5">
+                               <p className="text-[10px] text-neutral-400 mb-2">Sign in to save your preferences</p>
+                               <button
+                                 onClick={() => { setShowPrefsPopover(false); onPreferenceLoginPrompt?.(); }}
+                                 className="w-full py-2 text-xs font-semibold rounded-lg bg-[#4A5D23] text-white hover:bg-[#3a4e1a] transition-all"
+                               >
+                                 Sign in
+                               </button>
+                             </div>
+                           )}
                          </motion.div>
                        )}
                      </AnimatePresence>

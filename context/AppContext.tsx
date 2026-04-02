@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { ChatMessage, Property } from '../types';
+import { ChatMessage, Property, UserPreference } from '../types';
 
 type Thread = { messages: ChatMessage[]; title: string };
 type AllThreads = Record<string, Thread>;
@@ -13,12 +13,16 @@ interface AppContextValue {
   favorites: Property[];
   toggleFavorite: (property: Property) => void;
   clearFavorites: () => void;
+  userPreferences: UserPreference[];
+  addPreferences: (newItems: UserPreference[]) => void;
+  clearPreferences: () => void;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
 
 const STORAGE_KEY = 'unitpulse_threads';
 const FAV_STORAGE_KEY = 'unitpulse_favorites';
+const PREF_STORAGE_KEY = 'unitpulse_preferences';
 
 function loadThreads(): AllThreads {
   try {
@@ -94,8 +98,47 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     localStorage.removeItem(FAV_STORAGE_KEY);
   };
 
+  // User preferences
+  const [userPreferences, setUserPreferences] = useState<UserPreference[]>(() => {
+    try {
+      const raw = localStorage.getItem(PREF_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  });
+
+  useEffect(() => {
+    localStorage.setItem(PREF_STORAGE_KEY, JSON.stringify(userPreferences));
+  }, [userPreferences]);
+
+  const addPreferences = (newItems: UserPreference[]) => {
+    if (!newItems || newItems.length === 0) return;
+    setUserPreferences(prev => {
+      const merged = [...prev];
+      for (const item of newItems) {
+        // Replace existing preference in same category with similar label
+        const existingIdx = merged.findIndex(p =>
+          p.category === item.category && (
+            p.label.toLowerCase() === item.label.toLowerCase() ||
+            (p.value && item.value && p.value === item.value)
+          )
+        );
+        if (existingIdx >= 0) {
+          merged[existingIdx] = item;
+        } else {
+          merged.push(item);
+        }
+      }
+      return merged;
+    });
+  };
+
+  const clearPreferences = () => {
+    setUserPreferences([]);
+    localStorage.removeItem(PREF_STORAGE_KEY);
+  };
+
   return (
-    <AppContext.Provider value={{ allThreads, addThread, updateThread, renameThread, deleteThread, favorites, toggleFavorite, clearFavorites }}>
+    <AppContext.Provider value={{ allThreads, addThread, updateThread, renameThread, deleteThread, favorites, toggleFavorite, clearFavorites, userPreferences, addPreferences, clearPreferences }}>
       {children}
     </AppContext.Provider>
   );

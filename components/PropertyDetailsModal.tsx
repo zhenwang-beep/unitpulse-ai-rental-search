@@ -376,22 +376,22 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                         {section.units.length > 0 && (
                           <div>
                             {/* Table header */}
-                            <div className="grid grid-cols-[1fr_60px_90px_70px] gap-x-2 px-4 py-2 border-b border-black/5 bg-neutral-50/50">
-                              <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">Unit</span>
-                              <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider text-center">Sq Ft</span>
-                              <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider text-right">Price</span>
+                            <div className="grid grid-cols-[1fr_60px_100px_70px] gap-x-2 px-4 py-2 border-b border-black/5 bg-neutral-50/50">
+                              <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Unit</span>
+                              <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider text-center">Sq Ft</span>
+                              <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider text-right">Price</span>
                               <span></span>
                             </div>
                             {/* Table rows */}
                             <div className="divide-y divide-black/5">
                               {section.units.map((unit) => (
-                                <div key={unit.id} className="grid grid-cols-[1fr_60px_90px_70px] gap-x-2 items-center px-4 py-3 hover:bg-neutral-50/50 transition-colors">
-                                  <span className="text-xs font-bold text-black">{unit.id}</span>
-                                  <span className="text-xs font-medium text-neutral-500 text-center tabular-nums">{unit.sqft || section.sqft}</span>
-                                  <span className="text-xs font-black text-black text-right tabular-nums">{unit.price}</span>
+                                <div key={unit.id} className="grid grid-cols-[1fr_60px_100px_70px] gap-x-2 items-center px-4 py-3 hover:bg-neutral-50/50 transition-colors">
+                                  <span className="text-sm font-bold text-black">{unit.id}</span>
+                                  <span className="text-sm font-medium text-neutral-500 text-center tabular-nums">{unit.sqft || section.sqft}</span>
+                                  <span className="text-sm font-black text-black text-right tabular-nums">{unit.price}</span>
                                   <button
                                     onClick={() => setContactMode('inquire')}
-                                    className="text-[10px] font-bold text-[#4A5D23] hover:underline text-right"
+                                    className="text-xs font-bold text-[#4A5D23] hover:underline text-right"
                                   >
                                     Inquire
                                   </button>
