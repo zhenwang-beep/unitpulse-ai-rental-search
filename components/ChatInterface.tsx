@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowUp, Loader2, ChevronRight, ChevronLeft, AudioLines, RotateCcw, Check, MapPin, Star, Wifi, Car, Coffee, ShieldCheck, Upload, CreditCard, PenTool, Key, Zap, ClipboardCheck, Heart, Sparkles, Plus, Phone, Calendar, ArrowUpDown, Square } from 'lucide-react';
+import { ArrowUp, Loader2, ChevronRight, ChevronLeft, AudioLines, RotateCcw, Check, MapPin, Star, Wifi, Car, Coffee, ShieldCheck, Upload, CreditCard, PenTool, Key, Zap, ClipboardCheck, Heart, Sparkles, Plus, Phone, Calendar, ArrowUpDown, Square, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChatMessage, Property } from '../types';
 import { AI_AVATAR, SUGGESTION_CHIPS } from '../constants';
@@ -883,7 +883,7 @@ const CompactPropertyCard = ({
           </div>
         )}
 
-        <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/60 backdrop-blur-md rounded text-xs font-semibold text-white uppercase tracking-wider flex items-baseline gap-1 z-10">
+        <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/60 backdrop-blur-md rounded text-xs font-semibold text-white tracking-wider flex items-baseline gap-1 z-10">
           ${property.price.toLocaleString()}+ / mo
         </div>
       </div>
@@ -893,20 +893,20 @@ const CompactPropertyCard = ({
           <MapPin size={12} />
           <span className="truncate">{property.location.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
         </div>
-        <div className="flex items-center gap-2 pt-2 text-xs font-black text-black uppercase tracking-wider">
+        <div className="flex items-center gap-1.5 pt-1 text-[10px] font-bold text-neutral-500 uppercase tracking-wider">
           <span>{property.bedsRange || `${property.bedrooms} Bed`}</span>
-          <span className="w-1 h-1 bg-neutral-200 rounded-full" />
+          <span className="text-neutral-300">·</span>
           <span>{property.bathsRange || `${property.bathrooms} Bath`}</span>
           {property.sqftRange && (
             <>
-              <span className="w-1 h-1 bg-neutral-200 rounded-full" />
-              <span>{property.sqftRange} SQFT</span>
+              <span className="text-neutral-300">·</span>
+              <span>{property.sqftRange} SF</span>
             </>
           )}
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-2 pt-2">
+        <div className="flex gap-2 pt-1.5">
           <button 
             onClick={(e) => { e.stopPropagation(); window.location.href = 'tel:+11234567890'; }}
             className="flex-1 py-1.5 bg-transparent hover:text-neutral-600 text-black rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5"
@@ -1236,6 +1236,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [aiStatusIndex, setAiStatusIndex] = useState(0);
   const [tourProperty, setTourProperty] = useState<Property | null>(null);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [dismissedContextPropertyId, setDismissedContextPropertyId] = useState<string | null>(null);
+  const [contextProperty, setContextProperty] = useState<Property | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
@@ -1351,6 +1353,33 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   };
 
   const hasText = input.trim().length > 0;
+
+  // Update context property when a new AI message with properties arrives (sticky across follow-ups)
+  useEffect(() => {
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const msg = messages[i];
+      if (msg.role === 'assistant' && msg.properties && msg.properties.length > 0) {
+        setContextProperty(msg.properties[0]);
+        return;
+      }
+    }
+    if (messages.length === 0) setContextProperty(null);
+  }, [messages]);
+
+  // Reset dismissed state and auto-open property panel on desktop when context property changes
+  const prevContextIdRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (contextProperty && contextProperty.id !== prevContextIdRef.current) {
+      setDismissedContextPropertyId(null);
+      // Auto-open property panel on desktop
+      if (window.innerWidth >= 1024) {
+        onPropertyClick(contextProperty);
+      }
+      prevContextIdRef.current = contextProperty.id;
+    }
+  }, [contextProperty?.id]);
+
+  const showContextChip = contextProperty && !isCollapsed && !isLoading && contextProperty.id !== dismissedContextPropertyId;
 
    return (
     <div className="flex-1 min-h-0 flex flex-col w-full relative h-full overflow-hidden bg-[#FCF9F8]">
@@ -1568,58 +1597,75 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
        )}
 
        <div className={`w-full px-4 flex flex-col items-center justify-end z-50 shrink-0 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#FCF9F8] via-[#FCF9F8]/90 to-transparent ${!isCollapsed ? 'pb-4 pt-8' : 'pb-4 pt-0'}`}>
-         
-          {!isCollapsed && !isLoading && messages.length > 0 && filteredSuggestions.length > 0 && (
-            <div className="relative w-full max-w-3xl mb-2 group">
-             {canScrollLeft && (
-               <button 
-                 type="button"
-                 onClick={() => scrollSuggestions('left')}
-                 className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md border border-black/5 rounded-full flex items-center justify-center text-black hover:bg-black hover:text-white transition-all"
-               >
-                 <ChevronLeft size={16} />
-               </button>
-             )}
 
-             <div 
-               ref={suggestionsRef}
-               onScroll={checkSuggestionsScroll}
-               className="flex gap-2 overflow-x-auto max-w-full py-1 px-4 scrollbar-hide scroll-smooth"
-               style={{
-                 maskImage: `linear-gradient(to right, ${canScrollLeft ? 'transparent' : 'black'}, black 40px, black calc(100% - 40px), ${canScrollRight ? 'transparent' : 'black'})`,
-                 WebkitMaskImage: `linear-gradient(to right, ${canScrollLeft ? 'transparent' : 'black'}, black 40px, black calc(100% - 40px), ${canScrollRight ? 'transparent' : 'black'})`
-               }}
-             >
-               {filteredSuggestions.map((reply) => (
-                 <button
-                   key={reply}
-                   onClick={() => {
+          {/* Suggested replies */}
+          {!isCollapsed && !isLoading && messages.length > 0 && filteredSuggestions.length > 0 && (
+            <div className="relative w-full max-w-3xl mb-2">
+              <div
+                ref={suggestionsRef}
+                onScroll={checkSuggestionsScroll}
+                className="flex items-center gap-2 overflow-x-auto max-w-full py-1 px-1 scrollbar-hide scroll-smooth"
+                style={{
+                  maskImage: canScrollRight ? `linear-gradient(to right, black, black calc(100% - 40px), transparent)` : undefined,
+                  WebkitMaskImage: canScrollRight ? `linear-gradient(to right, black, black calc(100% - 40px), transparent)` : undefined
+                }}
+              >
+                {filteredSuggestions.map((reply) => (
+                  <button
+                    key={reply}
+                    onClick={() => {
                       onSendMessage(reply);
                       setInput('');
                       setGhostText('');
-                   }}
-                   className="whitespace-nowrap px-4 py-2 bg-white border border-black/5 text-black text-xs font-medium rounded-full hover:bg-black hover:text-white transition-all"
-                 >
-                   {reply}
-                 </button>
-               ))}
-             </div>
+                    }}
+                    className="whitespace-nowrap px-3.5 py-1.5 bg-white border border-black/5 text-black text-xs font-medium rounded-full hover:bg-black hover:text-white transition-all shrink-0"
+                  >
+                    {reply}
+                  </button>
+                ))}
+              </div>
 
-             {canScrollRight && (
-               <button 
-                 type="button"
-                 onClick={() => scrollSuggestions('right')}
-                 className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md border border-black/5 rounded-full flex items-center justify-center text-black hover:bg-black hover:text-white transition-all"
-               >
-                 <ChevronRight size={16} />
-               </button>
-             )}
-           </div>
-         )}
+              {canScrollRight && (
+                <button
+                  type="button"
+                  onClick={() => scrollSuggestions('right')}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md border border-black/5 rounded-full flex items-center justify-center text-black hover:bg-black hover:text-white transition-all"
+                >
+                  <ChevronRight size={16} />
+                </button>
+              )}
+            </div>
+          )}
 
          <div className={`w-full max-w-3xl transition-all duration-500 focus-within:scale-[1.01] focus-within:-translate-y-1 ${isCollapsed ? 'scale-95' : ''}`}>
            <div className={`bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-black/5 transition-all duration-500 focus-within:ring-1 focus-within:ring-black focus-within:shadow-[0_20px_50px_rgba(0,0,0,0.12)] flex flex-col gap-1 ${isCollapsed ? 'p-2 min-h-[3rem]' : 'p-3 min-h-[5rem]'}`}>
-             
+
+             {/* Property context chip inside chatbox */}
+             {showContextChip && !isCollapsed && (
+               <div className="flex items-center px-1 pt-0.5">
+                 <button
+                   onClick={() => onPropertyClick(contextProperty)}
+                   className="group flex items-center gap-2 pl-1 pr-1 py-1 bg-neutral-50 border border-black/5 rounded-full hover:border-[#4A5D23]/30 hover:bg-neutral-100 transition-all duration-200"
+                 >
+                   <img
+                     src={contextProperty.image}
+                     alt=""
+                     className="w-5 h-5 rounded-full object-cover border border-black/5"
+                     referrerPolicy="no-referrer"
+                   />
+                   <span className="text-[11px] font-semibold text-black truncate max-w-[140px]">{contextProperty.title}</span>
+                   <span className="text-[10px] text-neutral-400 font-medium whitespace-nowrap">${contextProperty.price.toLocaleString()}/mo</span>
+                   <span
+                     role="button"
+                     onClick={(e) => { e.stopPropagation(); setDismissedContextPropertyId(contextProperty.id); }}
+                     className="p-0.5 rounded-full text-neutral-300 hover:text-neutral-500 hover:bg-neutral-200 transition-all"
+                   >
+                     <X size={11} />
+                   </span>
+                 </button>
+               </div>
+             )}
+
              <div className="flex-1 relative flex items-start min-h-[2rem] py-1">
                {ghostText && (
                  <div className="absolute inset-0 px-2 pointer-events-none flex items-start pt-1">
