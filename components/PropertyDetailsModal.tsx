@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Property, FloorPlan, Unit } from '../types';
-import { X, MapPin, Bed, Bath, Ruler, Sparkles, Heart, Check, Calendar, FileText, ChevronDown, Menu, ChevronLeft, ChevronRight, Building2, MessageSquare, Loader2 } from 'lucide-react';
+import { X, MapPin, Bed, Bath, Ruler, Sparkles, Heart, Check, Calendar, FileText, ChevronDown, Menu, ChevronLeft, ChevronRight, Building2, MessageSquare, Loader2, Share, Link2, Mail, MessageCircle, Copy } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import ContactFormModal from './ContactFormModal';
 
@@ -69,6 +69,8 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isAnalyzing, setIsAnalyzing] = useState(true);
   const [contactMode, setContactMode] = useState<'tour' | 'inquire' | null>(null);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   useEffect(() => {
     if (property && !isInline) {
@@ -120,14 +122,23 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
 
           <div className="flex-1" />
 
-          {/* Right: favorite */}
-          <button
-            onClick={() => onToggleFavorite(property.id)}
-            aria-label={isFavorite ? "Remove from favorites" : "Save to favorites"}
-            className={`p-2 backdrop-blur-md rounded-full transition-all duration-300 shrink-0 ${isFavorite ? 'bg-black text-white' : 'bg-white/80 shadow-sm border border-black/5 text-neutral-400 hover:bg-white hover:text-black'}`}
-          >
-            <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
-          </button>
+          {/* Right: share + favorite */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowShareModal(true)}
+              aria-label="Share property"
+              className="p-2 backdrop-blur-md rounded-full transition-all duration-300 shrink-0 bg-white/80 shadow-sm border border-black/5 text-neutral-400 hover:bg-white hover:text-black"
+            >
+              <Share size={18} />
+            </button>
+            <button
+              onClick={() => onToggleFavorite(property.id)}
+              aria-label={isFavorite ? "Remove from favorites" : "Save to favorites"}
+              className={`p-2 backdrop-blur-md rounded-full transition-all duration-300 shrink-0 ${isFavorite ? 'bg-black text-white' : 'bg-white/80 shadow-sm border border-black/5 text-neutral-400 hover:bg-white hover:text-black'}`}
+            >
+              <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
+            </button>
+          </div>
         </div>
 
           {/* Bento Box Image Grid — inset with padding, rounded corners */}
@@ -482,11 +493,11 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
       {/* Sticky footer actions */}
       <div className="shrink-0 border-t border-black/5 bg-[#FCF9F8] px-4 lg:px-6 py-3 lg:py-5">
         <div className="max-w-3xl mx-auto w-full flex items-center justify-between gap-3">
-        <div className="flex flex-col min-w-0">
-          <span className="text-base lg:text-xl font-black font-heading text-black leading-tight whitespace-nowrap">
-            ${property.price.toLocaleString()} <span className="font-semibold text-sm lg:text-sm opacity-70">/ mo</span>
+        <div className="flex flex-col lg:flex-row lg:items-baseline lg:gap-3 min-w-0">
+          <span className="text-xl lg:text-4xl font-black font-heading text-black leading-tight whitespace-nowrap">
+            ${property.price.toLocaleString()} <span className="font-semibold text-sm opacity-70">/ mo</span>
           </span>
-          <span className="text-xs text-neutral-500 mt-0.5 truncate max-w-[140px] lg:max-w-none">Unit 402 • Avail. Mar 1st</span>
+          <span className="text-xs text-neutral-500 mt-0.5 lg:mt-0 truncate max-w-[140px] lg:max-w-none">Unit 402 • Avail. Mar 1st</span>
         </div>
         <div className="flex gap-2 shrink-0">
           <button
@@ -578,9 +589,172 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
     </div>
   );
 
+  const shareUrl = `unitpulse.co/p/${property.id}`;
+  const fullShareUrl = `${window.location.origin}/#/property/${property.id}`;
+  const shareText = `Check out ${property.title} in ${property.location} — $${property.price.toLocaleString()}/mo on UnitPulse!`;
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(fullShareUrl);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch {
+      const input = document.createElement('input');
+      input.value = fullShareUrl;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    }
+  };
+
+  const handleNativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: property.title, text: shareText, url: fullShareUrl });
+        setShowShareModal(false);
+      } catch { /* user cancelled */ }
+    }
+  };
+
+  const shareChannels = [
+    {
+      label: 'Copy link',
+      icon: linkCopied ? Check : Link2,
+      color: linkCopied ? 'text-[#4A5D23] bg-[#4A5D23]/10' : 'text-neutral-600 bg-neutral-100 hover:bg-neutral-200',
+      onClick: handleCopyLink,
+    },
+    {
+      label: 'Email',
+      icon: Mail,
+      color: 'text-neutral-600 bg-neutral-100 hover:bg-neutral-200',
+      onClick: () => { window.open(`mailto:?subject=${encodeURIComponent(property.title)}&body=${encodeURIComponent(shareText + '\n\n' + fullShareUrl)}`); },
+    },
+    {
+      label: 'Message',
+      icon: MessageCircle,
+      color: 'text-neutral-600 bg-neutral-100 hover:bg-neutral-200',
+      onClick: () => { window.open(`sms:?&body=${encodeURIComponent(shareText + ' ' + fullShareUrl)}`); },
+    },
+  ];
+
+  const shareModal = createPortal(
+    <AnimatePresence>
+      {showShareModal && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[999]"
+            onClick={() => setShowShareModal(false)}
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="fixed inset-0 z-[1000] flex items-center justify-center p-4"
+            onClick={() => setShowShareModal(false)}
+          >
+            <div
+              className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header with property preview */}
+              <div className="p-6 pb-5">
+                <div className="flex items-center justify-between mb-5">
+                  <h3 className="text-base font-bold text-black">Share this property</h3>
+                  <button
+                    onClick={() => setShowShareModal(false)}
+                    className="p-1.5 rounded-full text-neutral-400 hover:text-black hover:bg-neutral-100 transition-colors"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+
+                {/* Property mini card */}
+                <div className="flex gap-4 p-4 bg-neutral-50 rounded-2xl">
+                  <img
+                    src={property.image}
+                    alt={property.title}
+                    className="w-20 h-20 rounded-xl object-cover shrink-0"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="flex-1 min-w-0 flex flex-col justify-center">
+                    <p className="text-sm font-bold text-black truncate">{property.title}</p>
+                    <p className="text-xs text-neutral-500 flex items-center gap-1 mt-1">
+                      <MapPin size={11} /> {property.location}
+                    </p>
+                    <p className="text-base font-black text-[#4A5D23] mt-1.5">
+                      ${property.price.toLocaleString()}<span className="text-xs font-semibold opacity-70"> /mo</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Share options */}
+              <div className="px-6 pb-4">
+                <div className="flex gap-5 justify-center">
+                  {shareChannels.map((ch) => {
+                    const Icon = ch.icon;
+                    return (
+                      <button
+                        key={ch.label}
+                        onClick={ch.onClick}
+                        className="flex flex-col items-center gap-2 group"
+                      >
+                        <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${ch.color}`}>
+                          <Icon size={22} />
+                        </div>
+                        <span className="text-xs font-semibold text-neutral-500">{linkCopied && ch.label === 'Copy link' ? 'Copied!' : ch.label}</span>
+                      </button>
+                    );
+                  })}
+                  {typeof navigator.share === 'function' && (
+                    <button
+                      onClick={handleNativeShare}
+                      className="flex flex-col items-center gap-2 group"
+                    >
+                      <div className="w-14 h-14 rounded-full flex items-center justify-center transition-all text-neutral-600 bg-neutral-100 hover:bg-neutral-200">
+                        <Share size={22} />
+                      </div>
+                      <span className="text-xs font-semibold text-neutral-500">More</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Copy URL bar */}
+              <div className="px-6 pb-6 pt-2">
+                <div className="flex items-center gap-2 p-2.5 pl-4 bg-neutral-50 rounded-xl border border-neutral-200">
+                  <span className="flex-1 text-sm text-neutral-400 truncate select-all">{shareUrl}</span>
+                  <button
+                    onClick={handleCopyLink}
+                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-all shrink-0 ${
+                      linkCopied
+                        ? 'bg-[#4A5D23] text-white'
+                        : 'bg-black text-white hover:bg-neutral-800'
+                    }`}
+                  >
+                    {linkCopied ? 'Copied!' : 'Copy'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>,
+    document.body
+  );
+
   if (isInline) return (
     <>
       {content}
+      {shareModal}
       {contactMode && (
         <ContactFormModal
           mode={contactMode}
@@ -598,6 +772,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
         <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in" onClick={onClose} />
         {content}
       </div>
+      {shareModal}
       {contactMode && (
         <ContactFormModal
           mode={contactMode}

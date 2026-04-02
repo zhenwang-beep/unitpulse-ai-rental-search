@@ -15,6 +15,7 @@ interface AppContextValue {
   clearFavorites: () => void;
   userPreferences: UserPreference[];
   addPreferences: (newItems: UserPreference[]) => void;
+  removePreference: (category: string, label: string) => void;
   clearPreferences: () => void;
 }
 
@@ -132,13 +133,17 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     });
   };
 
+  const removePreference = (category: string, label: string) => {
+    setUserPreferences(prev => prev.filter(p => !(p.category === category && p.label === label)));
+  };
+
   const clearPreferences = () => {
     setUserPreferences([]);
     localStorage.removeItem(PREF_STORAGE_KEY);
   };
 
   return (
-    <AppContext.Provider value={{ allThreads, addThread, updateThread, renameThread, deleteThread, favorites, toggleFavorite, clearFavorites, userPreferences, addPreferences, clearPreferences }}>
+    <AppContext.Provider value={{ allThreads, addThread, updateThread, renameThread, deleteThread, favorites, toggleFavorite, clearFavorites, userPreferences, addPreferences, removePreference, clearPreferences }}>
       {children}
     </AppContext.Provider>
   );
