@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Property } from '../types';
+import { Property, FloorPlan, FloorPlanModel, Unit } from '../types';
 import { X, MapPin, Bed, Bath, Ruler, Sparkles, Heart, Check, Calendar, FileText, ChevronDown, Menu, ChevronLeft, ChevronRight, Building2, MessageSquare, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import ContactFormModal from './ContactFormModal';
@@ -63,7 +63,8 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
   onSignLease,
   isLoggedIn = false,
 }) => {
-  const [expandedFloorPlan, setExpandedFloorPlan] = useState<string | null>(null);
+  const [activePlanType, setActivePlanType] = useState<string | null>(null);
+  const [activeModel, setActiveModel] = useState<string | null>(null);
   const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -83,6 +84,18 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
     setIsAnalyzing(true);
     const timer = setTimeout(() => setIsAnalyzing(false), 1600);
     return () => clearTimeout(timer);
+  }, [property?.id]);
+
+  useEffect(() => {
+    if (property) {
+      const plans = property.floorPlans?.length ? property.floorPlans : DEFAULT_FLOOR_PLANS(property.imageSeed);
+      if (plans.length > 0) {
+        setActivePlanType(plans[0].type);
+        const firstModel = plans[0].models?.[0]?.name ?? null;
+        setActiveModel(firstModel);
+      }
+      setSelectedUnit(null);
+    }
   }, [property?.id]);
 
   if (!property) return null;
@@ -263,131 +276,144 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
           </div>
 
           {/* Floor Plans */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xs font-black text-black uppercase tracking-wider">Floor Plans</h3>
-              <span className="text-xs font-bold text-[#4A5D23] uppercase tracking-wider">
-                {floorPlans.reduce((sum, p) => sum + p.available, 0)} Units Available
-              </span>
-            </div>
-            <div className="space-y-3">
-              {floorPlans.map((plan) => (
-                <div
-                  key={plan.type}
-                  className={`rounded-2xl border transition-all ${expandedFloorPlan === plan.type ? 'border-[#4A5D23] border-2' : 'border-black/5 hover:border-black/20'} bg-white overflow-hidden`}
-                >
-                  <button
-                    onClick={() => setExpandedFloorPlan(expandedFloorPlan === plan.type ? null : plan.type)}
-                    className="w-full p-4 flex items-center gap-3"
-                  >
-                    {/* Floor plan thumbnail */}
-                    {plan.image && (
-                      <div
-                        className="w-16 h-12 rounded-lg overflow-hidden shrink-0 border border-black/8"
-                        onClick={(e) => { e.stopPropagation(); setSelectedImageIndex(0); setIsImageModalOpen(true); }}
-                      >
-                        <img src={plan.image} alt={`${plan.type} floor plan`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
-                      </div>
-                    )}
-                    <div className="text-left space-y-1 flex-1">
-                      <span className="text-sm font-black text-black uppercase tracking-wider block">{plan.type}</span>
-                      <div className="flex items-center gap-2 text-xs font-bold text-neutral-400 uppercase tracking-wider flex-wrap">
-                        <span>{plan.priceRange}</span>
-                        <span>•</span>
-                        <span>{plan.sqft} sqft</span>
-                        <span className={plan.available > 0 ? 'text-[#4A5D23]' : 'text-neutral-300'}>
-                          • {plan.available} Available
-                        </span>
-                      </div>
-                    </div>
-                    <ChevronDown size={16} className={`transition-transform duration-300 shrink-0 ${expandedFloorPlan === plan.type ? 'rotate-180' : ''}`} />
-                  </button>
+          {(() => {
+            const currentPlan = floorPlans.find(p => p.type === activePlanType) ?? floorPlans[0];
+            const totalAvailable = floorPlans.reduce((sum, p) => sum + p.available, 0);
+            // Resolve which units to show: models > direct units
+            const currentModel = currentPlan?.models?.find(m => m.name === activeModel) ?? currentPlan?.models?.[0];
+            const visibleUnits: Unit[] = currentModel ? currentModel.units : (currentPlan?.units ?? []);
+            const visibleImage = currentModel ? (currentModel.image ?? currentPlan?.image) : currentPlan?.image;
+            const visibleSqft = currentModel ? currentModel.sqft : currentPlan?.sqft;
 
-                  <AnimatePresence>
-                    {expandedFloorPlan === plan.type && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-4 pb-4 border-t border-black/5 space-y-3 pt-3">
-                          {plan.units?.map((unit) => (
-                            <div key={unit.id} className="space-y-3">
-                              <div
-                                onClick={() => setSelectedUnit(selectedUnit === unit.id ? null : unit.id)}
-                                className={`flex gap-3 p-4 rounded-xl border cursor-pointer transition-all ${selectedUnit === unit.id ? 'bg-[#4A5D23] text-white border-[#4A5D23]' : 'bg-[#F4F1EE] border-black/5 hover:border-black/20'}`}
-                              >
-                                {/* Unit image */}
-                                <div
-                                  className="w-20 h-20 rounded-lg overflow-hidden shrink-0 relative"
-                                  onClick={(e) => { e.stopPropagation(); openImage(0); }}
-                                >
-                                  <img src={unit.image} className="w-full h-full object-cover" referrerPolicy="no-referrer" alt={unit.id} />
-                                </div>
-                                {/* Unit info */}
-                                <div className="flex-1 flex flex-col justify-between py-0.5">
-                                  <div className="flex justify-between items-start">
-                                    <div>
-                                      <span className="text-xs font-black uppercase tracking-wider block">{unit.id}</span>
-                                      <span className={`text-xs font-bold uppercase tracking-wider ${selectedUnit === unit.id ? 'text-white/60' : 'text-neutral-400'}`}>
-                                        {plan.type} • {unit.sqft || plan.sqft} sqft
-                                      </span>
-                                    </div>
-                                    <div className="text-right">
-                                      <span className="text-sm font-black block">{unit.price}</span>
-                                      <span className={`text-xs font-black uppercase tracking-wider ${selectedUnit === unit.id ? 'text-[#8aaa4d]' : 'text-[#4A5D23]'}`}>Available Now</span>
-                                    </div>
-                                  </div>
-                                  <div className="mt-2">
-                                    <button
-                                      onClick={(e) => { e.stopPropagation(); setContactMode('tour'); }}
-                                      className={`w-full py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all ${selectedUnit === unit.id ? 'bg-white text-[#4A5D23]' : 'bg-[#4A5D23] text-white'}`}
-                                    >
-                                      Schedule Tour
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <AnimatePresence>
-                                {selectedUnit === unit.id && (
-                                  <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: 'auto', opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    className="overflow-hidden"
-                                  >
-                                    <div className="p-4 bg-[#F4F1EE] rounded-xl border border-black/5 space-y-4">
-                                      <div className="space-y-2">
-                                        <span className="text-xs font-black uppercase tracking-wider text-neutral-400">Unit Amenities</span>
-                                        <div className="grid grid-cols-2 gap-2">
-                                          {unit.amenities.map((am) => (
-                                            <div key={am} className="flex items-center gap-2 px-3 py-2 bg-white border border-[#4A5D23]/15 rounded-lg">
-                                              <Check size={10} className="text-[#4A5D23]" strokeWidth={3} />
-                                              <span className="text-xs font-black text-black uppercase tracking-wider">{am}</span>
-                                            </div>
-                                          ))}
-                                        </div>
-                                      </div>
-                                      <button className="w-full py-3 bg-[#4A5D23] text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#3a4e1a] transition-all">
-                                        <FileText size={14} />
-                                        Apply for this unit
-                                      </button>
-                                    </div>
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+            return (
+              <div className="space-y-4">
+                {/* Header */}
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-black text-black uppercase tracking-wider">Floor Plans</h3>
+                  <span className="text-xs font-bold text-[#4A5D23] uppercase tracking-wider bg-[#F4F7EC] px-2.5 py-1 rounded-full">
+                    {totalAvailable} Units Available
+                  </span>
                 </div>
-              ))}
-            </div>
-          </div>
+
+                {/* Plan type tabs */}
+                <div className="flex gap-2 flex-wrap">
+                  {floorPlans.map((plan) => (
+                    <button
+                      key={plan.type}
+                      onClick={() => {
+                        setActivePlanType(plan.type);
+                        setActiveModel(plan.models?.[0]?.name ?? null);
+                        setSelectedUnit(null);
+                      }}
+                      className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-black uppercase tracking-wider transition-all ${
+                        activePlanType === plan.type
+                          ? 'bg-black text-white'
+                          : 'bg-white text-neutral-500 border border-black/10 hover:border-black/30'
+                      }`}
+                    >
+                      {plan.type}
+                      <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full ${
+                        activePlanType === plan.type ? 'bg-white/20 text-white' : 'bg-neutral-100 text-neutral-400'
+                      }`}>
+                        {plan.available}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Model sub-tabs (only if plan has multiple models) */}
+                {currentPlan?.models && currentPlan.models.length > 1 && (
+                  <div className="flex gap-2 flex-wrap">
+                    {currentPlan.models.map((model) => (
+                      <button
+                        key={model.name}
+                        onClick={() => { setActiveModel(model.name); setSelectedUnit(null); }}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wide transition-all ${
+                          activeModel === model.name
+                            ? 'bg-[#4A5D23] text-white'
+                            : 'bg-[#F4F1EE] text-neutral-500 hover:bg-neutral-200'
+                        }`}
+                      >
+                        {model.name}
+                        <span className={`text-[9px] ${activeModel === model.name ? 'text-white/70' : 'text-neutral-400'}`}>
+                          · {model.sqft}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Floor plan image */}
+                {visibleImage && (
+                  <div
+                    className="relative w-full rounded-2xl overflow-hidden border border-black/5 cursor-pointer group"
+                    style={{ aspectRatio: '16/7' }}
+                    onClick={() => { setSelectedImageIndex(0); setIsImageModalOpen(true); }}
+                  >
+                    <img src={visibleImage} alt="Floor plan" className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" referrerPolicy="no-referrer" />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                    <div className="absolute bottom-3 right-3 flex items-center gap-1.5 px-3 py-1.5 bg-black/70 backdrop-blur-sm rounded-full text-white text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <span>View full plan</span>
+                      <ChevronRight size={10} />
+                    </div>
+                  </div>
+                )}
+
+                {/* Plan stats */}
+                {currentPlan && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-base font-black text-black">{currentPlan.priceRange}</span>
+                    <span className="text-xs font-semibold text-neutral-400 bg-neutral-100 px-2.5 py-1 rounded-full">{visibleSqft} sqft</span>
+                  </div>
+                )}
+
+                {/* Unit list */}
+                {visibleUnits.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="h-px flex-1 bg-neutral-200" />
+                      <span className="text-[9px] font-black uppercase tracking-widest text-neutral-400">{visibleUnits.length} {visibleUnits.length === 1 ? 'Unit' : 'Units'} Available</span>
+                      <div className="h-px flex-1 bg-neutral-200" />
+                    </div>
+                    <div className="divide-y divide-black/5">
+                      {visibleUnits.map((unit, idx) => (
+                        <div key={unit.id} className="py-3.5 flex items-center gap-3">
+                          {/* Thumbnail */}
+                          <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-[#E8EDE0]">
+                            <img src={unit.image} alt={unit.id} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                          </div>
+                          {/* Info */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-baseline gap-1.5">
+                              <span className="text-sm font-black text-black">{unit.id}</span>
+                            </div>
+                            <div className="text-[11px] font-medium text-neutral-400 mt-0.5">
+                              {currentPlan?.type} · {unit.sqft ? `${unit.sqft} sqft` : visibleSqft}
+                            </div>
+                            <div className="flex gap-1.5 mt-1.5 flex-wrap">
+                              {unit.amenities.slice(0, 2).map(am => (
+                                <span key={am} className="text-[9px] font-medium text-neutral-500 bg-neutral-100 px-1.5 py-0.5 rounded-md">{am}</span>
+                              ))}
+                            </div>
+                          </div>
+                          {/* Price + CTA */}
+                          <div className="flex flex-col items-end gap-2 shrink-0">
+                            <span className="text-sm font-black text-black">{unit.price}</span>
+                            <button
+                              onClick={() => setContactMode('tour')}
+                              className="px-3 py-1.5 bg-[#4A5D23] text-white rounded-full text-[10px] font-bold hover:bg-[#3a4e1a] transition-colors whitespace-nowrap"
+                            >
+                              Schedule Tour
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Amenities */}
           <div className="space-y-4">

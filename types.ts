@@ -1,3 +1,10 @@
+export interface FloorPlanModel {
+  name: string;       // e.g. "Layout A", "Corner Suite"
+  sqft: string;       // e.g. "720 sqft"
+  image?: string;
+  units: Unit[];
+}
+
 export interface FloorPlan {
   type: string;
   priceRange: string;
@@ -5,6 +12,7 @@ export interface FloorPlan {
   available: number;
   image?: string;
   units?: Unit[];
+  models?: FloorPlanModel[];  // optional sub-layouts within this plan type
 }
 
 export interface Unit {
