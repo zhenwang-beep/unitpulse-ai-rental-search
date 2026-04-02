@@ -4,8 +4,8 @@ import { Property } from '../types';
 import PropertyDetailsModal from '../components/PropertyDetailsModal';
 import { useAppContext } from '../context/AppContext';
 
-const SUPABASE_URL = 'https://qrcajdeipgefbceaxswv.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyY2FqZGVpcGdlZmJjZWF4c3d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNzA1MjcsImV4cCI6MjA5MDY0NjUyN30.02X7yELYEzOmnBKRGP8fU8fKVFEA0xijLJTG63LSLhM';
+const SUPABASE_URL = 'https://gunthdnpdaodgyphkcfm.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1bnRoZG5wZGFvZGd5cGhrY2ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxNDYxMzgsImV4cCI6MjA5MDcyMjEzOH0.7bhmqA4FrxORwFOJoeeAsJB8nCQKm0dH-MeGHOt6EHI';
 const DB_HEADERS = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' };
 
 type OutletCtx = { isLoggedIn: boolean; setShowLoginView: (v: boolean) => void };
