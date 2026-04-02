@@ -165,10 +165,26 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
   const { favorites } = useAppContext();
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [isAtTop, setIsAtTop] = useState(true);
+  const lastScrollYRef = useRef(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const city = CITY_DATA.find(c => c.slug === citySlug);
   const details = citySlug ? CITY_DETAILS[citySlug] : undefined;
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const currentScrollY = e.currentTarget.scrollTop;
+    setIsAtTop(currentScrollY < 20);
+    if (currentScrollY < 100) {
+      setIsHeaderVisible(true);
+    } else if (currentScrollY > lastScrollYRef.current + 5) {
+      setIsHeaderVisible(false);
+    } else if (currentScrollY < lastScrollYRef.current - 5) {
+      setIsHeaderVisible(true);
+    }
+    lastScrollYRef.current = currentScrollY;
+  };
 
   useEffect(() => {
     if (!isDropdownOpen) return;
@@ -220,9 +236,9 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
   }
 
   return (
-    <div className="h-[100dvh] w-full bg-[#FCF9F8] text-black font-sans overflow-y-auto scroll-smooth">
+    <div className="h-[100dvh] w-full bg-[#FCF9F8] text-black font-sans overflow-y-auto scroll-smooth" onScroll={handleScroll}>
       {/* Header */}
-      <header className="w-full px-4 md:px-8 py-4 flex justify-between items-center z-[60] shrink-0 sticky top-0 bg-white shadow-sm">
+      <header className={`w-full px-4 md:px-8 py-4 flex justify-between items-center z-[60] shrink-0 transition-all duration-300 sticky top-0 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
         <div className="w-full flex justify-between items-center">
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/')}>
             <img src={LOGO_URL} alt="UnitPulse" className="h-8" />
