@@ -7,6 +7,7 @@ const SYNC_INTERVAL_MS = 60_000; // 60 seconds
 
 let syncTimer: ReturnType<typeof setInterval> | null = null;
 let isSyncing = false;
+let visibilityHandler: (() => void) | null = null;
 
 /**
  * Upsert the anonymous session record in Supabase.
@@ -39,6 +40,10 @@ async function syncEvents(): Promise<number> {
   const events = getEvents();
   if (events.length === 0) return 0;
 
+  // Snapshot the max timestamp before the async call so we only clear
+  // events that existed at this point (not ones added during the sync).
+  const cutoffTimestamp = Math.max(...events.map(e => e.timestamp));
+
   const rows = events.map(e => ({
     session_id: e.sessionId,
     event_type: e.type,
@@ -54,8 +59,9 @@ async function syncEvents(): Promise<number> {
     return 0;
   }
 
-  // Clear only the events we successfully synced
-  clearSyncedEvents(events.length);
+  // Clear only events up to the cutoff — any events added during the async
+  // sync will have a later timestamp and be preserved for the next batch.
+  clearSyncedEvents(cutoffTimestamp);
   return events.length;
 }
 
@@ -168,12 +174,12 @@ export function startSync(): void {
   }, SYNC_INTERVAL_MS);
 
   // Sync on page hide (tab close, navigate away)
-  document.addEventListener('visibilitychange', () => {
+  visibilityHandler = () => {
     if (document.visibilityState === 'hidden' && getEventCount() > 0) {
-      // Use sendBeacon-style: fire and forget
       runSync();
     }
-  });
+  };
+  document.addEventListener('visibilitychange', visibilityHandler);
 }
 
 /**
@@ -183,5 +189,9 @@ export function stopSync(): void {
   if (syncTimer) {
     clearInterval(syncTimer);
     syncTimer = null;
+  }
+  if (visibilityHandler) {
+    document.removeEventListener('visibilitychange', visibilityHandler);
+    visibilityHandler = null;
   }
 }

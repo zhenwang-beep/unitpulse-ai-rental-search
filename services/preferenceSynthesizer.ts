@@ -38,6 +38,14 @@ interface PropertyScores {
 function groupEventsByProperty(events: BehaviorEvent[]): Map<string, PropertyScores> {
   const map = new Map<string, PropertyScores>();
 
+  // First pass: count photo views per property for the 3+ threshold
+  const photoCountsByProp = new Map<string, number>();
+  for (const event of events) {
+    if (event.type === 'photo_view' && event.propertyId) {
+      photoCountsByProp.set(event.propertyId, (photoCountsByProp.get(event.propertyId) || 0) + 1);
+    }
+  }
+
   for (const event of events) {
     if (!event.propertyId) continue;
 
@@ -62,7 +70,10 @@ function groupEventsByProperty(events: BehaviorEvent[]): Map<string, PropertySco
         weight = EVENT_WEIGHTS.property_view;
         break;
       case 'photo_view':
-        weight = EVENT_WEIGHTS.photo_view_deep; // counted per-event, deduped below
+        // Only award deep engagement weight if 3+ photos viewed on this property
+        weight = (photoCountsByProp.get(event.propertyId) || 0) >= 3
+          ? EVENT_WEIGHTS.photo_view_deep
+          : 0;
         break;
       default:
         weight = 1;

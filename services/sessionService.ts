@@ -56,7 +56,7 @@ export async function getSession(): Promise<SessionInfo> {
 
   try {
     const response = await fetch(
-      'https://ip-api.com/json/?fields=city,regionName,country,lat,lon,query',
+      'http://ip-api.com/json/?fields=city,regionName,country,lat,lon,query',
       { signal: AbortSignal.timeout(5000) }
     );
     if (response.ok) {

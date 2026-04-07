@@ -64,18 +64,16 @@ export function clearEvents(): void {
 }
 
 /**
- * Clear only the events that were included in a sync batch,
- * keeping any new events that arrived during the sync.
+ * Clear events that were included in a sync batch by timestamp,
+ * keeping any new events that arrived during the async sync.
  */
-export function clearSyncedEvents(syncedCount: number): void {
-  let remaining = syncedCount;
+export function clearSyncedEvents(cutoffTimestamp: number): void {
   for (const [type, bucket] of eventBuffer.entries()) {
-    if (remaining <= 0) break;
-    const toRemove = Math.min(bucket.length, remaining);
-    bucket.splice(0, toRemove);
-    remaining -= toRemove;
-    if (bucket.length === 0) {
+    const remaining = bucket.filter(e => e.timestamp > cutoffTimestamp);
+    if (remaining.length === 0) {
       eventBuffer.delete(type);
+    } else {
+      eventBuffer.set(type, remaining);
     }
   }
 }
