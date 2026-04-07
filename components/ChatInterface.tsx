@@ -910,7 +910,7 @@ const CompactPropertyCard = ({
           {property.sqftRange && (
             <>
               <span className="text-neutral-300">·</span>
-              <span>{property.sqftRange} SF</span>
+              <span>{property.sqftRange.includes('SF') ? property.sqftRange : `${property.sqftRange} SF`}</span>
             </>
           )}
         </div>

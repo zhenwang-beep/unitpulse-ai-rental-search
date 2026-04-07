@@ -145,7 +145,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
           </div>
           <div className="flex items-center gap-1.5">
             <Ruler size={14} />
-            <span>{property.sqftRange || `${property.sqft}`} SF</span>
+            <span>{property.sqftRange ? (property.sqftRange.includes('SF') ? property.sqftRange : `${property.sqftRange} SF`) : `${property.sqft} SF`}</span>
           </div>
         </div>
         
