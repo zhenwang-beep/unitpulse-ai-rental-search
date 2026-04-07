@@ -1,3 +1,37 @@
+// --- Amenity Analysis Types ---
+
+export interface AmenityItem {
+  name: string;
+  confidence: number;
+}
+
+export interface CategorizedAmenities {
+  kitchen: AmenityItem[];
+  bathroom: AmenityItem[];
+  living: AmenityItem[];
+  bedroom: AmenityItem[];
+  outdoor: AmenityItem[];
+  building: AmenityItem[];
+  laundry: AmenityItem[];
+  other: AmenityItem[];
+}
+
+export interface AmenityAnalysisResult {
+  propertyId?: string;
+  amenities: CategorizedAmenities;
+  summary: string;
+  imageCount: number;
+}
+
+export function toFlatAmenityArray(amenities: CategorizedAmenities, minConfidence = 0.7): string[] {
+  return Object.values(amenities)
+    .flat()
+    .filter(item => item.confidence >= minConfidence)
+    .map(item => item.name);
+}
+
+// --- Property & Floor Plan Types ---
+
 export interface FloorPlanModel {
   name: string;       // e.g. "Layout A", "Corner Suite"
   sqft: string;       // e.g. "720 sqft"
