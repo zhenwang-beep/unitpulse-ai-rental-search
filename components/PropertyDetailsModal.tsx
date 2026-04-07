@@ -39,19 +39,6 @@ const BUILDING_AMENITIES = [
   { label: 'Storage Unit', category: 'Lifestyle' },
 ];
 
-const DEFAULT_FLOOR_PLANS = (seed: string | number) => [
-  { type: 'Studio', priceRange: '$1,800 - $2,100', sqft: '450 - 550', available: 3, image: `https://picsum.photos/seed/${seed}-fp-studio/800/560`, units: [
-    { id: 'Unit 101', price: '$1,850', sqft: '480', amenities: ['City View', 'Modern Kitchen'], image: `https://picsum.photos/seed/${seed}s1/400/300`, images: [`https://picsum.photos/seed/${seed}s1/1200/800`] },
-    { id: 'Unit 205', price: '$1,950', sqft: '510', amenities: ['High Floor', 'Balcony'], image: `https://picsum.photos/seed/${seed}s2/400/300`, images: [`https://picsum.photos/seed/${seed}s2/1200/800`] },
-  ]},
-  { type: '1B1B', priceRange: '$2,400 - $2,800', sqft: '700 - 850', available: 5, image: `https://picsum.photos/seed/${seed}-fp-1b1b/800/560`, units: [
-    { id: 'Unit 102', price: '$2,450', sqft: '720', amenities: ['Walk-in Closet', 'In-unit Laundry'], image: `https://picsum.photos/seed/${seed}1b1/400/300`, images: [`https://picsum.photos/seed/${seed}1b1/1200/800`] },
-    { id: 'Unit 201', price: '$2,550', sqft: '780', amenities: ['Garden View', 'Quiet Side'], image: `https://picsum.photos/seed/${seed}1b2/400/300`, images: [`https://picsum.photos/seed/${seed}1b2/1200/800`] },
-  ]},
-  { type: '2B2B', priceRange: '$3,500 - $4,200', sqft: '1,100 - 1,300', available: 2, image: `https://picsum.photos/seed/${seed}-fp-2b2b/800/560`, units: [
-    { id: 'Unit 601', price: '$3,600', sqft: '1,150', amenities: ['Penthouse Level', 'Private Terrace'], image: `https://picsum.photos/seed/${seed}2b1/400/300`, images: [`https://picsum.photos/seed/${seed}2b1/1200/800`] },
-  ]},
-];
 
 const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
   property,
@@ -97,7 +84,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
   if (!property) return null;
 
   const images = (property.images?.length ? property.images : [property.image || `https://picsum.photos/seed/${property.imageSeed}/1200/800`]);
-  const floorPlans = property.floorPlans?.length ? property.floorPlans : DEFAULT_FLOOR_PLANS(property.imageSeed);
+  const floorPlans = property.floorPlans ?? [];
   const matchScore = property.matchScore ?? 95;
 
   const openImage = (idx: number) => { setSelectedImageIndex(idx); setIsImageModalOpen(true); };
@@ -281,7 +268,20 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
           </div>
 
           {/* Floor Plans */}
-          {(() => {
+          {floorPlans.length === 0 ? (
+            <div className="space-y-4">
+              <h3 className="text-xs font-black text-black uppercase tracking-wider">Floor Plans</h3>
+              <div className="rounded-2xl border border-black/5 bg-neutral-50 p-6 text-center">
+                <p className="text-sm text-neutral-400">Floor plan details are not yet available for this property.</p>
+                <button
+                  onClick={() => setContactMode('inquire')}
+                  className="mt-3 px-4 py-2 bg-[#4A5D23] text-white rounded-full text-xs font-bold hover:bg-[#3a4e1a] transition-colors"
+                >
+                  Inquire for Details
+                </button>
+              </div>
+            </div>
+          ) : (() => {
             const totalAvailable = floorPlans.reduce((sum, p) => sum + p.available, 0);
             const visiblePlans = activePlanType === 'All' ? floorPlans : floorPlans.filter(p => p.type === activePlanType);
             const planTypes = ['All', ...floorPlans.map(p => p.type)];
