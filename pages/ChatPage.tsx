@@ -594,12 +594,12 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
             >
               {/* Drag pill — appears on hover */}
               <div className="w-[3px] h-8 rounded-full bg-transparent group-hover:bg-[#4A5D23]/40 transition-all duration-150" />
-              {/* Collapse button — positioned fully in chat panel area */}
+              {/* Collapse button — positioned at the right edge of the chat panel */}
               <button
                 onMouseDown={e => e.stopPropagation()}
                 onClick={() => setIsChatCollapsed(true)}
                 title="Collapse chat"
-                className="absolute top-4 left-full ml-2 z-[56] w-9 h-9 bg-white border border-black/10 rounded-full flex items-center justify-center shadow-md hover:bg-neutral-50 transition-colors"
+                className="fixed top-20 right-5 z-[61] w-9 h-9 bg-white border border-black/10 rounded-full flex items-center justify-center shadow-md hover:bg-neutral-50 transition-colors"
               >
                 <PanelRightClose size={12} />
               </button>
