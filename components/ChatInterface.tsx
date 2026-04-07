@@ -1416,7 +1416,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     }
   }, [contextProperty?.id]);
 
-  const showContextChip = contextProperty && !isCollapsed && !isLoading && contextProperty.id !== dismissedContextPropertyId;
+  const showContextChip = contextProperty && !isCollapsed && contextProperty.id !== dismissedContextPropertyId;
 
    return (
     <div className="flex-1 min-h-0 flex flex-col w-full relative h-full overflow-hidden bg-[#FCF9F8]">
@@ -1609,24 +1609,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
              ))}
              
              {isLoading && (
-               <div className="flex flex-col gap-3 animate-fade-in-up">
-                 <div className="flex items-center gap-2 ml-1">
-                   <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center text-white text-xs font-bold font-heading shrink-0">U</div>
-                   <span className="text-xs font-medium text-neutral-400 uppercase tracking-wider animate-pulse">
-                     {AI_STATUS_MESSAGES[aiStatusIndex]}
-                   </span>
-                 </div>
-                 <div className="bg-white border border-black/5 rounded-2xl p-5 space-y-3 shadow-sm">
-                   <div className="space-y-2">
-                     <div className="h-3 bg-neutral-100 rounded-full animate-pulse w-3/4" />
-                     <div className="h-3 bg-neutral-100 rounded-full animate-pulse w-full" />
-                     <div className="h-3 bg-neutral-100 rounded-full animate-pulse w-5/6" />
-                   </div>
-                   <div className="flex gap-2 pt-1">
-                     <div className="h-7 w-24 bg-neutral-100 rounded-full animate-pulse" />
-                     <div className="h-7 w-20 bg-neutral-100 rounded-full animate-pulse" />
-                   </div>
-                 </div>
+               <div className="flex items-center gap-2 ml-1 animate-fade-in-up">
+                 <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center text-white text-xs font-bold font-heading shrink-0">U</div>
+                 <span className="text-xs font-medium text-neutral-400 uppercase tracking-wider animate-pulse">
+                   {AI_STATUS_MESSAGES[aiStatusIndex]}
+                 </span>
                </div>
              )}
            </div>
