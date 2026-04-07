@@ -11,6 +11,7 @@ import { sendMessageToGemini } from '../services/geminiService';
 import { getFilteredProperties, getAllProperties } from '../services/propertyService';
 import { useAppContext } from '../context/AppContext';
 import { ToastData } from '../components/Toast';
+import { useTracker } from '../hooks/useTracker';
 import { ArrowRight, Search, Sun, TreePine, Music, PanelRightClose, PanelRightOpen, ChevronDown, RotateCcw, Loader2, AudioLines, MapPin, X, ShieldCheck, Heart, Bed, Bath, Ruler, Calendar, Phone, Sparkles, CheckCircle2, Zap, ChevronLeft, ChevronRight, Info, PenTool, FileText, Check, Menu, LogOut, User, ArrowLeftRight, Calculator, Target, Clock, Building, Settings, HelpCircle, Eye, EyeOff } from 'lucide-react';
 
 declare global {
@@ -32,9 +33,11 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
   const { chatId } = useParams<{ chatId: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const isPropertyPanelOpen = !!useMatch('/search/:chatId/property/:propertyId');
+  const propertyPanelMatch = useMatch('/search/:chatId/property/:propertyId');
+  const isPropertyPanelOpen = !!propertyPanelMatch;
 
-  const { allThreads, updateThread, favorites, toggleFavorite, renameThread, deleteThread, addThread, userPreferences, addPreferences, removePreference } = useAppContext();
+  const { allThreads, updateThread, favorites, toggleFavorite, renameThread, deleteThread, addThread, userPreferences, addPreferences, removePreference, refreshPreferenceProfile } = useAppContext();
+  const { trackSearch, trackFilterChange, trackComparison } = useTracker();
 
   const handleResetChat = () => {
     deleteThread(chatId!);
@@ -138,12 +141,22 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
     return () => window.removeEventListener('resize', update);
   }, []);
 
+  // Track which propertyId we've already logged a comparison for
+  const lastComparedId = useRef<string | null>(null);
+
   // Reset collapse + mobile tab when panel opens/closes
   useEffect(() => {
     if (!isPropertyPanelOpen) {
       setIsChatCollapsed(false);
+      lastComparedId.current = null; // reset so re-opening same property tracks again
     } else {
       setMobileTab('listing');
+      // Track comparison view when property panel opens (deduplicated)
+      const panelPropertyId = propertyPanelMatch?.params?.propertyId;
+      if (panelPropertyId && panelPropertyId !== lastComparedId.current) {
+        lastComparedId.current = panelPropertyId;
+        trackComparison(panelPropertyId);
+      }
     }
   }, [isPropertyPanelOpen]);
 
@@ -216,6 +229,9 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
     abortRef.current = controller;
     setIsLoading(true);
 
+    // Track the search query
+    trackSearch(text);
+
     const userMsg: ChatMessage = {
       id: Date.now().toString(),
       role: 'user',
@@ -226,7 +242,11 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
     setMessages(prev => [...prev, userMsg]);
 
     const history = messages.slice(-6).map(m => ({ role: m.role, text: m.text }));
-    const response = await sendMessageToGemini(text, history, null, controller.signal, allDbProperties);
+
+    // Synthesize latest preference profile before sending to Gemini
+    const currentProfile = await refreshPreferenceProfile(allDbProperties);
+
+    const response = await sendMessageToGemini(text, history, null, controller.signal, allDbProperties, currentProfile);
 
     if (controller.signal.aborted) return;
     setIsLoading(false);
@@ -239,6 +259,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
       if (shouldSearch) {
         const newFilters = { ...currentFilters, ...response.filters };
         setCurrentFilters(newFilters);
+        trackFilterChange(newFilters);
         results = await getFilteredProperties(newFilters);
       }
 

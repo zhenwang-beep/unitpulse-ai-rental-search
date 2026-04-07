@@ -112,3 +112,65 @@ export interface GeminiResponse {
   sources?: Source[];
   extractedPreferences?: UserPreference[];
 }
+
+// --- Behavioral Preference Intelligence Types ---
+
+export type EventType =
+  | 'property_view'
+  | 'dwell_time'
+  | 'favorite'
+  | 'unfavorite'
+  | 'share'
+  | 'tour_schedule'
+  | 'filter_change'
+  | 'scroll_depth'
+  | 'photo_view'
+  | 'search_query'
+  | 'comparison';
+
+export interface BehaviorEvent {
+  type: EventType;
+  propertyId?: string;
+  payload: Record<string, unknown>;
+  timestamp: number;
+  sessionId: string;
+}
+
+export interface SessionInfo {
+  sessionId: string;
+  ipHash: string;
+  geo: {
+    city: string;
+    region: string;
+    country: string;
+    lat: number;
+    lng: number;
+  } | null;
+  createdAt: number;
+  lastSeen: number;
+}
+
+export interface WeightedPreference {
+  value: string;
+  weight: number;
+  source: 'behavioral' | 'chat' | 'ip-geo';
+  count: number;
+}
+
+export interface PreferenceProfile {
+  locationPreferences: WeightedPreference[];
+  budgetRange: { min: number; max: number; confidence: number };
+  bedroomPreference: WeightedPreference[];
+  propertyTypePreference: WeightedPreference[];
+  amenityPreferences: WeightedPreference[];
+  lifestyleSignals: WeightedPreference[];
+  engagementSummary: {
+    totalViews: number;
+    avgDwellTimeMs: number;
+    favoritesCount: number;
+    toursScheduled: number;
+    photoEngagementRate: number;
+  };
+  naturalLanguageSummary: string;
+  lastUpdated: number;
+}

@@ -3,6 +3,7 @@ import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
 import { Property } from '../types';
 import PropertyDetailsModal from '../components/PropertyDetailsModal';
 import { useAppContext } from '../context/AppContext';
+import { useDwellTime } from '../hooks/useTracker';
 
 const SUPABASE_URL = 'https://gunthdnpdaodgyphkcfm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1bnRoZG5wZGFvZGd5cGhrY2ZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxNDYxMzgsImV4cCI6MjA5MDcyMjEzOH0.7bhmqA4FrxORwFOJoeeAsJB8nCQKm0dH-MeGHOt6EHI';
@@ -18,6 +19,9 @@ const PropertyPanel: React.FC = () => {
 
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Track how long the user spends viewing this property
+  useDwellTime(propertyId);
 
   useEffect(() => {
     if (!propertyId) return;

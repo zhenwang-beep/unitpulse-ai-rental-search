@@ -6,6 +6,7 @@ import { AI_AVATAR, SUGGESTION_CHIPS } from '../constants';
 import PropertyCard from './PropertyCard';
 import ContactFormModal from './ContactFormModal';
 import RenterProfilePopover, { CircularProgress } from './RenterProfilePopover';
+import { track } from '../services/tracker';
 
 interface ChatInterfaceProps {
   messages: ChatMessage[];
@@ -36,16 +37,20 @@ export const RichMediaCanvas = ({ property, onAction }: { property: Property, on
 
   const nextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    const newIndex = (currentImageIndex + 1) % images.length;
+    setCurrentImageIndex(newIndex);
+    track('photo_view', property.id, { imageIndex: newIndex, totalImages: images.length });
   };
 
   const prevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+    const newIndex = (currentImageIndex - 1 + images.length) % images.length;
+    setCurrentImageIndex(newIndex);
+    track('photo_view', property.id, { imageIndex: newIndex, totalImages: images.length });
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="w-full bg-white rounded-3xl overflow-hidden border border-black/5 shadow-2xl mt-4"

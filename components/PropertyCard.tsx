@@ -3,6 +3,7 @@ import { Property } from '../types';
 import { Heart, MapPin, Bed, Bath, Ruler, Star, ChevronLeft, ChevronRight, Phone, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import ContactFormModal from './ContactFormModal';
+import { useTracker } from '../hooks/useTracker';
 
 interface PropertyCardProps {
   property: Property;
@@ -18,15 +19,20 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showTourModal, setShowTourModal] = useState(false);
   const images = property.images || [`https://picsum.photos/seed/${property.imageSeed}/800/600`];
+  const { trackView, trackPhotoNav, trackFavorite, trackTourSchedule } = useTracker();
 
   const nextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    const newIndex = (currentImageIndex + 1) % images.length;
+    setCurrentImageIndex(newIndex);
+    trackPhotoNav(property.id, newIndex, images.length);
   };
 
   const prevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+    const newIndex = (currentImageIndex - 1 + images.length) % images.length;
+    setCurrentImageIndex(newIndex);
+    trackPhotoNav(property.id, newIndex, images.length);
   };
 
   return (
@@ -35,7 +41,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
       className="group relative bg-white rounded-xl hover:shadow-xl transition-all duration-500 overflow-hidden border border-black/5 cursor-pointer h-full flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => onClick?.(property)}
+      onClick={() => { trackView(property); onClick?.(property); }}
     >
       {/* Image Container */}
       <div className="relative h-56 overflow-hidden shrink-0">
@@ -97,6 +103,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
         <button
           onClick={(e) => {
             e.stopPropagation();
+            trackFavorite(property.id, !isFavorite);
             onToggleFavorite(property);
           }}
           aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
@@ -171,7 +178,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
             <span className="truncate">(123) 456-7890</span>
           </button>
           <button
-            onClick={(e) => { e.stopPropagation(); setShowTourModal(true); }}
+            onClick={(e) => { e.stopPropagation(); trackTourSchedule(property.id); setShowTourModal(true); }}
             aria-label="Schedule a tour"
             className="flex-1 py-2.5 bg-[#4A5D23] hover:bg-[#3a4e1a] text-white rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-1.5"
           >

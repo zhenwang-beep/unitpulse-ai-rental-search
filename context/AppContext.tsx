@@ -1,5 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { ChatMessage, Property, UserPreference } from '../types';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import { ChatMessage, Property, UserPreference, PreferenceProfile } from '../types';
+import { getSession } from '../services/sessionService';
+import { startSync, loadProfile, loadHistoricalEvents, runSync } from '../services/syncService';
+import { getEvents } from '../services/tracker';
+import { synthesize } from '../services/preferenceSynthesizer';
+import { getSessionSync } from '../services/sessionService';
 
 type Thread = { messages: ChatMessage[]; title: string };
 type AllThreads = Record<string, Thread>;
@@ -17,6 +22,8 @@ interface AppContextValue {
   addPreferences: (newItems: UserPreference[]) => void;
   removePreference: (category: string, label: string) => void;
   clearPreferences: () => void;
+  preferenceProfile: PreferenceProfile | null;
+  refreshPreferenceProfile: (properties: Property[]) => Promise<PreferenceProfile | null>;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -142,8 +149,65 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     localStorage.removeItem(PREF_STORAGE_KEY);
   };
 
+  // --- Behavioral Preference Intelligence ---
+  const [preferenceProfile, setPreferenceProfile] = useState<PreferenceProfile | null>(null);
+  const sessionInitialized = useRef(false);
+  const historicalEventsRef = useRef<import('../types').BehaviorEvent[]>([]);
+  const initPromiseRef = useRef<Promise<void> | null>(null);
+
+  // Initialize session + sync on mount
+  useEffect(() => {
+    if (sessionInitialized.current) return;
+    sessionInitialized.current = true;
+
+    initPromiseRef.current = (async () => {
+      await getSession(); // Ensures sessionId + geo are in localStorage
+      startSync();        // Start periodic Supabase sync
+
+      // Load historical events from Supabase for cross-session continuity
+      const [stored, historical] = await Promise.all([
+        loadProfile(),
+        loadHistoricalEvents(),
+      ]);
+      historicalEventsRef.current = historical;
+
+      if (stored) {
+        setPreferenceProfile(stored);
+      }
+    })();
+  }, []);
+
+  // Synthesize profile on demand (called before Gemini calls)
+  const refreshPreferenceProfile = useCallback(
+    async (properties: Property[]): Promise<PreferenceProfile | null> => {
+      // Wait for session + historical events to be loaded
+      if (initPromiseRef.current) {
+        await initPromiseRef.current;
+      }
+
+      const session = getSessionSync();
+      const currentEvents = getEvents();
+      // Merge historical (from Supabase) + current buffer (from this session)
+      const allEvents = [...historicalEventsRef.current, ...currentEvents];
+
+      // Only synthesize if we have events or chat preferences
+      if (allEvents.length === 0 && userPreferences.length === 0 && !session?.geo) {
+        return preferenceProfile; // Return cached
+      }
+
+      const profile = synthesize(allEvents, userPreferences, properties, session?.geo);
+      setPreferenceProfile(profile);
+
+      // Trigger a sync with the updated profile
+      runSync(profile);
+
+      return profile;
+    },
+    [userPreferences, preferenceProfile]
+  );
+
   return (
-    <AppContext.Provider value={{ allThreads, addThread, updateThread, renameThread, deleteThread, favorites, toggleFavorite, clearFavorites, userPreferences, addPreferences, removePreference, clearPreferences }}>
+    <AppContext.Provider value={{ allThreads, addThread, updateThread, renameThread, deleteThread, favorites, toggleFavorite, clearFavorites, userPreferences, addPreferences, removePreference, clearPreferences, preferenceProfile, refreshPreferenceProfile }}>
       {children}
     </AppContext.Provider>
   );
