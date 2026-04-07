@@ -9,7 +9,7 @@ const dbHeaders = {
   'Content-Type': 'application/json',
 };
 
-const rowToProperty = (row: Record<string, unknown>): Property => ({
+export const rowToProperty = (row: Record<string, unknown>): Property => ({
   id: row.id as string,
   title: row.title as string,
   location: row.location as string,
@@ -70,6 +70,17 @@ export const getFilteredProperties = async (filters: SearchFilters): Promise<Pro
   } catch (e) {
     console.error('Property fetch error:', e);
     return [];
+  }
+};
+
+export const getPropertyById = async (id: string): Promise<Property | null> => {
+  try {
+    const resp = await fetch(`${SUPABASE_URL}/rest/v1/properties?id=eq.${id}&select=*&limit=1`, { headers: dbHeaders });
+    if (!resp.ok) return null;
+    const rows: Record<string, unknown>[] = await resp.json();
+    return rows.length > 0 ? rowToProperty(rows[0]) : null;
+  } catch {
+    return null;
   }
 };
 
