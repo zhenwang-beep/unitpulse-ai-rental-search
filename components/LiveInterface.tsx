@@ -236,10 +236,10 @@ const LiveInterface: React.FC<LiveInterfaceProps> = ({ onClose, onMessage, onTog
                  for (const fc of message.toolCall.functionCalls) {
                     if (fc.name === 'searchProperties') {
                        const filters = fc.args as any;
-                       const results = getFilteredProperties(filters);
+                       const results = await getFilteredProperties(filters);
                        setSearchResults(results);
-                       pendingPropertiesRef.current = results; 
-                       
+                       pendingPropertiesRef.current = results;
+
                        sessionPromiseRef.current?.then(session => {
                          session.sendToolResponse({
                            functionResponses: [{
