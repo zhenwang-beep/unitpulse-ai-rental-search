@@ -15,6 +15,8 @@ import RentalMarketsPage from './pages/RentalMarketsPage';
 import CityRentalPage from './pages/CityRentalPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
+import PartnerPage from './pages/PartnerPage';
+import UpleasingPrivacyPage from './pages/UpleasingPrivacyPage';
 import TestPage from './pages/TestPage';
 import FavoritesPage from './components/FavoritesPage';
 import Toast, { ToastData } from './components/Toast';
@@ -253,6 +255,26 @@ const AppShell: React.FC = () => {
         } />
         <Route path="/terms" element={
           <TermsPage
+            isLoggedIn={isLoggedIn}
+            isDropdownOpen={isDropdownOpen}
+            setIsDropdownOpen={setIsDropdownOpen}
+            setShowLoginView={setShowLoginView}
+            handleLogout={handleLogout}
+            showToast={setToast}
+          />
+        } />
+        <Route path="/upleasing-privacy" element={
+          <UpleasingPrivacyPage
+            isLoggedIn={isLoggedIn}
+            isDropdownOpen={isDropdownOpen}
+            setIsDropdownOpen={setIsDropdownOpen}
+            setShowLoginView={setShowLoginView}
+            handleLogout={handleLogout}
+            showToast={setToast}
+          />
+        } />
+        <Route path="/partner" element={
+          <PartnerPage
             isLoggedIn={isLoggedIn}
             isDropdownOpen={isDropdownOpen}
             setIsDropdownOpen={setIsDropdownOpen}

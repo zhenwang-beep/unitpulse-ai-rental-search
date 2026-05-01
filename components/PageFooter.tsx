@@ -28,16 +28,16 @@ const PageFooter: React.FC = () => (
             <h4 className="font-bold text-black mb-4 text-sm uppercase tracking-wider">For partners</h4>
             <ul className="space-y-3 text-sm text-neutral-500">
               <li><a href="/partner" className="hover:text-black transition-colors">Become a partner</a></li>
-              <li><a href="/partner#features" className="hover:text-black transition-colors">Features</a></li>
+              <li><a href="/partner#agents" className="hover:text-black transition-colors">Features</a></li>
               <li><a href="/partner#pricing" className="hover:text-black transition-colors">Pricing</a></li>
-              <li><a href="/partner#contact" className="hover:text-black transition-colors">Contact sales</a></li>
+              <li><a href="/partner" className="hover:text-black transition-colors">Contact sales</a></li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold text-black mb-4 text-sm uppercase tracking-wider">Company</h4>
             <ul className="space-y-3 text-sm text-neutral-500">
-              <li><a href="/partner#about" className="hover:text-black transition-colors">About us</a></li>
-              <li><a href="/partner#contact" className="hover:text-black transition-colors">Contact</a></li>
+              <li><a href="/partner" className="hover:text-black transition-colors">About us</a></li>
+              <li><a href="/partner" className="hover:text-black transition-colors">Contact</a></li>
             </ul>
           </div>
           <div>
