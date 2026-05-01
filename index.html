@@ -19,17 +19,20 @@
               heading: ['"Manrope"', 'sans-serif'],
             },
             colors: {
+              // Olive (primary brand). Semantic tokens — see design.md.
               brand: {
-                50: '#f9f9f9',
-                100: '#f2f2f2',
-                200: '#e5e5e5',
-                300: '#d4d4d4',
-                400: '#a3a3a3',
-                500: '#737373',
-                600: '#525252',
-                700: '#404040',
-                800: '#262626',
-                900: '#171717',
+                DEFAULT: '#4A5D23',
+                hover: '#3a4e1a',
+                'on-dark': '#A8B97D',  // For use on bg-black / dark surfaces
+                text: '#243510',       // Body text on AI tint
+                heading: '#1a2609',    // Headings on AI tint
+              },
+              // Cream/warm-neutral surfaces.
+              surface: {
+                app: '#FCF9F8',        // App background, sticky bars, modal panels
+                '2': '#F4F1EE',        // Pricing tables, amenity chips, tag bg
+                ai: '#F4F7EC',         // AI Lifestyle Match, olive-accent info sections
+                footer: '#F0EDEA',     // Landing page footer
               },
             },
             animation: {
