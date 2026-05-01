@@ -111,7 +111,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
             onToggleFavorite(property);
           }}
           aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-          className={`absolute top-3 right-3 w-11 h-11 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 ${isFavorite ? 'bg-black text-white' : 'bg-white/20 text-white hover:bg-white hover:text-black'}`}
+          className={`absolute top-3 right-3 w-11 h-11 md:w-10 md:h-10 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 ${isFavorite ? 'bg-black text-white' : 'bg-white/20 text-white hover:bg-white hover:text-black'}`}
         >
           <Heart size={16} fill={isFavorite ? "currentColor" : "none"} />
         </button>

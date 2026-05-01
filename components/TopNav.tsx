@@ -112,14 +112,14 @@ const TopNav: React.FC<TopNavProps> = ({
                 e.preventDefault();
                 navigate('/');
               }}
-              className="inline-flex items-center min-h-11 text-sm font-medium hover:text-black/60 transition-colors"
+              className="inline-flex items-center text-sm font-medium hover:text-black/60 transition-colors"
             >
               Find a home
             </a>
             <a
               href="/partner"
               onClick={handlePartnerClick}
-              className="inline-flex items-center min-h-11 text-sm font-medium hover:text-black/60 transition-colors"
+              className="inline-flex items-center text-sm font-medium hover:text-black/60 transition-colors"
             >
               Become a partner
             </a>
@@ -161,7 +161,7 @@ const TopNav: React.FC<TopNavProps> = ({
             ) : (
               <button
                 onClick={() => setShowLoginView(true)}
-                className="px-5 py-2.5 min-h-11 bg-brand text-white rounded-lg text-sm font-medium hover:bg-brand-hover transition-all"
+                className="px-5 py-2.5 md:py-2 min-h-11 md:min-h-0 bg-brand text-white rounded-lg text-sm font-medium hover:bg-brand-hover transition-all"
               >
                 Login
               </button>

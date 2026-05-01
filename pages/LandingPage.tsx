@@ -374,7 +374,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     }
                   }}
                   aria-label={hasLandingText ? "Search" : "Start voice search"}
-                  className={`h-11 w-11 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 ${isMultiline ? 'mb-1' : ''} ${
+                  className={`h-11 w-11 md:h-10 md:w-10 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 ${isMultiline ? 'mb-1' : ''} ${
                     hasLandingText
                       ? 'bg-brand text-white hover:bg-brand-hover'
                       : 'bg-brand text-white hover:bg-brand-hover'
@@ -433,7 +433,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 <button
                   key={index}
                   onClick={() => navigate('/search', { state: { query: chip.query } })}
-                  className="group flex items-center gap-2 px-3 min-h-11 bg-white/80 backdrop-blur-md border border-black/5 rounded-full hover:bg-brand hover:text-white transition-all duration-500 hover:shadow-lg hover:shadow-brand/20 hover:-translate-y-0.5"
+                  className="group flex items-center gap-2 px-3 py-2 min-h-11 md:min-h-0 bg-white/80 backdrop-blur-md border border-black/5 rounded-full hover:bg-brand hover:text-white transition-all duration-500 hover:shadow-lg hover:shadow-brand/20 hover:-translate-y-0.5"
                 >
                   <div className="w-6 h-6 rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500 border border-black/5">
                     <img src={chip.image} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
@@ -488,7 +488,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     <button
                       key={city}
                       onClick={() => setSelectedCity(city)}
-                      className={`px-4 min-h-11 inline-flex items-center justify-center rounded-full text-xs font-bold tracking-wider transition-all border shrink-0 ${
+                      className={`px-4 py-2 min-h-11 md:min-h-0 inline-flex items-center justify-center rounded-full text-xs font-bold tracking-wider transition-all border shrink-0 ${
                         selectedCity === city
                           ? 'bg-black text-white border-black'
                           : 'bg-white text-neutral-500 border-black/10 hover:border-black hover:text-black'

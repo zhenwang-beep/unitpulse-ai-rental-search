@@ -1816,7 +1816,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                      onClick={onStartLiveMode}
                      disabled={isLoading || hasText}
                      aria-label="Start voice mode"
-                     className={`w-11 h-11 flex items-center justify-center rounded-full transition-all ${hasText ? 'text-neutral-200 cursor-not-allowed' : 'text-neutral-400 hover:text-black hover:bg-neutral-100'}`}
+                     className={`w-11 h-11 md:w-10 md:h-10 flex items-center justify-center rounded-full transition-all ${hasText ? 'text-neutral-200 cursor-not-allowed' : 'text-neutral-400 hover:text-black hover:bg-neutral-100'}`}
                      title="Live Mode"
                    >
                      <AudioLines size={20} />

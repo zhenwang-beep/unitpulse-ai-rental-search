@@ -537,7 +537,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                 <span className="text-sm font-black tracking-wider">{property.title}</span>
                 <span className="text-xs font-bold opacity-60 uppercase tracking-wider">{selectedImageIndex + 1} / {images.length}</span>
               </div>
-              <button onClick={() => setIsImageModalOpen(false)} aria-label="Close photo viewer" className="w-11 h-11 flex items-center justify-center hover:bg-white/10 rounded-full transition-all">
+              <button onClick={() => setIsImageModalOpen(false)} aria-label="Close photo viewer" className="w-11 h-11 md:w-10 md:h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-all">
                 <X size={22} />
               </button>
             </div>
@@ -673,7 +673,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                   <button
                     onClick={() => setShowShareModal(false)}
                     aria-label="Close share dialog"
-                    className="w-11 h-11 flex items-center justify-center rounded-full text-neutral-400 hover:text-black hover:bg-neutral-100 transition-colors"
+                    className="w-11 h-11 md:w-10 md:h-10 flex items-center justify-center rounded-full text-neutral-400 hover:text-black hover:bg-neutral-100 transition-colors"
                   >
                     <X size={18} />
                   </button>
