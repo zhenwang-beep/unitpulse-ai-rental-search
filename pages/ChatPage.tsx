@@ -13,6 +13,7 @@ import { useAppContext } from '../context/AppContext';
 import { ToastData } from '../components/Toast';
 import { useTracker } from '../hooks/useTracker';
 import { ArrowRight, Search, Sun, TreePine, Music, PanelRightClose, PanelRightOpen, ChevronDown, RotateCcw, Loader2, AudioLines, MapPin, X, ShieldCheck, Heart, Bed, Bath, Ruler, Calendar, Phone, Sparkles, CheckCircle2, Zap, ChevronLeft, ChevronRight, Info, PenTool, FileText, Check, Menu, LogOut, User, ArrowLeftRight, Calculator, Target, Clock, Building, Settings, HelpCircle, Eye, EyeOff } from 'lucide-react';
+import { FEATURES } from '../featureFlags';
 
 declare global {
   interface Window {
@@ -369,8 +370,8 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
   // --- CHAT VIEW (Main Interface) ---
   return (
     <div className="flex flex-col h-[100dvh] w-full bg-surface-app font-sans text-black overflow-hidden">
-       {/* Live Interface Overlay */}
-       {isLiveMode && (
+       {/* Live Interface Overlay — gated on AI_VOICE; tree-shaken when off. */}
+       {FEATURES.AI_VOICE && isLiveMode && (
          <LiveInterface
            onClose={() => setIsLiveMode(false)}
            onMessage={handleLiveMessage}

@@ -11,6 +11,7 @@ import { ArrowRight, Search, AudioLines, ChevronDown, ChevronLeft, ChevronRight,
 import { ToastData } from '../components/Toast';
 import PageFooter from '../components/PageFooter';
 import TopNav from '../components/TopNav';
+import { FEATURES } from '../featureFlags';
 
 const PLACEHOLDER_PROMPTS = [
   "A modern loft in SoHo under $3000...",
@@ -220,8 +221,13 @@ const LandingPage: React.FC<LandingPageProps> = ({
   const handleLandingSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!landingInput.trim()) return;
-    navigate('/search', { state: { query: landingInput } });
+    if (FEATURES.AI_CHAT) {
+      navigate('/search', { state: { query: landingInput } });
+    }
+    // When AI_CHAT is OFF, the input acts as a live keyword filter — landingInput
+    // is already wired into filteredProperties below, so submitting just blurs.
     setLandingGhostText('');
+    landingInputRef.current?.blur();
   };
 
   const handleLandingInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -252,7 +258,13 @@ const LandingPage: React.FC<LandingPageProps> = ({
       }
       if (e.key === 'Enter' && !e.shiftKey && dropdownIndex >= 0) {
         e.preventDefault();
-        navigate('/search', { state: { query: dropdownSuggestions[dropdownIndex] } });
+        const choice = dropdownSuggestions[dropdownIndex];
+        if (FEATURES.AI_CHAT) {
+          navigate('/search', { state: { query: choice } });
+        } else {
+          setLandingInput(choice);
+          setIsLandingFocused(false);
+        }
         return;
       }
     }
@@ -285,8 +297,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
       className="h-[100dvh] w-full bg-surface-app flex flex-col text-black font-sans overflow-y-auto scroll-smooth"
       onScroll={handleLandingScroll}
     >
-      {/* Live Interface Overlay */}
-      {isLiveMode && (
+      {/* Live Interface Overlay — gated on AI_VOICE; tree-shaken when off. */}
+      {FEATURES.AI_VOICE && isLiveMode && (
         <LiveInterface
           onClose={() => setIsLiveMode(false)}
           onMessage={() => {}}
@@ -364,24 +376,23 @@ const LandingPage: React.FC<LandingPageProps> = ({
                   </div>
                 )}
 
-                {/* Combined Action Button */}
-                <button
-                  type={hasLandingText ? "submit" : "button"}
-                  onClick={(e) => {
-                    if (!hasLandingText) {
-                      e.preventDefault();
-                      setIsLiveMode(true);
-                    }
-                  }}
-                  aria-label={hasLandingText ? "Search" : "Start voice search"}
-                  className={`h-11 w-11 md:h-10 md:w-10 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 ${isMultiline ? 'mb-1' : ''} ${
-                    hasLandingText
-                      ? 'bg-brand text-white hover:bg-brand-hover'
-                      : 'bg-brand text-white hover:bg-brand-hover'
-                  }`}
-                >
-                  {hasLandingText ? <ArrowRight size={20} /> : <AudioLines size={20} />}
-                </button>
+                {/* Combined Action Button — submit on text, voice when empty.
+                    When AI_VOICE is OFF and there's no text, hide the button entirely. */}
+                {(hasLandingText || FEATURES.AI_VOICE) && (
+                  <button
+                    type={hasLandingText ? "submit" : "button"}
+                    onClick={(e) => {
+                      if (!hasLandingText) {
+                        e.preventDefault();
+                        if (FEATURES.AI_VOICE) setIsLiveMode(true);
+                      }
+                    }}
+                    aria-label={hasLandingText ? "Search" : "Start voice search"}
+                    className={`h-11 w-11 md:h-10 md:w-10 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 ${isMultiline ? 'mb-1' : ''} bg-brand text-white hover:bg-brand-hover`}
+                  >
+                    {hasLandingText ? <ArrowRight size={20} /> : <AudioLines size={20} />}
+                  </button>
+                )}
               </div>
             </div>
             {/* Suggestions Dropdown */}
@@ -406,7 +417,12 @@ const LandingPage: React.FC<LandingPageProps> = ({
                         type="button"
                         onMouseDown={(e) => {
                           e.preventDefault();
-                          navigate('/search', { state: { query: s } });
+                          if (FEATURES.AI_CHAT) {
+                            navigate('/search', { state: { query: s } });
+                          } else {
+                            setLandingInput(s);
+                            setIsLandingFocused(false);
+                          }
                         }}
                         onMouseEnter={() => setDropdownIndex(i)}
                         className={`w-full text-left px-5 py-3 flex items-center gap-3 transition-colors text-sm ${
@@ -432,7 +448,13 @@ const LandingPage: React.FC<LandingPageProps> = ({
               {SUGGESTION_CHIPS.map((chip, index) => (
                 <button
                   key={index}
-                  onClick={() => navigate('/search', { state: { query: chip.query } })}
+                  onClick={() => {
+                    if (FEATURES.AI_CHAT) {
+                      navigate('/search', { state: { query: chip.query } });
+                    } else {
+                      setLandingInput(chip.query);
+                    }
+                  }}
                   className="group flex items-center gap-2 px-3 py-2 min-h-11 md:min-h-0 bg-white/80 backdrop-blur-md border border-black/5 rounded-full hover:bg-brand hover:text-white transition-all duration-500 hover:shadow-lg hover:shadow-brand/20 hover:-translate-y-0.5"
                 >
                   <div className="w-6 h-6 rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500 border border-black/5">
@@ -503,7 +525,23 @@ const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {(() => {
-            const filteredProperties = landingProperties.filter(p => selectedCity === 'All' || p.location.includes(selectedCity));
+            const keyword = landingInput.trim().toLowerCase();
+            const filteredProperties = landingProperties.filter((p) => {
+              if (selectedCity !== 'All' && !p.location.includes(selectedCity)) return false;
+              // When AI_CHAT is OFF, the input doubles as a live keyword filter so users can
+              // still narrow results without a conversational AI search.
+              if (!FEATURES.AI_CHAT && keyword) {
+                const haystack = [
+                  p.title,
+                  p.location,
+                  p.type,
+                  p.description,
+                  ...(p.amenities ?? []),
+                ].join(' ').toLowerCase();
+                return haystack.includes(keyword);
+              }
+              return true;
+            });
             return (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredProperties.map((p) => (
@@ -512,7 +550,13 @@ const LandingPage: React.FC<LandingPageProps> = ({
                       property={p}
                       isFavorite={favorites.some(f => f.id === p.id)}
                       onToggleFavorite={handleToggleFavorite}
-                      onClick={(property: Property) => navigate('/search', { state: { propertyId: property.id } })}
+                      onClick={(property: Property) => {
+                        if (FEATURES.AI_CHAT) {
+                          navigate('/search', { state: { propertyId: property.id } });
+                        } else {
+                          navigate(`/property/${property.id}`);
+                        }
+                      }}
                     />
                   </div>
                 ))}

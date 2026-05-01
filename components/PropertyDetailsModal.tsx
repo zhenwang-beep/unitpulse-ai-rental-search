@@ -4,6 +4,7 @@ import { Property, FloorPlan, Unit } from '../types';
 import { X, MapPin, Bed, Bath, Ruler, Sparkles, Heart, Check, Calendar, FileText, ChevronDown, Menu, ChevronLeft, ChevronRight, Building2, MessageSquare, Loader2, Share, Link2, Mail, MessageCircle, Copy } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import ContactFormModal from './ContactFormModal';
+import { FEATURES } from '../featureFlags';
 
 interface PropertyDetailsModalProps {
   property: Property | null;
@@ -181,10 +182,12 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-1 bg-black text-white text-xs font-black uppercase tracking-wider rounded-full">New Listing</span>
-              <span className="px-2.5 py-1 bg-brand text-white text-xs font-black uppercase tracking-wider rounded-full flex items-center gap-1">
-                <Sparkles size={10} />
-                {matchScore}% Match
-              </span>
+              {FEATURES.AI_LIFESTYLE_MATCH && (
+                <span className="px-2.5 py-1 bg-brand text-white text-xs font-black uppercase tracking-wider rounded-full flex items-center gap-1">
+                  <Sparkles size={10} />
+                  {matchScore}% Match
+                </span>
+              )}
             </div>
             <h1 className="text-2xl font-black font-heading tracking-tight text-black leading-none">{property.title}</h1>
             <div className="flex items-center gap-1.5 text-neutral-400 font-bold text-sm">
@@ -212,7 +215,8 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
             ))}
           </div>
 
-          {/* AI Lifestyle Match */}
+          {/* AI Lifestyle Match — gated on AI_LIFESTYLE_MATCH; tree-shaken when off. */}
+          {FEATURES.AI_LIFESTYLE_MATCH && (
           <div className="bg-gradient-to-br from-surface-ai to-surface-ai/50 rounded-2xl p-5 border border-brand/15 relative overflow-hidden">
             <div className="flex items-center justify-between gap-2 mb-3">
               <div className="flex items-center gap-2">
@@ -267,6 +271,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
               );
             })()}
           </div>
+          )}
 
           {/* Floor Plans */}
           {floorPlans.length === 0 ? (
