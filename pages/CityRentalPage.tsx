@@ -236,7 +236,7 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
       {/* Hero */}
       <div className="w-full max-w-6xl mx-auto px-4 pt-6 pb-10">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="relative rounded-[2rem] overflow-hidden h-72 md:h-96">
-          <img src={city.image} alt={`${city.name} skyline`} className="w-full h-full object-cover" />
+          <img src={city.image} alt={`${city.name} skyline`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
           <div className="absolute bottom-0 left-0 p-8">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-black uppercase tracking-wider mb-4">

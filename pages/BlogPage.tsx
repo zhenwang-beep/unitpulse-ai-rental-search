@@ -192,9 +192,11 @@ const BlogPage: React.FC<BlogPageProps> = ({
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <div className="rounded-lg overflow-hidden">
-                  <img 
-                    src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" 
-                    alt="Blog feature" 
+                  <img
+                    src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80"
+                    alt="Blog feature"
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-auto"
                   />
                 </div>
@@ -218,9 +220,11 @@ const BlogPage: React.FC<BlogPageProps> = ({
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="relative h-64 md:h-auto overflow-hidden">
-                    <img 
-                      src={blog.image} 
-                      alt={blog.title} 
+                    <img
+                      src={blog.image}
+                      alt={blog.title}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
@@ -285,9 +289,11 @@ const BlogPage: React.FC<BlogPageProps> = ({
                 transition={{ duration: 0.4, delay: index * 0.1 }}
               >
                 <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={article.image} 
-                    alt={article.title} 
+                  <img
+                    src={article.image}
+                    alt={article.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>

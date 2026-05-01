@@ -347,6 +347,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     onBlur={() => setTimeout(() => setIsLandingFocused(false), 150)}
                     onKeyDown={handleLandingKeyDown}
                     placeholder=""
+                    aria-label="Describe your ideal home"
                     rows={1}
                     className="flex-1 bg-transparent border-0 p-0 text-black focus:ring-0 focus:outline-none text-sm md:text-lg min-w-0 w-full relative z-10 resize-none overflow-hidden leading-normal font-sans tracking-normal"
                     style={{ maxHeight: '200px' }}
@@ -372,7 +373,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
                       setIsLiveMode(true);
                     }
                   }}
-                  className={`h-10 w-10 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 ${isMultiline ? 'mb-1' : ''} ${
+                  aria-label={hasLandingText ? "Search" : "Start voice search"}
+                  className={`h-11 w-11 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 ${isMultiline ? 'mb-1' : ''} ${
                     hasLandingText
                       ? 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
                       : 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
@@ -431,10 +433,10 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 <button
                   key={index}
                   onClick={() => navigate('/search', { state: { query: chip.query } })}
-                  className="group flex items-center gap-2 px-3 py-2 bg-white/80 backdrop-blur-md border border-black/5 rounded-full hover:bg-[#4A5D23] hover:text-white transition-all duration-500 hover:shadow-lg hover:shadow-[#4A5D23]/20 hover:-translate-y-0.5"
+                  className="group flex items-center gap-2 px-3 min-h-11 bg-white/80 backdrop-blur-md border border-black/5 rounded-full hover:bg-[#4A5D23] hover:text-white transition-all duration-500 hover:shadow-lg hover:shadow-[#4A5D23]/20 hover:-translate-y-0.5"
                 >
                   <div className="w-6 h-6 rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500 border border-black/5">
-                    <img src={chip.image} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    <img src={chip.image} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                   </div>
                   <span className="text-xs font-medium whitespace-nowrap">{chip.label}</span>
                 </button>
@@ -452,7 +454,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
               {cityScrollState.canScrollLeft && (
                 <button
                   onClick={() => scrollCityChips('left')}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-md border border-black/5 text-neutral-500 hover:text-black transition-colors md:hidden"
+                  aria-label="Scroll cities left"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 flex items-center justify-center rounded-full bg-white shadow-md border border-black/5 text-neutral-500 hover:text-black transition-colors md:hidden"
                 >
                   <ChevronLeft size={16} />
                 </button>
@@ -460,7 +463,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
               {cityScrollState.canScrollRight && (
                 <button
                   onClick={() => scrollCityChips('right')}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-md border border-black/5 text-neutral-500 hover:text-black transition-colors md:hidden"
+                  aria-label="Scroll cities right"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 flex items-center justify-center rounded-full bg-white shadow-md border border-black/5 text-neutral-500 hover:text-black transition-colors md:hidden"
                 >
                   <ChevronRight size={16} />
                 </button>
@@ -484,7 +488,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     <button
                       key={city}
                       onClick={() => setSelectedCity(city)}
-                      className={`px-4 py-1.5 rounded-full text-xs font-bold tracking-wider transition-all border shrink-0 ${
+                      className={`px-4 min-h-11 inline-flex items-center justify-center rounded-full text-xs font-bold tracking-wider transition-all border shrink-0 ${
                         selectedCity === city
                           ? 'bg-black text-white border-black'
                           : 'bg-white text-neutral-500 border-black/10 hover:border-black hover:text-black'

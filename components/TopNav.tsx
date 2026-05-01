@@ -112,14 +112,14 @@ const TopNav: React.FC<TopNavProps> = ({
                 e.preventDefault();
                 navigate('/');
               }}
-              className="text-sm font-medium hover:text-black/60 transition-colors"
+              className="inline-flex items-center min-h-11 text-sm font-medium hover:text-black/60 transition-colors"
             >
               Find a home
             </a>
             <a
               href="/partner"
               onClick={handlePartnerClick}
-              className="text-sm font-medium hover:text-black/60 transition-colors"
+              className="inline-flex items-center min-h-11 text-sm font-medium hover:text-black/60 transition-colors"
             >
               Become a partner
             </a>
@@ -161,7 +161,7 @@ const TopNav: React.FC<TopNavProps> = ({
             ) : (
               <button
                 onClick={() => setShowLoginView(true)}
-                className="px-5 py-2 bg-[#4A5D23] text-white rounded-lg text-sm font-medium hover:bg-[#3a4e1a] transition-all"
+                className="px-5 py-2.5 min-h-11 bg-[#4A5D23] text-white rounded-lg text-sm font-medium hover:bg-[#3a4e1a] transition-all"
               >
                 Login
               </button>
@@ -211,7 +211,8 @@ const TopNav: React.FC<TopNavProps> = ({
                 )}
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="p-2 hover:bg-neutral-100 rounded-full transition-colors"
+                  aria-label="Close menu"
+                  className="w-11 h-11 flex items-center justify-center hover:bg-neutral-100 rounded-full transition-colors"
                 >
                   <X size={20} />
                 </button>

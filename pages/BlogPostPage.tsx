@@ -320,9 +320,11 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
                         transition={{ duration: 0.4, delay: index * 0.1 }}
                       >
                         <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
-                          <img 
-                            src={post.image} 
-                            alt={post.title} 
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-full object-cover"
                           />
                         </div>

@@ -378,7 +378,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                               className="w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-black/5 cursor-pointer group"
                               onClick={() => { setSelectedImageIndex(0); setIsImageModalOpen(true); }}
                             >
-                              <img src={section.image} alt="Floor plan" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" referrerPolicy="no-referrer" />
+                              <img src={section.image} alt="Floor plan" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" referrerPolicy="no-referrer" />
                             </div>
                           )}
                         </div>
@@ -536,7 +536,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                 <span className="text-sm font-black tracking-wider">{property.title}</span>
                 <span className="text-xs font-bold opacity-60 uppercase tracking-wider">{selectedImageIndex + 1} / {images.length}</span>
               </div>
-              <button onClick={() => setIsImageModalOpen(false)} className="p-3 hover:bg-white/10 rounded-full transition-all">
+              <button onClick={() => setIsImageModalOpen(false)} aria-label="Close photo viewer" className="w-11 h-11 flex items-center justify-center hover:bg-white/10 rounded-full transition-all">
                 <X size={22} />
               </button>
             </div>
@@ -574,9 +574,11 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                 <button
                   key={idx}
                   onClick={() => setSelectedImageIndex(idx)}
+                  aria-label={`View photo ${idx + 1}`}
+                  aria-current={selectedImageIndex === idx ? 'true' : undefined}
                   className={`w-14 h-14 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${selectedImageIndex === idx ? 'border-[#4A5D23]' : 'border-transparent opacity-40 hover:opacity-80'}`}
                 >
-                  <img src={img} className="w-full h-full object-cover" referrerPolicy="no-referrer" alt="" />
+                  <img src={img} loading="lazy" decoding="async" className="w-full h-full object-cover" referrerPolicy="no-referrer" alt="" />
                 </button>
               ))}
             </div>
@@ -669,7 +671,8 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                   <h3 className="text-base font-bold text-black">Share this property</h3>
                   <button
                     onClick={() => setShowShareModal(false)}
-                    className="p-1.5 rounded-full text-neutral-400 hover:text-black hover:bg-neutral-100 transition-colors"
+                    aria-label="Close share dialog"
+                    className="w-11 h-11 flex items-center justify-center rounded-full text-neutral-400 hover:text-black hover:bg-neutral-100 transition-colors"
                   >
                     <X size={18} />
                   </button>

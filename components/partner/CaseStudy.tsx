@@ -130,7 +130,7 @@ const CaseStudy: React.FC = () => {
                                                 : 'w-12 h-12 border-transparent grayscale opacity-40 hover:opacity-100 hover:grayscale-0'
                                             }`}
                       >
-                        <img src={study.avatar} alt={study.person} className="w-full h-full object-cover" />
+                        <img src={study.avatar} alt={study.person} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                       </button>
                     ))}
                   </div>

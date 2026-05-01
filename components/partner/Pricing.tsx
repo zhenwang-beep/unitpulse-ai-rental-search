@@ -186,9 +186,11 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
           <div className="max-w-6xl mx-auto mt-16 rounded-3xl overflow-hidden relative group shadow-2xl">
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 w-full h-full">
-              <img 
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
-                alt="Modern Architecture" 
+              <img
+                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"
+                alt="Modern Architecture"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-1000"
                 referrerPolicy="no-referrer"
               />

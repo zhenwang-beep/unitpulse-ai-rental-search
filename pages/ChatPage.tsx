@@ -729,9 +729,11 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
                   <button
                     key={idx}
                     onClick={() => setSelectedPropertyImageIndex(idx)}
+                    aria-label={`View photo ${idx + 1}`}
+                    aria-current={selectedPropertyImageIndex === idx ? 'true' : undefined}
                     className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${selectedPropertyImageIndex === idx ? 'border-emerald-500' : 'border-transparent opacity-40 hover:opacity-100'}`}
                   >
-                    <img src={img} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    <img src={img} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                   </button>
                 ))}
               </div>

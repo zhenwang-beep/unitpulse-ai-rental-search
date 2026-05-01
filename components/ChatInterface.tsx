@@ -440,7 +440,7 @@ const ContractSummary = ({ property, onComplete }: { property: Property, onCompl
         <div className="p-4 bg-white rounded-2xl border border-black/5 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl overflow-hidden">
-              <img src={property.image} alt={property.title} className="w-full h-full object-cover" />
+              <img src={property.image} alt={property.title} loading="lazy" decoding="async" className="w-full h-full object-cover" />
             </div>
             <div>
               <div className="text-sm font-bold text-black">{property.title.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</div>
@@ -1029,7 +1029,7 @@ const PropertyComparisonTable = ({
                   <td className="px-3 py-3">
                     <div className="flex items-center gap-2">
                       <div className="relative w-8 h-8 rounded-lg overflow-hidden shrink-0 border border-black/5">
-                        <img src={property.images?.[0] || property.image} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                        <img src={property.images?.[0] || property.image} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                       </div>
                       <div className="min-w-0">
                         <div className="text-xs font-medium tracking-tight truncate group-hover:text-[#4A5D23] transition-colors">{property.title}</div>
@@ -1470,7 +1470,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                        onClick={() => onSendMessage(chip.query)}
                        className="group relative overflow-hidden rounded-2xl border border-black/5 bg-white hover:border-[#4A5D23]/20 hover:shadow-lg transition-all duration-200 text-left"
                      >
-                       <img src={chip.image} alt="" className="w-full h-20 object-cover" referrerPolicy="no-referrer" />
+                       <img src={chip.image} alt="" loading="lazy" decoding="async" className="w-full h-20 object-cover" referrerPolicy="no-referrer" />
                        <div className="px-3 py-2.5">
                          <span className="text-xs font-bold text-black">{chip.label}</span>
                        </div>
@@ -1811,11 +1811,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
                <div className="flex items-center gap-4">
                  <div className="flex items-center gap-2">
-                   <button 
+                   <button
                      type="button"
                      onClick={onStartLiveMode}
                      disabled={isLoading || hasText}
-                     className={`p-2 rounded-full transition-all ${hasText ? 'text-neutral-200 cursor-not-allowed' : 'text-neutral-400 hover:text-black hover:bg-neutral-100'}`}
+                     aria-label="Start voice mode"
+                     className={`w-11 h-11 flex items-center justify-center rounded-full transition-all ${hasText ? 'text-neutral-200 cursor-not-allowed' : 'text-neutral-400 hover:text-black hover:bg-neutral-100'}`}
                      title="Live Mode"
                    >
                      <AudioLines size={20} />
