@@ -66,6 +66,36 @@ needs engineering to turn these into real fields:
   (e.g. "2-bedroom apartments in Koreatown"). Generate at build time only
   for combinations with ≥3 actual listings to avoid thin-content penalties.
 
+## SEO when AI_CHAT re-enables (architectural)
+
+The URL hierarchy is fully SEO-friendly today **only because AI_CHAT is off
+in production**. When AI_CHAT enables later, canonical URLs like
+`/ca/los-angeles/sawyer-koreatown` redirect to
+`/search/<thread>/property/<id>` and render inside the chat panel — which
+has no breadcrumbs, no `BreadcrumbList` JSON-LD, and no canonical URL
+signal. Search engines would index the chat URL instead of the canonical
+one, losing the SEO investment in the hierarchy.
+
+This is not solved by adding breadcrumbs to the chat panel (the redirect
+itself is the issue, not the panel UI). Real options when AI_CHAT enables:
+
+1. **Don't redirect canonical URLs.** Render `PropertyDetailPage` directly
+   for `/{state}/{city}/{slug}` and offer "Continue in chat" as an
+   affordance. Chat lives in its own URL space (`/chat/...`); canonical
+   URLs always render the indexable page. Cleanest option.
+2. **Emit canonical signal + property schema in the chat panel.** Keep
+   the redirect, but inject `<link rel="canonical" href="/{state}/{city}/{slug}">`
+   and the full property `RealEstateListing`/`Apartment` schema into the
+   chat-panel HTML. Engines may still prefer the canonical URL for
+   indexing.
+3. **Pre-render canonical pages for crawlers.** Detect bots, serve the
+   non-redirected canonical content. Adds infra complexity (SSR or a
+   pre-render service); least preferred.
+
+Decide before flipping `AI_CHAT=true` in production. Recommend (1) — it
+also keeps URL-shareability working naturally without requiring users to
+mentally model the chat-thread layer.
+
 ## Sitemap, robots.txt, llms.txt
 
 When the URL hierarchy is real (post-Phase 2):

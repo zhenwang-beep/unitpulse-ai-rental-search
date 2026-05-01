@@ -168,7 +168,7 @@ const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
 
       {/* Breadcrumbs + page-level actions on the same row.
           Breadcrumbs also rendered as BreadcrumbList JSON-LD for SEO. */}
-      <div className="w-full px-4 md:px-8 py-3 bg-white border-b border-black/5">
+      <div className="w-full px-4 md:px-8 py-3">
         <div className="max-w-7xl mx-auto flex items-center gap-3">
           <nav aria-label="Breadcrumb" className="flex-1 min-w-0">
             <ol className="flex items-center gap-2 text-xs text-neutral-500 flex-wrap">

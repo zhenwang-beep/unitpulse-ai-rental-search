@@ -239,7 +239,7 @@ const CityIndexPage: React.FC<CityIndexPageProps> = ({
         variant="sticky-static"
       />
 
-      <nav aria-label="Breadcrumb" className="w-full px-4 md:px-8 py-3 bg-white border-b border-black/5">
+      <nav aria-label="Breadcrumb" className="w-full px-4 md:px-8 py-3">
         <ol className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-neutral-500 flex-wrap">
           <li className="flex items-center gap-2">
             <Link to="/" className="inline-flex items-center gap-1 hover:text-black transition-colors">
