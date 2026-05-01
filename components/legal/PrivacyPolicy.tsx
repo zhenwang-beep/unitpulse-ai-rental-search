@@ -7,7 +7,7 @@ const PrivacyPolicy: React.FC = () => {
   }, []);
 
   return (
-    <section className="pt-40 pb-24 bg-white min-h-screen">
+    <section className="pt-12 md:pt-16 pb-24 bg-[#FCF9F8]">
       <div className="max-w-4xl mx-auto px-6">
         <FadeIn>
           <h1 className="font-serif text-5xl text-black mb-6">Privacy Policy</h1>

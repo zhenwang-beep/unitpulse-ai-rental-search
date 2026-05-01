@@ -45,7 +45,6 @@ const PageFooter: React.FC = () => (
             <ul className="space-y-3 text-sm text-neutral-500">
               <li><a href="/privacy" className="hover:text-black transition-colors">Privacy Policy</a></li>
               <li><a href="/terms" className="hover:text-black transition-colors">Terms of Service</a></li>
-              <li><a href="/upleasing-privacy" className="hover:text-black transition-colors">Upleasing Privacy</a></li>
             </ul>
           </div>
         </div>

@@ -27,13 +27,8 @@ const PartnerPage: React.FC<PartnerPageProps> = ({
   setShowLoginView,
   handleLogout,
 }) => {
-  const [scrollY, setScrollY] = useState(0);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [prefilledEmail, setPrefilledEmail] = useState('');
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    setScrollY(e.currentTarget.scrollTop);
-  };
 
   const openContactModal = (emailOrEvent?: string | React.MouseEvent) => {
     if (typeof emailOrEvent === 'string') {
@@ -54,8 +49,11 @@ const PartnerPage: React.FC<PartnerPageProps> = ({
     }, 100);
   }, []);
 
+  // PartnerPage uses natural body scroll (rather than the rental site's inner-scroll container)
+  // so framer-motion's `useScroll` in FeatureCanvas can track window scroll for its animations.
+  // TopNav falls back to window.scrollY when no scrollY prop is passed.
   return (
-    <div className="h-[100dvh] w-full bg-[#FCF9F8] text-black font-sans overflow-y-auto scroll-smooth" onScroll={handleScroll}>
+    <div className="w-full bg-[#FCF9F8] text-black font-sans">
       <TopNav
         isLoggedIn={isLoggedIn}
         isDropdownOpen={isDropdownOpen}
@@ -63,7 +61,6 @@ const PartnerPage: React.FC<PartnerPageProps> = ({
         setShowLoginView={setShowLoginView}
         handleLogout={handleLogout}
         variant="sticky-scroll"
-        scrollY={scrollY}
       />
 
       <main>
