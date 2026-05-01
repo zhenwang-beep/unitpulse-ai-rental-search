@@ -36,13 +36,14 @@ const SearchRedirect: React.FC = () => {
     addThread(PERSISTENT_THREAD_ID, 'UnitPulse', initialMessages);
   }
 
-  const destination = propertyId
-    ? `/search/${PERSISTENT_THREAD_ID}/property/${propertyId}`
-    : `/search/${PERSISTENT_THREAD_ID}`;
-
+  // Always land on the chat page itself. Even when a propertyId is passed
+  // (e.g. from clicking a card on the landing page), the user should see the
+  // chat first and click into a property card from there — not have the
+  // detail panel auto-open over the chat. The propertyId is forwarded as
+  // initial-message context only, used inside the assistant greeting above.
   return (
     <Navigate
-      to={destination}
+      to={`/search/${PERSISTENT_THREAD_ID}`}
       state={{ query }}
       replace
     />
