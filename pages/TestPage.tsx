@@ -9,7 +9,7 @@ const TestPage: React.FC = () => {
       <h1 className="text-3xl font-bold mb-8">Test Page</h1>
       <button 
         onClick={() => navigate('/')}
-        className="px-6 py-3 bg-brand text-white rounded-lg font-medium hover:bg-brand-hover transition-colors"
+        className="px-6 py-3 bg-[#4A5D23] text-white rounded-lg font-medium hover:bg-[#3a4e1a] transition-colors"
       >
         Go back to Home
       </button>

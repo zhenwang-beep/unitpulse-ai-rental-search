@@ -114,7 +114,7 @@ const RentalMarketsPage: React.FC<RentalMarketsPageProps> = ({
   }, []);
 
   return (
-    <div className="h-[100dvh] w-full bg-app-bg text-black font-sans overflow-y-auto scroll-smooth" onScroll={handleScroll}>
+    <div className="h-[100dvh] w-full bg-[#FCF9F8] text-black font-sans overflow-y-auto scroll-smooth" onScroll={handleScroll}>
       <TopNav
         isLoggedIn={isLoggedIn}
         isDropdownOpen={isDropdownOpen}
@@ -128,12 +128,12 @@ const RentalMarketsPage: React.FC<RentalMarketsPageProps> = ({
       {/* Hero */}
       <div className="w-full max-w-6xl mx-auto px-4 pt-16 pb-10 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand/10 text-brand text-xs font-black uppercase tracking-wider mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#4A5D23]/10 text-[#4A5D23] text-xs font-black uppercase tracking-wider mb-6">
             <TrendingUp size={14} />
             Market Insights
           </div>
           <h1 className="text-4xl md:text-6xl font-black font-heading tracking-tighter text-black mb-6">
-            Rental Markets <span className="text-brand">by City</span>
+            Rental Markets <span style={{ color: '#4A5D23' }}>by City</span>
           </h1>
           <p className="text-neutral-500 text-lg max-w-2xl mx-auto leading-relaxed">
             Explore rental trends, average prices, and neighborhood guides for top US cities. Find the perfect market for your next home.
@@ -145,7 +145,7 @@ const RentalMarketsPage: React.FC<RentalMarketsPageProps> = ({
       <div className="w-full max-w-6xl mx-auto px-4 mb-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { icon: Building, label: 'Cities Covered', value: '6+', color: 'bg-brand/10 text-brand' },
+            { icon: Building, label: 'Cities Covered', value: '6+', color: 'bg-[#4A5D23]/10 text-[#4A5D23]' },
             { icon: Home, label: 'Active Listings', value: '4,730+', color: 'bg-blue-50 text-blue-600' },
             { icon: DollarSign, label: 'Avg National Rent', value: '$2,467', color: 'bg-amber-50 text-amber-600' },
             { icon: Users, label: 'Renters Helped', value: '12,000+', color: 'bg-purple-50 text-purple-600' },
@@ -209,7 +209,7 @@ const RentalMarketsPage: React.FC<RentalMarketsPageProps> = ({
                     </div>
                   </div>
                   <div className="mt-4 pt-4 border-t border-black/5 flex items-center justify-between">
-                    <span className="text-sm font-semibold text-brand group-hover:translate-x-0.5 transition-transform">Explore market →</span>
+                    <span className="text-sm font-semibold text-[#4A5D23] group-hover:translate-x-0.5 transition-transform">Explore market →</span>
                   </div>
                 </div>
               </div>

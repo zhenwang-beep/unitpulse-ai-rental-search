@@ -368,7 +368,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
 
   // --- CHAT VIEW (Main Interface) ---
   return (
-    <div className="flex flex-col h-[100dvh] w-full bg-app-bg font-sans text-black overflow-hidden">
+    <div className="flex flex-col h-[100dvh] w-full bg-[#FCF9F8] font-sans text-black overflow-hidden">
        {/* Live Interface Overlay */}
        {isLiveMode && (
          <LiveInterface
@@ -379,7 +379,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
          />
        )}
 
-       <header className={`fixed top-0 left-0 right-0 px-4 md:px-8 py-4 flex justify-between items-center z-[60] transition-all duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isPropertyPanelOpen ? 'bg-white border-b border-black/10' : isAtTop ? 'bg-app-bg' : 'bg-white shadow-sm'}`}>
+       <header className={`fixed top-0 left-0 right-0 px-4 md:px-8 py-4 flex justify-between items-center z-[60] transition-all duration-300 ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'} ${isPropertyPanelOpen ? 'bg-white border-b border-black/10' : isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`}>
           <div className="w-full flex justify-between items-center">
             <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/')}>
                <img src={LOGO_URL} alt="UnitPulse" className="h-8" />
@@ -394,7 +394,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
                     className="w-10 h-10 rounded-full bg-neutral-100 border border-black/5 flex items-center justify-center overflow-hidden cursor-pointer hover:border-black transition-all"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
-                    <span className="w-full h-full bg-brand text-white text-xs font-black flex items-center justify-center">FZ</span>
+                    <span className="w-full h-full bg-[#4A5D23] text-white text-xs font-black flex items-center justify-center">FZ</span>
                   </div>
                   {isDropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-black/5 py-2 z-[70]">
@@ -405,7 +405,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
                         <Heart size={16} />
                         Favorites
                         {favorites.length > 0 && (
-                          <span className="ml-auto w-5 h-5 bg-brand text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                          <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
                             {favorites.length}
                           </span>
                         )}
@@ -422,7 +422,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
               ) : (
                 <button
                   onClick={() => setShowLoginView(true)}
-                  className="px-5 py-2 bg-brand text-white rounded-lg text-sm font-medium hover:bg-brand-hover transition-all"
+                  className="px-5 py-2 bg-[#4A5D23] text-white rounded-lg text-sm font-medium hover:bg-[#3a4e1a] transition-all"
                 >
                   Login
                 </button>
@@ -464,7 +464,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
                <div className="p-5 flex flex-col gap-5">
                  {isLoggedIn ? (
                    <div className="flex items-center gap-4 p-4 bg-neutral-50 rounded-2xl border border-black/5">
-                     <div className="w-12 h-12 rounded-full bg-brand text-white text-sm font-black flex items-center justify-center shadow-sm">FZ</div>
+                     <div className="w-12 h-12 rounded-full bg-[#4A5D23] text-white text-sm font-black flex items-center justify-center shadow-sm">FZ</div>
                      <div className="flex flex-col">
                        <span className="text-sm font-bold text-neutral-900">Felix Zhou</span>
                        <span className="text-xs font-medium text-neutral-500">felix.zhou@gmail.com</span>
@@ -476,7 +476,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
                      <p className="text-sm text-neutral-500">Sign in to save your favorite homes and track applications.</p>
                      <button
                        onClick={() => { setShowLoginView(true); setIsHistoryOpen(false); }}
-                       className="w-full py-3 bg-brand text-white rounded-xl text-sm font-medium hover:bg-brand-hover transition-all"
+                       className="w-full py-3 bg-[#4A5D23] text-white rounded-xl text-sm font-medium hover:bg-[#3a4e1a] transition-all"
                      >
                        Login / Sign up
                      </button>
@@ -496,7 +496,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
                        <Heart size={20} className="text-neutral-400" />
                        Saved Homes
                        {favorites.length > 0 && (
-                         <span className="ml-auto w-5 h-5 bg-brand text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                         <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
                            {favorites.length}
                          </span>
                        )}
@@ -553,13 +553,13 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
          <div className="fixed top-[69px] inset-x-0 z-[58] bg-white border-b border-black/10 flex">
            <button
              onClick={() => setMobileTab('listing')}
-             className={`flex-1 py-3 text-sm font-semibold transition-colors ${mobileTab === 'listing' ? 'text-black border-b-2 border-brand' : 'text-neutral-400'}`}
+             className={`flex-1 py-3 text-sm font-semibold transition-colors ${mobileTab === 'listing' ? 'text-black border-b-2 border-[#4A5D23]' : 'text-neutral-400'}`}
            >
              Listing
            </button>
            <button
              onClick={() => setMobileTab('chat')}
-             className={`flex-1 py-3 text-sm font-semibold transition-colors ${mobileTab === 'chat' ? 'text-black border-b-2 border-brand' : 'text-neutral-400'}`}
+             className={`flex-1 py-3 text-sm font-semibold transition-colors ${mobileTab === 'chat' ? 'text-black border-b-2 border-[#4A5D23]' : 'text-neutral-400'}`}
            >
              Chat
            </button>
@@ -590,10 +590,10 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
           {isPropertyPanelOpen && !isChatCollapsed && (
             <div
               onMouseDown={handleDividerMouseDown}
-              className="hidden lg:flex w-1 shrink-0 flex-col items-center justify-center cursor-col-resize select-none relative z-[55] group border-l border-black/10 hover:border-brand/30 hover:bg-brand/5 transition-colors"
+              className="hidden lg:flex w-1 shrink-0 flex-col items-center justify-center cursor-col-resize select-none relative z-[55] group border-l border-black/10 hover:border-[#4A5D23]/30 hover:bg-[#4A5D23]/5 transition-colors"
             >
               {/* Drag pill — appears on hover */}
-              <div className="w-[3px] h-8 rounded-full bg-transparent group-hover:bg-brand/40 transition-all duration-150" />
+              <div className="w-[3px] h-8 rounded-full bg-transparent group-hover:bg-[#4A5D23]/40 transition-all duration-150" />
               {/* Collapse button — positioned at the right edge of the chat panel */}
               <button
                 onMouseDown={e => e.stopPropagation()}
@@ -660,7 +660,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ isLoggedIn, setShowLoginView, setPe
               whileDrag={{ scale: 1.08 }}
             >
               <div className="relative">
-                <div className="w-12 h-12 rounded-full border-2 border-white shadow-xl bg-brand flex items-center justify-center text-white text-sm font-black group-hover:scale-105 transition-transform">
+                <div className="w-12 h-12 rounded-full border-2 border-white shadow-xl bg-[#4A5D23] flex items-center justify-center text-white text-sm font-black group-hover:scale-105 transition-transform">
                   U
                 </div>
                 <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-white" />

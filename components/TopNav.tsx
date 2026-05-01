@@ -92,7 +92,7 @@ const TopNav: React.FC<TopNavProps> = ({
       ? 'w-full px-4 md:px-8 py-4 flex justify-between items-center z-[60] shrink-0 transition-all duration-300 sticky top-0 bg-white shadow-sm'
       : `w-full px-4 md:px-8 py-4 flex justify-between items-center z-[60] shrink-0 transition-all duration-300 sticky top-0 ${
           isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
-        } ${isAtTop ? 'bg-app-bg' : 'bg-white shadow-sm'}`;
+        } ${isAtTop ? 'bg-[#FCF9F8]' : 'bg-white shadow-sm'}`;
 
   return (
     <>
@@ -129,7 +129,7 @@ const TopNav: React.FC<TopNavProps> = ({
                   className="w-10 h-10 rounded-full bg-neutral-100 border border-black/5 flex items-center justify-center overflow-hidden cursor-pointer hover:border-black transition-all"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  <span className="w-full h-full bg-brand text-white text-xs font-black flex items-center justify-center">
+                  <span className="w-full h-full bg-[#4A5D23] text-white text-xs font-black flex items-center justify-center">
                     FZ
                   </span>
                 </div>
@@ -144,7 +144,7 @@ const TopNav: React.FC<TopNavProps> = ({
                     >
                       <Heart size={16} /> Favorites
                       {favorites.length > 0 && (
-                        <span className="ml-auto w-5 h-5 bg-brand text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                        <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
                           {favorites.length}
                         </span>
                       )}
@@ -161,7 +161,7 @@ const TopNav: React.FC<TopNavProps> = ({
             ) : (
               <button
                 onClick={() => setShowLoginView(true)}
-                className="px-5 py-2 bg-brand text-white rounded-lg text-sm font-medium hover:bg-brand-hover transition-all"
+                className="px-5 py-2 bg-[#4A5D23] text-white rounded-lg text-sm font-medium hover:bg-[#3a4e1a] transition-all"
               >
                 Login
               </button>
@@ -198,7 +198,7 @@ const TopNav: React.FC<TopNavProps> = ({
               <div className="p-6 border-b border-black/5 flex justify-between items-center">
                 {isLoggedIn ? (
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-brand text-white text-xs font-black flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-[#4A5D23] text-white text-xs font-black flex items-center justify-center">
                       FZ
                     </div>
                     <div>
@@ -256,7 +256,7 @@ const TopNav: React.FC<TopNavProps> = ({
                     >
                       <Heart size={20} className="text-neutral-400" /> Favorites
                       {favorites.length > 0 && (
-                        <span className="ml-auto w-5 h-5 bg-brand text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                        <span className="ml-auto w-5 h-5 bg-[#4A5D23] text-white text-[10px] font-black rounded-full flex items-center justify-center">
                           {favorites.length}
                         </span>
                       )}
@@ -278,7 +278,7 @@ const TopNav: React.FC<TopNavProps> = ({
                       setShowLoginView(true);
                       setIsMenuOpen(false);
                     }}
-                    className="mt-4 w-full px-5 py-3 bg-brand text-white rounded-xl text-sm font-bold hover:bg-brand-hover transition-all"
+                    className="mt-4 w-full px-5 py-3 bg-[#4A5D23] text-white rounded-xl text-sm font-bold hover:bg-[#3a4e1a] transition-all"
                   >
                     Login
                   </button>

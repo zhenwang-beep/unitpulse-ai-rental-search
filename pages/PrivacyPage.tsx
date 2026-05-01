@@ -27,7 +27,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({
   };
 
   return (
-    <div className="h-[100dvh] w-full bg-app-bg text-black font-sans overflow-y-auto scroll-smooth" onScroll={handleScroll}>
+    <div className="h-[100dvh] w-full bg-[#FCF9F8] text-black font-sans overflow-y-auto scroll-smooth" onScroll={handleScroll}>
       <TopNav
         isLoggedIn={isLoggedIn}
         isDropdownOpen={isDropdownOpen}

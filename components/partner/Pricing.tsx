@@ -43,11 +43,11 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
 
               <ul className="space-y-4 mb-8 flex-1">
                 <li className="flex items-start gap-3 text-sm text-neutral-600">
-                  <Check size={16} className="text-brand mt-0.5 shrink-0" />
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Automated Listing Syndication</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-neutral-600">
-                  <Check size={16} className="text-brand mt-0.5 shrink-0" />
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Real-time Ad Optimization</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-neutral-600">
@@ -88,13 +88,13 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
 
           {/* UP Leasing — featured tier */}
           <FadeIn delay={200} className="h-full">
-            <div className="h-full p-8 rounded-2xl border-2 border-brand/25 bg-ai-tint flex flex-col transition-all hover:border-brand/40 hover:shadow-2xl hover:shadow-brand/15 shadow-xl shadow-brand/10 relative group transform md:-translate-y-6 overflow-hidden ring-1 ring-brand/10">
-              <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-brand text-white text-[10px] font-black uppercase tracking-wider shadow-md">
+            <div className="h-full p-8 rounded-2xl border-2 border-[#4A5D23]/25 bg-[#F4F7EC] flex flex-col transition-all hover:border-[#4A5D23]/40 hover:shadow-2xl hover:shadow-[#4A5D23]/15 shadow-xl shadow-[#4A5D23]/10 relative group transform md:-translate-y-6 overflow-hidden ring-1 ring-[#4A5D23]/10">
+              <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[#4A5D23] text-white text-[10px] font-black uppercase tracking-wider shadow-md">
                 Most Popular
               </div>
               <div className="mb-6">
                 <h3 className="font-heading text-2xl font-bold text-black mb-2">UP Leasing</h3>
-                <p className="text-sm text-brand font-bold uppercase tracking-wider">The Closer</p>
+                <p className="text-sm text-[#4A5D23] font-bold uppercase tracking-wider">The Closer</p>
               </div>
               
               <div className="mb-8">
@@ -108,26 +108,26 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
 
               <ul className="space-y-4 mb-8 flex-1">
                 <li className="flex items-start gap-3 text-sm text-neutral-600">
-                  <Check size={16} className="text-brand mt-0.5 shrink-0" />
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>24/7 AI Lead Engagement</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-neutral-600">
-                  <Check size={16} className="text-brand mt-0.5 shrink-0" />
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Autonomous Tour Scheduling</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-neutral-600">
-                  <Check size={16} className="text-brand mt-0.5 shrink-0" />
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Application & Lease Automation</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-neutral-600">
-                  <Check size={16} className="text-brand mt-0.5 shrink-0" />
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Zero Upfront Cost</span>
                 </li>
               </ul>
 
               <button
                 onClick={onOpenModal}
-                className="w-full py-4 rounded-xl bg-brand text-white font-semibold text-sm uppercase tracking-widest hover:bg-brand-hover transition-all shadow-xl shadow-brand/10 hover:shadow-2xl hover:shadow-brand/20"
+                className="w-full py-4 rounded-xl bg-[#4A5D23] text-white font-semibold text-sm uppercase tracking-widest hover:bg-[#3a4e1a] transition-all shadow-xl shadow-[#4A5D23]/10 hover:shadow-2xl hover:shadow-[#4A5D23]/20"
               >
                 Schedule a Demo
               </button>
@@ -154,19 +154,19 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
 
               <ul className="space-y-4 mb-8 flex-1">
                 <li className="flex items-start gap-3 text-sm text-neutral-600">
-                  <Check size={16} className="text-brand mt-0.5 shrink-0" />
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Unified Data Dashboard</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-neutral-600">
-                  <Check size={16} className="text-brand mt-0.5 shrink-0" />
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Full-Funnel Visualization</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-neutral-600">
-                  <Check size={16} className="text-brand mt-0.5 shrink-0" />
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Market & Competitor Analysis</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm text-neutral-600">
-                  <Check size={16} className="text-brand mt-0.5 shrink-0" />
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>"Data Copilot" Query Interface</span>
                 </li>
               </ul>
@@ -193,15 +193,15 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-neutral-900 via-neutral-900/90 to-neutral-900/50"></div>
-              <div className="absolute inset-0 bg-brand/20 mix-blend-overlay"></div>
+              <div className="absolute inset-0 bg-[#4A5D23]/20 mix-blend-overlay"></div>
             </div>
 
             {/* Content */}
             <div className="relative z-10 p-10 md:p-16 flex flex-col items-center justify-center text-center">
               <div className="max-w-3xl flex flex-col items-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ai-tint border border-brand/20 mb-6">
-                  <span className="w-2 h-2 rounded-full bg-brand animate-pulse"></span>
-                  <span className="text-brand font-mono text-xs font-bold tracking-widest uppercase">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F4F7EC] border border-[#4A5D23]/20 mb-6">
+                  <span className="w-2 h-2 rounded-full bg-[#4A5D23] animate-pulse"></span>
+                  <span className="text-[#4A5D23] font-mono text-xs font-bold tracking-widest uppercase">
                     Premium Offering
                   </span>
                 </div>
@@ -216,7 +216,7 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
                 
                 <button
                   onClick={onOpenModal}
-                  className="px-8 py-4 rounded-xl bg-brand text-white font-semibold text-sm uppercase tracking-widest hover:bg-brand-hover transition-all shadow-xl shadow-brand/20 hover:shadow-2xl hover:shadow-brand/30 inline-flex items-center gap-3 group/btn"
+                  className="px-8 py-4 rounded-xl bg-[#4A5D23] text-white font-semibold text-sm uppercase tracking-widest hover:bg-[#3a4e1a] transition-all shadow-xl shadow-[#4A5D23]/20 hover:shadow-2xl hover:shadow-[#4A5D23]/30 inline-flex items-center gap-3 group/btn"
                 >
                   Inquire About LaaS
                   <svg className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">

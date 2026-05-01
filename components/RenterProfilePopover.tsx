@@ -99,7 +99,7 @@ export const CircularProgress = ({ percentage, size = 30 }: { percentage: number
         strokeDasharray={circumference}
         strokeDashoffset={offset}
         strokeLinecap="round"
-        className="text-brand transition-all duration-700 ease-out"
+        className="text-[#4A5D23] transition-all duration-700 ease-out"
       />
     </svg>
   );
@@ -196,24 +196,24 @@ const RenterProfilePopover: React.FC<RenterProfilePopoverProps> = ({
       className="absolute bottom-full left-0 mb-2 w-80 bg-white rounded-2xl shadow-2xl border border-black/8 z-50 overflow-hidden"
     >
       {/* Downloadable profile card */}
-      <div ref={profileCardRef} className="p-5 bg-gradient-to-br from-ai-tint via-white to-white">
+      <div ref={profileCardRef} className="p-5 bg-gradient-to-br from-[#F4F7EC] via-white to-white">
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex-1 min-w-0">
-            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-brand/50 mb-0.5">Renter Profile</p>
+            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#4A5D23]/50 mb-0.5">Renter Profile</p>
             <p className="text-base font-black text-black tracking-tight leading-tight">{profileName}</p>
           </div>
           <div className="flex items-center gap-2 shrink-0 ml-2">
             <button
               onClick={handleDownload}
-              className="p-1.5 rounded-full text-neutral-300 hover:text-brand hover:bg-brand/10 transition-all"
+              className="p-1.5 rounded-full text-neutral-300 hover:text-[#4A5D23] hover:bg-[#4A5D23]/10 transition-all"
               title="Save profile card"
             >
               <Download size={13} />
             </button>
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-brand/10">
-              <Trophy size={11} className="text-brand" />
-              <span className="text-[10px] font-bold text-brand">Lv.{level.level}</span>
+            <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-[#4A5D23]/10">
+              <Trophy size={11} className="text-[#4A5D23]" />
+              <span className="text-[10px] font-bold text-[#4A5D23]">Lv.{level.level}</span>
             </div>
           </div>
         </div>
@@ -229,7 +229,7 @@ const RenterProfilePopover: React.FC<RenterProfilePopoverProps> = ({
               initial={{ width: 0 }}
               animate={{ width: `${percentage}%` }}
               transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-              className="h-full bg-gradient-to-r from-brand to-brand-on-dark rounded-full"
+              className="h-full bg-gradient-to-r from-[#4A5D23] to-[#7BA832] rounded-full"
             />
           </div>
           <p className="text-[10px] text-neutral-400 mt-1 font-medium">{level.next}</p>
@@ -247,10 +247,10 @@ const RenterProfilePopover: React.FC<RenterProfilePopoverProps> = ({
                 onClick={() => handleCategoryClick(cat)}
                 className={`group flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-200 ${
                   isExpanded
-                    ? 'bg-brand text-white ring-2 ring-brand/30'
+                    ? 'bg-[#4A5D23] text-white ring-2 ring-[#4A5D23]/30'
                     : isFilled
-                      ? 'bg-brand/10 text-brand hover:bg-brand/20'
-                      : 'bg-neutral-50 text-neutral-300 border border-dashed border-neutral-200 hover:border-brand/30 hover:text-brand/50 hover:bg-brand/5'
+                      ? 'bg-[#4A5D23]/10 text-[#4A5D23] hover:bg-[#4A5D23]/20'
+                      : 'bg-neutral-50 text-neutral-300 border border-dashed border-neutral-200 hover:border-[#4A5D23]/30 hover:text-[#4A5D23]/50 hover:bg-[#4A5D23]/5'
                 }`}
                 title={isFilled ? 'Click to view & edit' : cat.prompt}
               >
@@ -291,7 +291,7 @@ const RenterProfilePopover: React.FC<RenterProfilePopoverProps> = ({
                         onClose();
                       }
                     }}
-                    className="flex items-center gap-1 text-[10px] font-semibold text-brand hover:text-brand-hover transition-colors"
+                    className="flex items-center gap-1 text-[10px] font-semibold text-[#4A5D23] hover:text-[#3a4e1a] transition-colors"
                     title="Update this preference"
                   >
                     <Pencil size={10} />
@@ -334,7 +334,7 @@ const RenterProfilePopover: React.FC<RenterProfilePopoverProps> = ({
               const Icon = cat?.icon ?? FileText;
               return (
                 <div key={i} className="flex items-center gap-2 group/item">
-                  <Icon size={11} className="text-brand shrink-0" />
+                  <Icon size={11} className="text-[#4A5D23] shrink-0" />
                   <span className={`flex-1 text-[11px] leading-snug ${
                     pref.confidence === 'precise'
                       ? 'font-semibold text-black'
@@ -379,7 +379,7 @@ const RenterProfilePopover: React.FC<RenterProfilePopoverProps> = ({
         {!isLoggedIn && (
           <button
             onClick={() => { onClose(); onPreferenceLoginPrompt?.(); }}
-            className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-bold rounded-xl bg-brand text-white hover:bg-brand-hover transition-all"
+            className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-bold rounded-xl bg-[#4A5D23] text-white hover:bg-[#3a4e1a] transition-all"
           >
             <LogIn size={13} />
             Sign in to keep preferences

@@ -449,12 +449,12 @@ const Hero: React.FC<HeroProps> = ({ onOpenModal }) => {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full h-14 pl-4 pr-16 sm:pr-40 bg-surface-2 border border-black/5 rounded-lg text-black outline-none focus:border-black focus:ring-0 transition-all placeholder:text-neutral-400 text-sm"
+                  className="w-full h-14 pl-4 pr-16 sm:pr-40 bg-[#F4F1EE] border border-black/5 rounded-lg text-black outline-none focus:border-black focus:ring-0 transition-all placeholder:text-neutral-400 text-sm"
                   required
                 />
                 <button
                   type="submit"
-                  className="absolute top-1.5 right-1.5 bottom-1.5 w-11 sm:w-auto sm:px-4 bg-brand text-white text-xs sm:text-[10px] font-bold uppercase tracking-[0.1em] hover:bg-brand-hover transition-all rounded-lg flex items-center justify-center gap-2"
+                  className="absolute top-1.5 right-1.5 bottom-1.5 w-11 sm:w-auto sm:px-4 bg-[#4A5D23] text-white text-xs sm:text-[10px] font-bold uppercase tracking-[0.1em] hover:bg-[#3a4e1a] transition-all rounded-lg flex items-center justify-center gap-2"
                   aria-label="Request Demo"
                 >
                   <span className="hidden sm:inline">Request Demo</span>

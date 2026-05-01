@@ -41,7 +41,7 @@ const Toast: React.FC<ToastProps> = ({ toast, onDismiss }) => {
           {toast.actionLabel && toast.onAction && (
             <button
               onClick={() => { toast.onAction!(); onDismiss(); }}
-              className="text-xs font-bold text-brand-on-dark whitespace-nowrap hover:text-brand-on-dark transition-colors shrink-0"
+              className="text-xs font-bold text-[#a3c45e] whitespace-nowrap hover:text-[#c5e07a] transition-colors shrink-0"
             >
               {toast.actionLabel}
             </button>
