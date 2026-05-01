@@ -102,11 +102,11 @@ const PropertyDetailsView: React.FC<PropertyDetailsViewProps> = ({
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto">
 
-        {/* Top navigation bar */}
-        <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 gap-3">
-          {/* Left: back / close — hidden when the host page provides
-              breadcrumbs, since the back action is available there. */}
-          {!hideBackButton && (
+        {/* Top navigation bar (back + share + favorite). Hidden in page mode
+            when the host page already provides breadcrumbs; in that case
+            share + favorite move into the breadcrumb row. */}
+        {!hideBackButton && (
+          <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 gap-3">
             <button
               onClick={onClose}
               aria-label={isInline ? "Back to search" : "Close property details"}
@@ -115,28 +115,27 @@ const PropertyDetailsView: React.FC<PropertyDetailsViewProps> = ({
               <ChevronLeft size={16} />
               {isInline && <span className="text-xs font-semibold">Back</span>}
             </button>
-          )}
 
-          <div className="flex-1" />
+            <div className="flex-1" />
 
-          {/* Right: share + favorite */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setShowShareModal(true)}
-              aria-label="Share property"
-              className="p-2 backdrop-blur-md rounded-full transition-all duration-300 shrink-0 bg-white/80 shadow-sm border border-black/5 text-neutral-400 hover:bg-white hover:text-black"
-            >
-              <Share size={18} />
-            </button>
-            <button
-              onClick={() => onToggleFavorite(property.id)}
-              aria-label={isFavorite ? "Remove from favorites" : "Save to favorites"}
-              className={`p-2 backdrop-blur-md rounded-full transition-all duration-300 shrink-0 ${isFavorite ? 'bg-black text-white' : 'bg-white/80 shadow-sm border border-black/5 text-neutral-400 hover:bg-white hover:text-black'}`}
-            >
-              <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowShareModal(true)}
+                aria-label="Share property"
+                className="p-2 backdrop-blur-md rounded-full transition-all duration-300 shrink-0 bg-white/80 shadow-sm border border-black/5 text-neutral-400 hover:bg-white hover:text-black"
+              >
+                <Share size={18} />
+              </button>
+              <button
+                onClick={() => onToggleFavorite(property.id)}
+                aria-label={isFavorite ? "Remove from favorites" : "Save to favorites"}
+                className={`p-2 backdrop-blur-md rounded-full transition-all duration-300 shrink-0 ${isFavorite ? 'bg-black text-white' : 'bg-white/80 shadow-sm border border-black/5 text-neutral-400 hover:bg-white hover:text-black'}`}
+              >
+                <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
           {/* Bento Box Image Grid — inset with padding, rounded corners */}
           <div className="px-4 md:px-5 mb-5">

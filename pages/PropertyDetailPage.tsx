@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Navigate, useNavigate, Link } from 'react-router-dom';
-import { ChevronRight, Home } from 'lucide-react';
+import { ChevronRight, Home, Share, Heart, Check } from 'lucide-react';
 import { PERSISTENT_THREAD_ID } from '../constants';
 import { useAppContext } from '../context/AppContext';
 import { getAllProperties, getPropertyById } from '../services/propertyService';
@@ -61,6 +61,7 @@ const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
   const { addThread, favorites, toggleFavorite } = useAppContext();
   const [property, setProperty] = useState<Property | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   useEffect(() => {
     // Canonical-mode pages need a property fetch even when AI_CHAT is on,
@@ -120,6 +121,31 @@ const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
 
   const isFavorite = favorites.some((f) => f.id === property.id);
 
+  // Share button next to the breadcrumb. Uses the native share sheet on
+  // mobile, falls back to clipboard. The richer share-sheet modal still
+  // lives inside PropertyDetailsView for the chat-panel context.
+  const handleShare = async () => {
+    const url = window.location.href;
+    const shareData = { title: property.title, text: `${property.title} on UnitPulse`, url };
+    if (typeof navigator !== 'undefined' && (navigator as any).share) {
+      try {
+        await (navigator as any).share(shareData);
+        return;
+      } catch {
+        // user cancelled or share failed — fall through to clipboard
+      }
+    }
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(url);
+        setLinkCopied(true);
+        setTimeout(() => setLinkCopied(false), 2000);
+      } catch {
+        // ignore
+      }
+    }
+  };
+
   // Compose breadcrumb based on what we know about the property.
   const stateForCrumb = mode === 'canonical' ? state : null;
   const stateName = stateForCrumb ? STATE_NAMES[stateForCrumb] : null;
@@ -140,47 +166,72 @@ const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
         variant="sticky-static"
       />
 
-      {/* Breadcrumbs — also rendered as BreadcrumbList JSON-LD for SEO. */}
-      <nav
-        aria-label="Breadcrumb"
-        className="w-full px-4 md:px-8 py-3 bg-white border-b border-black/5"
-      >
-        <ol className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-neutral-500 flex-wrap">
-          <li className="flex items-center gap-2">
-            <Link to="/" className="inline-flex items-center gap-1 hover:text-black transition-colors">
-              <Home size={12} />
-              <span>Home</span>
-            </Link>
-            <ChevronRight size={12} className="text-neutral-300" />
-          </li>
-          {stateForCrumb && stateName ? (
-            <>
+      {/* Breadcrumbs + page-level actions on the same row.
+          Breadcrumbs also rendered as BreadcrumbList JSON-LD for SEO. */}
+      <div className="w-full px-4 md:px-8 py-3 bg-white border-b border-black/5">
+        <div className="max-w-7xl mx-auto flex items-center gap-3">
+          <nav aria-label="Breadcrumb" className="flex-1 min-w-0">
+            <ol className="flex items-center gap-2 text-xs text-neutral-500 flex-wrap">
               <li className="flex items-center gap-2">
-                <Link to={getStateUrl(stateForCrumb)} className="hover:text-black transition-colors">
-                  {stateName}
+                <Link to="/" className="inline-flex items-center gap-1 hover:text-black transition-colors">
+                  <Home size={12} />
+                  <span>Home</span>
                 </Link>
                 <ChevronRight size={12} className="text-neutral-300" />
               </li>
-              {city && cityNameForCrumb && (
+              {stateForCrumb && stateName ? (
+                <>
+                  <li className="flex items-center gap-2">
+                    <Link to={getStateUrl(stateForCrumb)} className="hover:text-black transition-colors">
+                      {stateName}
+                    </Link>
+                    <ChevronRight size={12} className="text-neutral-300" />
+                  </li>
+                  {city && cityNameForCrumb && (
+                    <li className="flex items-center gap-2">
+                      <Link to={getCityUrl(stateForCrumb, city)} className="hover:text-black transition-colors">
+                        {cityNameForCrumb}
+                      </Link>
+                      <ChevronRight size={12} className="text-neutral-300" />
+                    </li>
+                  )}
+                </>
+              ) : (
                 <li className="flex items-center gap-2">
-                  <Link to={getCityUrl(stateForCrumb, city)} className="hover:text-black transition-colors">
-                    {cityNameForCrumb}
-                  </Link>
+                  <Link to="/listings" className="hover:text-black transition-colors">Listings</Link>
                   <ChevronRight size={12} className="text-neutral-300" />
                 </li>
               )}
-            </>
-          ) : (
-            <li className="flex items-center gap-2">
-              <Link to="/listings" className="hover:text-black transition-colors">Listings</Link>
-              <ChevronRight size={12} className="text-neutral-300" />
-            </li>
-          )}
-          <li className="text-black font-medium truncate" aria-current="page">
-            {property.title}
-          </li>
-        </ol>
-      </nav>
+              <li className="text-black font-medium truncate" aria-current="page">
+                {property.title}
+              </li>
+            </ol>
+          </nav>
+
+          {/* Page-level actions — share + favorite. Lives here (not in
+              PropertyDetailsView) so the row stays consolidated. */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              onClick={handleShare}
+              aria-label={linkCopied ? "Link copied" : "Share property"}
+              className="w-9 h-9 flex items-center justify-center rounded-full text-neutral-500 hover:text-black hover:bg-neutral-100 transition-colors"
+            >
+              {linkCopied ? <Check size={16} className="text-brand" /> : <Share size={16} />}
+            </button>
+            <button
+              onClick={() => toggleFavorite(property)}
+              aria-label={isFavorite ? "Remove from favorites" : "Save to favorites"}
+              className={`w-9 h-9 flex items-center justify-center rounded-full transition-colors ${
+                isFavorite
+                  ? 'bg-black text-white hover:bg-neutral-800'
+                  : 'text-neutral-500 hover:text-black hover:bg-neutral-100'
+              }`}
+            >
+              <Heart size={16} fill={isFavorite ? 'currentColor' : 'none'} />
+            </button>
+          </div>
+        </div>
+      </div>
 
       <script
         type="application/ld+json"
