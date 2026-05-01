@@ -208,7 +208,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, initialEma
               type="submit"
               form="contact-form"
               disabled={status === 'submitting'}
-              className="w-full py-4 bg-black text-white text-sm font-bold uppercase tracking-widest rounded-lg hover:bg-neutral-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+              className="w-full py-4 bg-[#4A5D23] text-white text-sm font-semibold uppercase tracking-widest rounded-xl hover:bg-[#3a4e1a] transition-all shadow-xl shadow-[#4A5D23]/10 hover:shadow-2xl hover:shadow-[#4A5D23]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
             >
               {status === 'submitting' ? 'Sending...' : 'Request Demo'}
               {status !== 'submitting' && <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />}

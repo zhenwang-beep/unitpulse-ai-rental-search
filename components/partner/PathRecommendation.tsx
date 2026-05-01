@@ -115,7 +115,7 @@ const PathRecommendation: React.FC<PathRecommendationProps> = ({ onOpenModal }) 
                   <p className="text-neutral-600 mb-6 leading-relaxed max-w-md">{activePath.description}</p>
                   <button
                     onClick={onOpenModal}
-                    className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 rounded font-medium hover:bg-neutral-900 transition-colors group"
+                    className="inline-flex items-center gap-2 bg-[#4A5D23] text-white h-12 px-6 rounded-xl font-semibold text-sm hover:bg-[#3a4e1a] transition-all group"
                   >
                     Get a Recommendation
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

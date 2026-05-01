@@ -454,7 +454,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenModal }) => {
                 />
                 <button
                   type="submit"
-                  className="absolute top-1.5 right-1.5 bottom-1.5 w-11 sm:w-auto sm:px-4 bg-black text-white text-xs sm:text-[10px] font-bold uppercase tracking-[0.1em] hover:bg-neutral-900 transition-colors rounded-lg flex items-center justify-center gap-2"
+                  className="absolute top-1.5 right-1.5 bottom-1.5 w-11 sm:w-auto sm:px-4 bg-[#4A5D23] text-white text-xs sm:text-[10px] font-bold uppercase tracking-[0.1em] hover:bg-[#3a4e1a] transition-all rounded-lg flex items-center justify-center gap-2"
                   aria-label="Request Demo"
                 >
                   <span className="hidden sm:inline">Request Demo</span>

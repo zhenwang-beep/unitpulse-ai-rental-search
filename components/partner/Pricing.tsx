@@ -77,21 +77,24 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
                 </li>
               </ul>
 
-              <button 
+              <button
                 onClick={onOpenModal}
-                className="w-full py-4 rounded-xl border border-black/5 font-bold text-sm uppercase tracking-widest hover:bg-black hover:text-white hover:border-black transition-all"
+                className="w-full py-4 rounded-xl bg-neutral-100 text-black border border-black/5 font-semibold text-sm uppercase tracking-widest hover:bg-neutral-200 transition-all"
               >
                 Get Started
               </button>
             </div>
           </FadeIn>
 
-          {/* UP Leasing */}
+          {/* UP Leasing — featured tier */}
           <FadeIn delay={200} className="h-full">
-            <div className="h-full p-8 rounded-2xl border border-black/5 bg-[#F4F1EE] flex flex-col hover:border-black/10 transition-all hover:shadow-xl relative group transform md:-translate-y-4 overflow-hidden">
+            <div className="h-full p-8 rounded-2xl border-2 border-[#4A5D23]/25 bg-[#F4F7EC] flex flex-col transition-all hover:border-[#4A5D23]/40 hover:shadow-2xl hover:shadow-[#4A5D23]/15 shadow-xl shadow-[#4A5D23]/10 relative group transform md:-translate-y-6 overflow-hidden ring-1 ring-[#4A5D23]/10">
+              <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-[#4A5D23] text-white text-[10px] font-black uppercase tracking-wider shadow-md">
+                Most Popular
+              </div>
               <div className="mb-6">
                 <h3 className="font-heading text-2xl font-bold text-black mb-2">UP Leasing</h3>
-                <p className="text-sm text-neutral-500 font-medium uppercase tracking-wider">The Closer</p>
+                <p className="text-sm text-[#4A5D23] font-bold uppercase tracking-wider">The Closer</p>
               </div>
               
               <div className="mb-8">
@@ -122,9 +125,9 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
                 </li>
               </ul>
 
-              <button 
+              <button
                 onClick={onOpenModal}
-                className="w-full py-4 rounded-xl bg-black text-white font-bold text-sm uppercase tracking-widest hover:bg-neutral-900 transition-all shadow-lg"
+                className="w-full py-4 rounded-xl bg-[#4A5D23] text-white font-semibold text-sm uppercase tracking-widest hover:bg-[#3a4e1a] transition-all shadow-xl shadow-[#4A5D23]/10 hover:shadow-2xl hover:shadow-[#4A5D23]/20"
               >
                 Schedule a Demo
               </button>
@@ -168,9 +171,9 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
                 </li>
               </ul>
 
-              <button 
+              <button
                 onClick={onOpenModal}
-                className="w-full py-4 rounded-xl border border-black/5 font-bold text-sm uppercase tracking-widest hover:bg-black hover:text-white hover:border-black transition-all"
+                className="w-full py-4 rounded-xl bg-neutral-100 text-black border border-black/5 font-semibold text-sm uppercase tracking-widest hover:bg-neutral-200 transition-all"
               >
                 Get Started
               </button>
@@ -211,9 +214,9 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
                   Go beyond software. We run the entire leasing operation for you—an end-to-end, fully managed solution powered by our AI agents and overseen by our industry experts.
                 </p>
                 
-                <button 
+                <button
                   onClick={onOpenModal}
-                  className="px-8 py-4 rounded-xl bg-[#4A5D23] text-white font-bold text-sm uppercase tracking-widest hover:bg-[#4A5D23] transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] inline-flex items-center gap-3 group/btn"
+                  className="px-8 py-4 rounded-xl bg-[#4A5D23] text-white font-semibold text-sm uppercase tracking-widest hover:bg-[#3a4e1a] transition-all shadow-xl shadow-[#4A5D23]/20 hover:shadow-2xl hover:shadow-[#4A5D23]/30 inline-flex items-center gap-3 group/btn"
                 >
                   Inquire About LaaS
                   <svg className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -20,7 +20,7 @@ const CallToAction: React.FC<CallToActionProps> = ({ onOpenModal }) => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <button 
               onClick={onOpenModal}
-              className="w-full sm:w-auto bg-black text-white px-12 py-5 font-bold text-sm uppercase tracking-widest hover:bg-neutral-900 transition-all duration-300 shadow-xl shadow-black/10 hover:-translate-y-1 rounded-lg"
+              className="w-full sm:w-auto bg-[#4A5D23] text-white px-12 py-5 font-bold text-sm uppercase tracking-widest hover:bg-[#3a4e1a] transition-all duration-300 shadow-xl shadow-[#4A5D23]/10 hover:shadow-2xl hover:shadow-[#4A5D23]/20 hover:-translate-y-1 rounded-xl"
             >
               Talk to a specialist
             </button>
