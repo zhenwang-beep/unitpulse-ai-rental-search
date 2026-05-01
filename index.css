@@ -7,9 +7,24 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-heading: "Manrope", ui-sans-serif, system-ui, sans-serif;
 
-  /* Brand color tokens */
+  /* Brand color tokens — see design.md §1 for canonical usage. */
+
+  /* Foundation */
   --color-black: #171717;
   --color-white: #ffffff;
+
+  /* Background surfaces */
+  --color-app-bg: #FCF9F8;        /* App background, sticky bars, modal panels */
+  --color-surface-2: #F4F1EE;     /* Pricing tables, amenity chips, tag bg */
+  --color-ai-tint: #F4F7EC;       /* AI Lifestyle Match, olive-accent info sections */
+  --color-footer-bg: #F0EDEA;     /* Landing page footer only */
+
+  /* Olive (primary brand) — named "brand" because Tailwind v4 reserves "olive". */
+  --color-brand: #4A5D23;
+  --color-brand-hover: #3a4e1a;
+  --color-brand-on-dark: #A8B97D; /* For use on bg-black / dark surfaces */
+  --color-brand-text: #243510;    /* Body text on AI tint */
+  --color-brand-heading: #1a2609; /* Headings on AI tint */
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

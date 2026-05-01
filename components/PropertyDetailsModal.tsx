@@ -90,7 +90,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
   const openImage = (idx: number) => { setSelectedImageIndex(idx); setIsImageModalOpen(true); };
 
   const content = (
-    <div className={`relative w-full ${isInline ? 'h-full bg-[#FCF9F8]' : 'max-w-2xl max-h-[92vh] rounded-3xl shadow-2xl bg-white'} overflow-hidden flex flex-col`}>
+    <div className={`relative w-full ${isInline ? 'h-full bg-app-bg' : 'max-w-2xl max-h-[92vh] rounded-3xl shadow-2xl bg-white'} overflow-hidden flex flex-col`}>
 
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto">
@@ -180,7 +180,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-1 bg-black text-white text-xs font-black uppercase tracking-wider rounded-full">New Listing</span>
-              <span className="px-2.5 py-1 bg-[#4A5D23] text-white text-xs font-black uppercase tracking-wider rounded-full flex items-center gap-1">
+              <span className="px-2.5 py-1 bg-brand text-white text-xs font-black uppercase tracking-wider rounded-full flex items-center gap-1">
                 <Sparkles size={10} />
                 {matchScore}% Match
               </span>
@@ -212,14 +212,14 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
           </div>
 
           {/* AI Lifestyle Match */}
-          <div className="bg-gradient-to-br from-[#F4F7EC] to-[#F4F7EC]/50 rounded-2xl p-5 border border-[#4A5D23]/15 relative overflow-hidden">
+          <div className="bg-gradient-to-br from-ai-tint to-ai-tint/50 rounded-2xl p-5 border border-brand/15 relative overflow-hidden">
             <div className="flex items-center justify-between gap-2 mb-3">
               <div className="flex items-center gap-2">
-                <Sparkles size={16} className={`text-[#4A5D23] ${isAnalyzing ? 'animate-pulse' : ''}`} />
-                <h3 className="text-xs font-black text-[#1a2609] uppercase tracking-wider">AI Lifestyle Match</h3>
+                <Sparkles size={16} className={`text-brand ${isAnalyzing ? 'animate-pulse' : ''}`} />
+                <h3 className="text-xs font-black text-brand-heading uppercase tracking-wider">AI Lifestyle Match</h3>
               </div>
               {isAnalyzing && (
-                <span className="text-[10px] font-bold text-[#4A5D23]/60 uppercase tracking-wider flex items-center gap-1">
+                <span className="text-[10px] font-bold text-brand/60 uppercase tracking-wider flex items-center gap-1">
                   <Loader2 size={10} className="animate-spin" />
                   Analyzing
                 </span>
@@ -227,12 +227,12 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
             </div>
             {isAnalyzing ? (
               <div className="space-y-2">
-                <div className="h-3 bg-[#4A5D23]/10 rounded-full animate-pulse w-full" />
-                <div className="h-3 bg-[#4A5D23]/10 rounded-full animate-pulse w-5/6" />
-                <div className="h-3 bg-[#4A5D23]/10 rounded-full animate-pulse w-4/6 mt-3" />
-                <div className="h-3 bg-[#4A5D23]/10 rounded-full animate-pulse w-full" />
-                <div className="h-3 bg-[#4A5D23]/10 rounded-full animate-pulse w-3/4 mt-3" />
-                <div className="h-3 bg-[#4A5D23]/10 rounded-full animate-pulse w-5/6" />
+                <div className="h-3 bg-brand/10 rounded-full animate-pulse w-full" />
+                <div className="h-3 bg-brand/10 rounded-full animate-pulse w-5/6" />
+                <div className="h-3 bg-brand/10 rounded-full animate-pulse w-4/6 mt-3" />
+                <div className="h-3 bg-brand/10 rounded-full animate-pulse w-full" />
+                <div className="h-3 bg-brand/10 rounded-full animate-pulse w-3/4 mt-3" />
+                <div className="h-3 bg-brand/10 rounded-full animate-pulse w-5/6" />
               </div>
             ) : (() => {
               const pricePerSqft = Math.round(property.price / property.sqft);
@@ -242,24 +242,24 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
               const bedroomLabel = property.bedrooms === 0 ? 'studio' : `${property.bedrooms}-bed`;
               return (
                 <div className="space-y-3">
-                  <p className="text-xs font-semibold text-[#1a2609] leading-relaxed">
+                  <p className="text-xs font-semibold text-brand-heading leading-relaxed">
                     This {bedroomLabel} {property.type.toLowerCase()} in {property.location} aligns strongly with your search — here's why it stands out:
                   </p>
                   <ul className="space-y-2">
-                    <li className="flex items-start gap-2 text-xs text-[#243510] leading-relaxed">
-                      <span className="mt-0.5 w-4 h-4 rounded-full bg-[#4A5D23]/15 flex items-center justify-center shrink-0 text-[#4A5D23] font-black text-[9px]">$</span>
+                    <li className="flex items-start gap-2 text-xs text-brand-text leading-relaxed">
+                      <span className="mt-0.5 w-4 h-4 rounded-full bg-brand/15 flex items-center justify-center shrink-0 text-brand font-black text-[9px]">$</span>
                       <span>At <strong>${property.price.toLocaleString()}/mo</strong> (~${pricePerSqft}/sqft), it's priced {pricePerSqft < 4 ? 'competitively' : 'at market rate'} for {property.location} — good value for {property.sqft.toLocaleString()} sqft.</span>
                     </li>
-                    <li className="flex items-start gap-2 text-xs text-[#243510] leading-relaxed">
-                      <span className="mt-0.5 w-4 h-4 rounded-full bg-[#4A5D23]/15 flex items-center justify-center shrink-0 text-[#4A5D23] font-black text-[9px]">✦</span>
+                    <li className="flex items-start gap-2 text-xs text-brand-text leading-relaxed">
+                      <span className="mt-0.5 w-4 h-4 rounded-full bg-brand/15 flex items-center justify-center shrink-0 text-brand font-black text-[9px]">✦</span>
                       <span>{property.amenities.slice(0, 2).map(a => <strong key={a}>{a}</strong>).reduce((acc, el, i) => i === 0 ? [el] : [...acc, ' and ', el], [] as React.ReactNode[])} make this ideal for {hasRemoteWork ? 'remote workers' : isPetFriendly ? 'pet owners' : 'modern city living'}.</span>
                     </li>
-                    <li className="flex items-start gap-2 text-xs text-[#243510] leading-relaxed">
-                      <span className="mt-0.5 w-4 h-4 rounded-full bg-[#4A5D23]/15 flex items-center justify-center shrink-0 text-[#4A5D23] font-black text-[9px]">↑</span>
+                    <li className="flex items-start gap-2 text-xs text-brand-text leading-relaxed">
+                      <span className="mt-0.5 w-4 h-4 rounded-full bg-brand/15 flex items-center justify-center shrink-0 text-brand font-black text-[9px]">↑</span>
                       <span>{hasOutdoor ? `Outdoor access is a rare perk at this price — a strong lifestyle bonus for ${property.location}.` : `With ${property.amenities.length} listed amenities, the building adds meaningful value beyond the unit itself.`}</span>
                     </li>
                   </ul>
-                  <p className="text-[10px] text-[#4A5D23]/60 font-medium pt-1 border-t border-[#4A5D23]/10">
+                  <p className="text-[10px] text-brand/60 font-medium pt-1 border-t border-brand/10">
                     {matchScore}% match based on your search preferences
                   </p>
                 </div>
@@ -275,7 +275,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                 <p className="text-sm text-neutral-400">Floor plan details are not yet available for this property.</p>
                 <button
                   onClick={() => setContactMode('inquire')}
-                  className="mt-3 px-4 py-2 bg-[#4A5D23] text-white rounded-full text-xs font-bold hover:bg-[#3a4e1a] transition-colors"
+                  className="mt-3 px-4 py-2 bg-brand text-white rounded-full text-xs font-bold hover:bg-brand-hover transition-colors"
                 >
                   Inquire for Details
                 </button>
@@ -318,7 +318,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                 {/* Header */}
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-black text-black uppercase tracking-wider">Floor Plans</h3>
-                  <span className="text-xs font-bold text-[#4A5D23] uppercase tracking-wider bg-[#F4F7EC] px-2.5 py-1 rounded-full">
+                  <span className="text-xs font-bold text-brand uppercase tracking-wider bg-ai-tint px-2.5 py-1 rounded-full">
                     {totalAvailable} Units Available
                   </span>
                 </div>
@@ -357,7 +357,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                     return (
                       <div key={`${section.planType}-${section.modelName ?? idx}`} className="rounded-2xl border border-black/5 bg-white overflow-hidden">
                         {/* Model header: info left + thumbnail right */}
-                        <div className="flex items-center gap-4 p-4 border-b border-black/5 bg-[#FAFAF8]">
+                        <div className="flex items-center gap-4 p-4 border-b border-black/5 bg-app-bg">
                           {/* Info */}
                           <div className="flex-1 min-w-0">
                             <span className="text-sm font-black text-black uppercase tracking-wide">
@@ -367,7 +367,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                             <div className="text-[11px] font-medium text-neutral-400 mt-0.5">{sqftDisplay}</div>
                             <button
                               onClick={() => setContactMode('tour')}
-                              className="mt-2 px-3.5 py-1.5 bg-[#4A5D23] text-white rounded-full text-[10px] font-bold hover:bg-[#3a4e1a] transition-colors"
+                              className="mt-2 px-3.5 py-1.5 bg-brand text-white rounded-full text-[10px] font-bold hover:bg-brand-hover transition-colors"
                             >
                               Schedule Tour
                             </button>
@@ -402,7 +402,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                                   <span className="text-sm font-black text-black text-right tabular-nums">{unit.price}</span>
                                   <button
                                     onClick={() => setContactMode('inquire')}
-                                    className="text-xs font-bold text-[#4A5D23] hover:underline text-right"
+                                    className="text-xs font-bold text-brand hover:underline text-right"
                                   >
                                     Inquire
                                   </button>
@@ -435,8 +435,8 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                   <span className="text-xs font-black text-neutral-400 uppercase tracking-widest">{cat}</span>
                   <div className="grid grid-cols-2 gap-2">
                     {items.map((am) => (
-                      <div key={am} className="flex items-center gap-2.5 px-3 py-2.5 bg-[#F4F1EE] rounded-xl border border-black/5">
-                        <Check size={11} strokeWidth={3} className="text-[#4A5D23] shrink-0" />
+                      <div key={am} className="flex items-center gap-2.5 px-3 py-2.5 bg-surface-2 rounded-xl border border-black/5">
+                        <Check size={11} strokeWidth={3} className="text-brand shrink-0" />
                         <span className="text-xs font-semibold text-neutral-700">{am}</span>
                       </div>
                     ))}
@@ -449,7 +449,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
           {/* Pricing & Fees */}
           <div className="space-y-4">
             <h3 className="text-xs font-black text-black uppercase tracking-wider">Pricing & Fees</h3>
-            <div className="bg-[#F4F1EE] rounded-2xl p-5 border border-black/5 space-y-3">
+            <div className="bg-surface-2 rounded-2xl p-5 border border-black/5 space-y-3">
               {[
                 { label: 'Rent', value: property.pricingAndFees?.rent || `$${property.price.toLocaleString()}` },
                 { label: 'Deposit', value: property.pricingAndFees?.deposit || '$1,500' },
@@ -491,7 +491,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
       </div>
 
       {/* Sticky footer actions */}
-      <div className="shrink-0 border-t border-black/5 bg-[#FCF9F8] px-4 lg:px-6 py-3 lg:py-5">
+      <div className="shrink-0 border-t border-black/5 bg-app-bg px-4 lg:px-6 py-3 lg:py-5">
         <div className="max-w-3xl mx-auto w-full flex items-center justify-between gap-3">
         <div className="flex flex-col lg:flex-row lg:items-baseline lg:gap-3 min-w-0">
           <span className="text-xl lg:text-4xl font-black font-heading text-black leading-tight whitespace-nowrap">
@@ -508,7 +508,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
           </button>
           <button
             onClick={() => setContactMode('tour')}
-            className="h-11 lg:h-12 px-4 lg:px-5 bg-[#4A5D23] text-white rounded-xl font-semibold text-sm hover:bg-[#3a4e1a] transition-all flex items-center gap-1.5"
+            className="h-11 lg:h-12 px-4 lg:px-5 bg-brand text-white rounded-xl font-semibold text-sm hover:bg-brand-hover transition-all flex items-center gap-1.5"
           >
             <Calendar size={15} className="lg:hidden" />
             <Calendar size={16} className="hidden lg:block" />
@@ -574,7 +574,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                 <button
                   key={idx}
                   onClick={() => setSelectedImageIndex(idx)}
-                  className={`w-14 h-14 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${selectedImageIndex === idx ? 'border-[#4A5D23]' : 'border-transparent opacity-40 hover:opacity-80'}`}
+                  className={`w-14 h-14 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${selectedImageIndex === idx ? 'border-brand' : 'border-transparent opacity-40 hover:opacity-80'}`}
                 >
                   <img src={img} className="w-full h-full object-cover" referrerPolicy="no-referrer" alt="" />
                 </button>
@@ -623,7 +623,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
     {
       label: 'Copy link',
       icon: linkCopied ? Check : Link2,
-      color: linkCopied ? 'text-[#4A5D23] bg-[#4A5D23]/10' : 'text-neutral-600 bg-neutral-100 hover:bg-neutral-200',
+      color: linkCopied ? 'text-brand bg-brand/10' : 'text-neutral-600 bg-neutral-100 hover:bg-neutral-200',
       onClick: handleCopyLink,
     },
     {
@@ -688,7 +688,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                     <p className="text-xs text-neutral-500 flex items-center gap-1 mt-1">
                       <MapPin size={11} /> {property.location}
                     </p>
-                    <p className="text-base font-black text-[#4A5D23] mt-1.5">
+                    <p className="text-base font-black text-brand mt-1.5">
                       ${property.price.toLocaleString()}<span className="text-xs font-semibold opacity-70"> /mo</span>
                     </p>
                   </div>
@@ -735,7 +735,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
                     onClick={handleCopyLink}
                     className={`px-4 py-2 rounded-lg text-sm font-bold transition-all shrink-0 ${
                       linkCopied
-                        ? 'bg-[#4A5D23] text-white'
+                        ? 'bg-brand text-white'
                         : 'bg-black text-white hover:bg-neutral-800'
                     }`}
                   >

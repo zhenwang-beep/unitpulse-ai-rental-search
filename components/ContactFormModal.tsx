@@ -87,11 +87,11 @@ const DatePicker: React.FC<{ value: string; minValue: string; onChange: (v: stri
         type="button"
         onClick={() => setOpen(o => !o)}
         className={`w-full h-10 px-3 bg-neutral-50 border rounded-xl text-sm text-left flex items-center justify-between transition-all
-          ${open ? 'border-[#4A5D23] ring-2 ring-[#4A5D23]/30' : 'border-black/8'}
+          ${open ? 'border-brand ring-2 ring-brand/30' : 'border-black/8'}
           ${value ? 'text-black' : 'text-neutral-400'}`}
       >
         <span>{value ? formatDisplay(value) : 'Select a date'}</span>
-        <Calendar size={15} className={value ? 'text-[#4A5D23]' : 'text-neutral-300'} />
+        <Calendar size={15} className={value ? 'text-brand' : 'text-neutral-300'} />
       </button>
 
       <AnimatePresence>
@@ -150,7 +150,7 @@ const DatePicker: React.FC<{ value: string; minValue: string; onChange: (v: stri
                     onClick={() => selectDay(day)}
                     className={`mx-auto w-8 h-8 rounded-full text-sm font-semibold transition-all flex items-center justify-center
                       ${isSelected ? 'bg-black text-white' : ''}
-                      ${!isSelected && isToday ? 'border border-[#4A5D23] text-[#4A5D23]' : ''}
+                      ${!isSelected && isToday ? 'border border-brand text-brand' : ''}
                       ${!isSelected && !isToday && !isDisabled ? 'hover:bg-neutral-100 text-black' : ''}
                       ${isDisabled ? 'text-neutral-300 cursor-not-allowed' : 'cursor-pointer'}`}
                   >
@@ -232,8 +232,8 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ mode, property, isL
         >
           {submitted ? (
             <div className="flex flex-col items-center justify-center py-14 px-8 text-center">
-              <div className="w-16 h-16 rounded-full bg-[#4A5D23]/10 flex items-center justify-center mb-5">
-                <Check size={28} className="text-[#4A5D23]" strokeWidth={2.5} />
+              <div className="w-16 h-16 rounded-full bg-brand/10 flex items-center justify-center mb-5">
+                <Check size={28} className="text-brand" strokeWidth={2.5} />
               </div>
               <h2 className="text-lg font-black text-black mb-2">
                 {isTour ? 'Tour Requested!' : 'Message Sent!'}
@@ -256,10 +256,10 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ mode, property, isL
               {/* Header */}
               <div className="flex items-start justify-between px-6 pt-6 pb-4 border-b border-black/5">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-[#4A5D23]/10 flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-xl bg-brand/10 flex items-center justify-center">
                     {isTour
-                      ? <Calendar size={17} className="text-[#4A5D23]" />
-                      : <MessageSquare size={17} className="text-[#4A5D23]" />}
+                      ? <Calendar size={17} className="text-brand" />
+                      : <MessageSquare size={17} className="text-brand" />}
                   </div>
                   <div>
                     <h2 className="text-base font-black text-black">
@@ -285,7 +285,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ mode, property, isL
                       onChange={e => setName(e.target.value)}
                       placeholder="Felix Zhou"
                       required
-                      className="w-full h-10 px-3 bg-neutral-50 border border-black/8 rounded-xl text-sm text-black placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#4A5D23]/30 focus:border-[#4A5D23] transition-all"
+                      className="w-full h-10 px-3 bg-neutral-50 border border-black/8 rounded-xl text-sm text-black placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-all"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -296,7 +296,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ mode, property, isL
                       onChange={e => setEmail(e.target.value)}
                       placeholder="you@email.com"
                       required
-                      className="w-full h-10 px-3 bg-neutral-50 border border-black/8 rounded-xl text-sm text-black placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#4A5D23]/30 focus:border-[#4A5D23] transition-all"
+                      className="w-full h-10 px-3 bg-neutral-50 border border-black/8 rounded-xl text-sm text-black placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-all"
                     />
                   </div>
                 </div>
@@ -311,7 +311,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ mode, property, isL
                     value={phone}
                     onChange={e => setPhone(e.target.value)}
                     placeholder="+1 (555) 000-0000"
-                    className="w-full h-10 px-3 bg-neutral-50 border border-black/8 rounded-xl text-sm text-black placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#4A5D23]/30 focus:border-[#4A5D23] transition-all"
+                    className="w-full h-10 px-3 bg-neutral-50 border border-black/8 rounded-xl text-sm text-black placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-all"
                   />
                 </div>
 
@@ -332,7 +332,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ mode, property, isL
                             key={slot}
                             type="button"
                             onClick={() => setTime(slot)}
-                            className={`py-1.5 rounded-lg text-xs font-semibold transition-all ${time === slot ? 'bg-[#4A5D23] text-white' : 'bg-neutral-50 border border-black/8 text-neutral-600 hover:border-[#4A5D23]/40 hover:text-[#4A5D23]'}`}
+                            className={`py-1.5 rounded-lg text-xs font-semibold transition-all ${time === slot ? 'bg-brand text-white' : 'bg-neutral-50 border border-black/8 text-neutral-600 hover:border-brand/40 hover:text-brand'}`}
                           >
                             {slot}
                           </button>
@@ -348,7 +348,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ mode, property, isL
                       onChange={e => setMessage(e.target.value)}
                       rows={4}
                       required
-                      className="w-full px-3 py-2.5 bg-neutral-50 border border-black/8 rounded-xl text-sm text-black placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-[#4A5D23]/30 focus:border-[#4A5D23] transition-all resize-none leading-relaxed"
+                      className="w-full px-3 py-2.5 bg-neutral-50 border border-black/8 rounded-xl text-sm text-black placeholder:text-neutral-300 focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-all resize-none leading-relaxed"
                     />
                   </div>
                 )}
@@ -356,7 +356,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({ mode, property, isL
                 <button
                   type="submit"
                   disabled={!isValid() || submitting}
-                  className="w-full h-11 bg-[#4A5D23] text-white rounded-xl text-sm font-semibold hover:bg-[#3a4e1a] transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full h-11 bg-brand text-white rounded-xl text-sm font-semibold hover:bg-brand-hover transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {submitting
                     ? <><Loader2 size={16} className="animate-spin" /> Sending…</>

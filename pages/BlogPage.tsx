@@ -153,7 +153,7 @@ const BlogPage: React.FC<BlogPageProps> = ({
 
   return (
     <div
-      className="h-[100dvh] w-full bg-[#FCF9F8] flex flex-col text-black font-sans overflow-y-auto scroll-smooth"
+      className="h-[100dvh] w-full bg-app-bg flex flex-col text-black font-sans overflow-y-auto scroll-smooth"
     >
       <TopNav
         isLoggedIn={isLoggedIn}
@@ -166,7 +166,7 @@ const BlogPage: React.FC<BlogPageProps> = ({
 
       <main className="flex-1 flex flex-col items-center relative w-full">
         {/* Hero Section */}
-        <div className="w-full bg-[#4A5D23] text-white py-16 md:py-24">
+        <div className="w-full bg-brand text-white py-16 md:py-24">
           <div className="max-w-5xl mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <motion.div
@@ -181,7 +181,7 @@ const BlogPage: React.FC<BlogPageProps> = ({
                 <div className="text-white/80 mb-8">August 15, 2024</div>
                 <a 
                   href="/blog/1" 
-                  className="inline-block px-6 py-3 bg-white text-[#4A5D23] font-bold rounded-md hover:bg-white/90 transition-colors"
+                  className="inline-block px-6 py-3 bg-white text-brand font-bold rounded-md hover:bg-white/90 transition-colors"
                 >
                   Read article
                 </a>
@@ -225,10 +225,10 @@ const BlogPage: React.FC<BlogPageProps> = ({
                     />
                   </div>
                   <div className="p-6 md:p-8 flex flex-col justify-center">
-                    <div className="inline-block px-3 py-1 bg-[#4A5D23] text-white text-xs font-bold rounded-md mb-4 w-fit">
+                    <div className="inline-block px-3 py-1 bg-brand text-white text-xs font-bold rounded-md mb-4 w-fit">
                       {blog.category}
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-[#4A5D23] transition-colors">
+                    <h3 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-brand transition-colors">
                       {blog.title}
                     </h3>
                     <p className="text-neutral-600 mb-6 line-clamp-3">{blog.excerpt}</p>
@@ -248,7 +248,7 @@ const BlogPage: React.FC<BlogPageProps> = ({
               <input 
                 type="text" 
                 placeholder="What are you looking for?" 
-                className="w-full px-4 py-2 pl-10 rounded-md border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-[#4A5D23]"
+                className="w-full px-4 py-2 pl-10 rounded-md border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand"
               />
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
             </div>
@@ -261,8 +261,8 @@ const BlogPage: React.FC<BlogPageProps> = ({
                 key={category}
                 onClick={() => setSelectedCategory(category)}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all border ${selectedCategory === category
-                  ? 'bg-[#4A5D23] text-white border-[#4A5D23]'
-                  : 'bg-white text-neutral-700 border-neutral-200 hover:border-[#4A5D23] hover:text-[#4A5D23]'
+                  ? 'bg-brand text-white border-brand'
+                  : 'bg-white text-neutral-700 border-neutral-200 hover:border-brand hover:text-brand'
                   }`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -292,10 +292,10 @@ const BlogPage: React.FC<BlogPageProps> = ({
                   />
                 </div>
                 <div className="p-5">
-                  <div className="inline-block px-2 py-1 bg-[#4A5D23] text-white text-xs font-bold rounded-md mb-3 w-fit">
+                  <div className="inline-block px-2 py-1 bg-brand text-white text-xs font-bold rounded-md mb-3 w-fit">
                     {article.category}
                   </div>
-                  <h3 className="text-lg font-bold mb-3 group-hover:text-[#4A5D23] transition-colors line-clamp-2">
+                  <h3 className="text-lg font-bold mb-3 group-hover:text-brand transition-colors line-clamp-2">
                     {article.title}
                   </h3>
                   <p className="text-neutral-600 text-sm mb-4 line-clamp-2">{article.excerpt}</p>
@@ -307,20 +307,20 @@ const BlogPage: React.FC<BlogPageProps> = ({
         </div>
 
         {/* Newsletter Section */}
-        <div className="w-full bg-[#F0EDEA] py-16 md:py-20 relative overflow-hidden">
+        <div className="w-full bg-footer-bg py-16 md:py-20 relative overflow-hidden">
           {/* Decorative Elements */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#4A5D23]/5 rounded-full blur-3xl -mr-20 -mt-20"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#4A5D23]/5 rounded-full blur-3xl -ml-20 -mb-20"></div>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-brand/5 rounded-full blur-3xl -mr-20 -mt-20"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand/5 rounded-full blur-3xl -ml-20 -mb-20"></div>
           <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#4A5D23]/10 rounded-full mb-6"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-brand/10 rounded-full mb-6"
             >
-              <MessageSquare size={16} className="text-[#4A5D23]" />
-              <span className="text-sm font-medium text-[#4A5D23]">Stay Connected</span>
+              <MessageSquare size={16} className="text-brand" />
+              <span className="text-sm font-medium text-brand">Stay Connected</span>
             </motion.div>
             <motion.h2 
               className="text-2xl md:text-3xl font-bold mb-4"
@@ -350,9 +350,9 @@ const BlogPage: React.FC<BlogPageProps> = ({
               <input 
                 type="email" 
                 placeholder="Your email address" 
-                className="flex-1 px-6 py-4 rounded-full bg-white border border-black/10 focus:outline-none focus:ring-2 focus:ring-[#4A5D23]"
+                className="flex-1 px-6 py-4 rounded-full bg-white border border-black/10 focus:outline-none focus:ring-2 focus:ring-brand"
               />
-              <button className="px-8 py-4 bg-[#4A5D23] text-white rounded-full font-bold hover:bg-[#3a4e1a] transition-all whitespace-nowrap shadow-lg shadow-[#4A5D23]/20 hover:shadow-xl hover:shadow-[#4A5D23]/30">
+              <button className="px-8 py-4 bg-brand text-white rounded-full font-bold hover:bg-brand-hover transition-all whitespace-nowrap shadow-lg shadow-brand/20 hover:shadow-xl hover:shadow-brand/30">
                 Subscribe
               </button>
             </motion.div>

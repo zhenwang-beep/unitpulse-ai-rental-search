@@ -99,7 +99,7 @@ const CaseStudy: React.FC = () => {
     <div className="mt-24">
       <div className="max-w-7xl mx-auto">
         <FadeIn delay={200}>
-          <div className="bg-[#F4F1EE] border border-black/5 rounded-3xl p-8 md:p-16 relative overflow-hidden transition-all duration-500">
+          <div className="bg-surface-2 border border-black/5 rounded-3xl p-8 md:p-16 relative overflow-hidden transition-all duration-500">
             <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white rounded-full blur-[100px] -z-10 opacity-60"></div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-16">
@@ -219,18 +219,18 @@ const CaseStudy: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-bold text-xs uppercase tracking-widest text-black mb-4 flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-[#4A5D23]"></div> The Solution
+                      <div className="w-2 h-2 rounded-full bg-brand"></div> The Solution
                     </h4>
                     <p className="text-neutral-600 text-sm leading-relaxed">{currentStudy.details.solution}</p>
                   </div>
                 </div>
 
-                <div className="bg-[#F4F1EE] rounded-2xl p-6 md:p-8">
+                <div className="bg-surface-2 rounded-2xl p-6 md:p-8">
                   <h4 className="font-bold text-xs uppercase tracking-widest text-black mb-6">Key Outcomes</h4>
                   <div className="grid gap-4">
                     {currentStudy.details.results.map((res, i) => (
                       <div key={i} className="flex items-start gap-3 text-sm text-neutral-700">
-                        <CheckCircle2 size={18} className="text-[#4A5D23] shrink-0 mt-0.5" />
+                        <CheckCircle2 size={18} className="text-brand shrink-0 mt-0.5" />
                         <span className="font-medium">{res}</span>
                       </div>
                     ))}

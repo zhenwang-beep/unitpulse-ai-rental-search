@@ -76,7 +76,7 @@ const PathRecommendation: React.FC<PathRecommendationProps> = ({ onOpenModal }) 
   }
 
   return (
-    <section className="py-24 bg-[#F8F9FA] overflow-hidden">
+    <section className="py-24 bg-surface-2 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left Content */}
@@ -115,7 +115,7 @@ const PathRecommendation: React.FC<PathRecommendationProps> = ({ onOpenModal }) 
                   <p className="text-neutral-600 mb-6 leading-relaxed max-w-md">{activePath.description}</p>
                   <button
                     onClick={onOpenModal}
-                    className="inline-flex items-center gap-2 bg-[#4A5D23] text-white h-12 px-6 rounded-xl font-semibold text-sm hover:bg-[#3a4e1a] transition-all group"
+                    className="inline-flex items-center gap-2 bg-brand text-white h-12 px-6 rounded-xl font-semibold text-sm hover:bg-brand-hover transition-all group"
                   >
                     Get a Recommendation
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

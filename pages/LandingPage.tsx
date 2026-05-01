@@ -282,7 +282,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
   return (
     <div
       ref={scrollContainerRef}
-      className="h-[100dvh] w-full bg-[#FCF9F8] flex flex-col text-black font-sans overflow-y-auto scroll-smooth"
+      className="h-[100dvh] w-full bg-app-bg flex flex-col text-black font-sans overflow-y-auto scroll-smooth"
       onScroll={handleLandingScroll}
     >
       {/* Live Interface Overlay */}
@@ -314,7 +314,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
           </h1>
 
           <form onSubmit={handleLandingSubmit} className="w-full max-w-3xl relative group opacity-0 animate-fade-in-up z-10" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-            <div className={`border-2 ${isLandingFocused ? 'shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-[#4A5D23]' : 'shadow-[0_10px_20px_rgba(0,0,0,0.05)] border-transparent'}`} style={{ borderRadius: isMultiline ? 16 : 9999, transition: 'border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s, border-color 0.3s' }}>
+            <div className={`border-2 ${isLandingFocused ? 'shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-brand' : 'shadow-[0_10px_20px_rgba(0,0,0,0.05)] border-transparent'}`} style={{ borderRadius: isMultiline ? 16 : 9999, transition: 'border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s, border-color 0.3s' }}>
               <div className={`relative bg-white pl-6 p-2 pr-4 flex gap-2 overflow-hidden z-10 ${isMultiline ? 'items-end' : 'items-center'}`} style={{ borderRadius: isMultiline ? 14 : 9999, transition: 'border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1)' }}>
                 <div className={`flex-1 relative flex items-center min-w-0 ${isMultiline ? 'py-3' : 'py-2'}`}>
                   {/* Rotating Placeholder */}
@@ -374,8 +374,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
                   }}
                   className={`h-10 w-10 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center justify-center shrink-0 z-10 ${isMultiline ? 'mb-1' : ''} ${
                     hasLandingText
-                      ? 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
-                      : 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
+                      ? 'bg-brand text-white hover:bg-brand-hover'
+                      : 'bg-brand text-white hover:bg-brand-hover'
                   }`}
                 >
                   {hasLandingText ? <ArrowRight size={20} /> : <AudioLines size={20} />}
@@ -431,7 +431,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 <button
                   key={index}
                   onClick={() => navigate('/search', { state: { query: chip.query } })}
-                  className="group flex items-center gap-2 px-3 py-2 bg-white/80 backdrop-blur-md border border-black/5 rounded-full hover:bg-[#4A5D23] hover:text-white transition-all duration-500 hover:shadow-lg hover:shadow-[#4A5D23]/20 hover:-translate-y-0.5"
+                  className="group flex items-center gap-2 px-3 py-2 bg-white/80 backdrop-blur-md border border-black/5 rounded-full hover:bg-brand hover:text-white transition-all duration-500 hover:shadow-lg hover:shadow-brand/20 hover:-translate-y-0.5"
                 >
                   <div className="w-6 h-6 rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500 border border-black/5">
                     <img src={chip.image} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
@@ -520,7 +520,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
         {/* AI Capabilities Section */}
         <div className="w-full max-w-6xl mx-auto mt-24 px-4 py-16">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#4A5D23]/10 text-[#4A5D23] text-xs font-black uppercase tracking-wider mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand/10 text-brand text-xs font-black uppercase tracking-wider mb-6">
               <Sparkles size={14} />
               AI Capabilities
             </div>
@@ -532,8 +532,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Card 1 */}
             <div className="p-8 rounded-[2rem] bg-white border border-black/5 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#4A5D23]/5 rounded-full blur-3xl -mr-20 -mt-20" />
-              <div className="w-14 h-14 rounded-2xl bg-[#FCF9F8] border border-black/5 flex items-center justify-center text-[#4A5D23] mb-6 shadow-sm">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand/5 rounded-full blur-3xl -mr-20 -mt-20" />
+              <div className="w-14 h-14 rounded-2xl bg-app-bg border border-black/5 flex items-center justify-center text-brand mb-6 shadow-sm">
                 <ArrowLeftRight size={24} />
               </div>
               <h3 className="text-xl font-bold text-black mb-3">Compare listings side by side</h3>
@@ -544,8 +544,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
             {/* Card 2 */}
             <div className="p-8 rounded-[2rem] bg-white border border-black/5 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#4A5D23]/5 rounded-full blur-3xl -mr-20 -mt-20" />
-              <div className="w-14 h-14 rounded-2xl bg-[#FCF9F8] border border-black/5 flex items-center justify-center text-[#4A5D23] mb-6 shadow-sm">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand/5 rounded-full blur-3xl -mr-20 -mt-20" />
+              <div className="w-14 h-14 rounded-2xl bg-app-bg border border-black/5 flex items-center justify-center text-brand mb-6 shadow-sm">
                 <Calculator size={24} />
               </div>
               <h3 className="text-xl font-bold text-black mb-3">Break down total monthly cost</h3>
@@ -556,8 +556,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
             {/* Card 3 */}
             <div className="p-8 rounded-[2rem] bg-white border border-black/5 relative overflow-hidden">
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#4A5D23]/5 rounded-full blur-3xl -ml-20 -mb-20" />
-              <div className="w-14 h-14 rounded-2xl bg-[#FCF9F8] border border-black/5 flex items-center justify-center text-[#4A5D23] mb-6 shadow-sm">
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-brand/5 rounded-full blur-3xl -ml-20 -mb-20" />
+              <div className="w-14 h-14 rounded-2xl bg-app-bg border border-black/5 flex items-center justify-center text-brand mb-6 shadow-sm">
                 <Target size={24} />
               </div>
               <h3 className="text-xl font-bold text-black mb-3">Recommend best-fit units</h3>
@@ -567,7 +567,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Card 4 */}
-            <div className="p-8 rounded-[2rem] bg-[#4A5D23] border border-[#4A5D23] relative overflow-hidden text-white">
+            <div className="p-8 rounded-[2rem] bg-brand border border-brand relative overflow-hidden text-white">
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20" />
               <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center text-white mb-6 shadow-sm backdrop-blur-md">
                 <MessageSquare size={24} />
@@ -585,7 +585,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
           <div className="flex flex-col md:flex-row gap-12 md:gap-24">
             <div className="md:w-1/3 shrink-0">
               <h2 className="text-4xl md:text-5xl font-black font-heading tracking-tighter text-black mb-6">
-                Common <br className="hidden md:block" /><span style={{ color: '#4A5D23' }}>Questions</span>
+                Common <br className="hidden md:block" /><span className="text-brand">Questions</span>
               </h2>
               <p className="text-neutral-500 text-sm font-medium leading-relaxed max-w-sm">
                 Everything you need to know about the product and how it works. Can't find an answer? Just ask our AI assistant.

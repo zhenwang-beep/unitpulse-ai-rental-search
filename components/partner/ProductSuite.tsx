@@ -63,8 +63,8 @@ const SourceVisual = ({ isActive }: { isActive: boolean }) => {
                         }}
                      >
                         <div className="relative flex flex-col items-center">
-                            <div className="w-3 h-3 bg-[#A8B97D] rounded-full animate-ping absolute"></div>
-                            <div className="w-3 h-3 bg-[#A8B97D] rounded-full relative z-10 border-2 border-black"></div>
+                            <div className="w-3 h-3 bg-brand-on-dark rounded-full animate-ping absolute"></div>
+                            <div className="w-3 h-3 bg-brand-on-dark rounded-full relative z-10 border-2 border-black"></div>
                             
                             <div className={`
                                 absolute bg-neutral-900 border border-neutral-900 px-2 py-1 rounded text-[10px] text-neutral-300 font-bold uppercase tracking-wider whitespace-nowrap z-20 shadow-xl
@@ -80,7 +80,7 @@ const SourceVisual = ({ isActive }: { isActive: boolean }) => {
 
         <div className="absolute bottom-6 left-0 right-0 text-center pointer-events-none z-30">
              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-neutral-900 rounded-full border border-neutral-900 shadow-lg">
-                <Globe size={12} className="text-[#A8B97D]" />
+                <Globe size={12} className="text-brand-on-dark" />
                 <span className="text-[10px] text-neutral-400 font-mono font-bold">OMNICHANNEL LISTENING ACTIVE</span>
              </div>
         </div>
@@ -111,15 +111,15 @@ const ResponseVisual = ({ isActive }: { isActive: boolean }) => {
 
           {/* AI Response */}
           <div className={`flex items-start gap-3 flex-row-reverse transition-all duration-700 delay-700 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}`}>
-             <div className="w-8 h-8 rounded-full bg-[#A8B97D] flex items-center justify-center text-[10px] font-bold text-white shrink-0">AI</div>
-             <div className="bg-[#A8B97D]/20 border border-[#A8B97D]/20 rounded-2xl rounded-tr-none p-3 text-xs text-[#F4F7EC] shadow-sm">
+             <div className="w-8 h-8 rounded-full bg-brand-on-dark flex items-center justify-center text-[10px] font-bold text-white shrink-0">AI</div>
+             <div className="bg-brand-on-dark/20 border border-brand-on-dark/20 rounded-2xl rounded-tr-none p-3 text-xs text-ai-tint shadow-sm">
                 Yes, John! We have two layouts available for Nov 1st starting at $2,400.
              </div>
           </div>
        </div>
 
         <div className="mt-2 flex items-center gap-2 text-[10px] text-neutral-500 font-bold">
-            <Zap size={12} className="text-[#A8B97D]" />
+            <Zap size={12} className="text-brand-on-dark" />
             <span>Response time: 0.8s</span>
         </div>
     </div>
@@ -153,8 +153,8 @@ const TourVisual = ({ isActive }: { isActive: boolean }) => {
                         {day}
                     </span>
                     {isTarget && (
-                        <div className={`absolute inset-0 bg-[#A8B97D]/20 border border-[#A8B97D] rounded flex items-center justify-center transition-all duration-500 delay-500 ${isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
-                           <CheckCircle2 size={16} className="text-[#A8B97D]" />
+                        <div className={`absolute inset-0 bg-brand-on-dark/20 border border-brand-on-dark rounded flex items-center justify-center transition-all duration-500 delay-500 ${isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
+                           <CheckCircle2 size={16} className="text-brand-on-dark" />
                         </div>
                     )}
                  </div>
@@ -189,14 +189,14 @@ const ScreenVisual = ({ isActive }: { isActive: boolean }) => {
                  </div>
                  
                  {/* Scanning Bar */}
-                 <div className={`absolute top-0 left-0 right-0 h-1 bg-[#A8B97D] shadow-[0_0_20px_rgba(16,185,129,0.8)] transition-all duration-[2000ms] ease-in-out ${isActive ? 'top-[100%]' : 'top-0'}`}></div>
+                 <div className={`absolute top-0 left-0 right-0 h-1 bg-brand-on-dark shadow-[0_0_20px_rgba(16,185,129,0.8)] transition-all duration-[2000ms] ease-in-out ${isActive ? 'top-[100%]' : 'top-0'}`}></div>
                  
                  {/* Success Overlay */}
-                 <div className={`absolute inset-0 bg-[#A8B97D]/90 flex flex-col items-center justify-center gap-2 transition-all duration-300 delay-[1500ms] ${isActive ? 'opacity-100' : 'opacity-0'}`}>
-                     <div className="w-10 h-10 rounded-full bg-[#A8B97D] flex items-center justify-center text-white shadow-lg">
+                 <div className={`absolute inset-0 bg-brand-on-dark/90 flex flex-col items-center justify-center gap-2 transition-all duration-300 delay-[1500ms] ${isActive ? 'opacity-100' : 'opacity-0'}`}>
+                     <div className="w-10 h-10 rounded-full bg-brand-on-dark flex items-center justify-center text-white shadow-lg">
                          <ShieldCheck size={20} />
                      </div>
-                     <span className="text-[10px] font-bold text-[#F4F7EC] uppercase tracking-widest">Verified</span>
+                     <span className="text-[10px] font-bold text-ai-tint uppercase tracking-widest">Verified</span>
                  </div>
              </div>
 
@@ -207,7 +207,7 @@ const ScreenVisual = ({ isActive }: { isActive: boolean }) => {
                       { l: 'Credit', d: 1400 }
                   ].map((item, i) => (
                       <div key={i} className={`flex items-center gap-2 text-[10px] text-neutral-500 font-bold uppercase transition-all duration-500`} style={{ transitionDelay: `${item.d}ms`, opacity: isActive ? 1 : 0, transform: isActive ? 'translateX(0)' : 'translateX(10px)' }}>
-                          <CheckCircle2 size={10} className="text-[#A8B97D]" /> {item.l}
+                          <CheckCircle2 size={10} className="text-brand-on-dark" /> {item.l}
                       </div>
                   ))}
              </div>
@@ -224,10 +224,10 @@ const YieldVisual = ({ isActive }: { isActive: boolean }) => {
                    <div className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold mb-1">Portfolio Revenue</div>
                    <div className="text-2xl font-heading text-white">
                       $1.24M 
-                      <span className={`text-sm font-sans text-[#A8B97D] font-bold ml-2 transition-opacity duration-1000 ${isActive ? 'opacity-100' : 'opacity-0'}`}>+12%</span>
+                      <span className={`text-sm font-sans text-brand-on-dark font-bold ml-2 transition-opacity duration-1000 ${isActive ? 'opacity-100' : 'opacity-0'}`}>+12%</span>
                    </div>
                 </div>
-                <div className={`px-2 py-1 bg-[#F4F7EC] border border-[#A8B97D]/20 rounded text-[9px] text-[#A8B97D] font-bold uppercase tracking-wider flex items-center gap-1 transition-opacity duration-1000 delay-500 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
+                <div className={`px-2 py-1 bg-ai-tint border border-brand-on-dark/20 rounded text-[9px] text-brand-on-dark font-bold uppercase tracking-wider flex items-center gap-1 transition-opacity duration-1000 delay-500 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
                     <TrendingUp size={10} /> Active
                 </div>
             </div>
@@ -336,7 +336,7 @@ const PipelineCard: React.FC<{ slide: any, index: number }> = ({ slide, index })
             {/* Content Area */}
             <div className="p-6 md:p-8 flex flex-col flex-1">
                 <div className="flex items-center gap-3 mb-4">
-                    <span className="text-[#A8B97D] font-mono text-sm font-bold">/{slide.step}</span>
+                    <span className="text-brand-on-dark font-mono text-sm font-bold">/{slide.step}</span>
                     <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">{slide.label}</span>
                 </div>
                 

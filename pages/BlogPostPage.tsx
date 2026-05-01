@@ -156,7 +156,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
 
   return (
     <div
-      className="h-[100dvh] w-full bg-[#FCF9F8] flex flex-col text-black font-sans overflow-y-auto scroll-smooth"
+      className="h-[100dvh] w-full bg-app-bg flex flex-col text-black font-sans overflow-y-auto scroll-smooth"
     >
       <TopNav
         isLoggedIn={isLoggedIn}
@@ -171,11 +171,11 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
         {/* Breadcrumb */}
         <div className="w-full max-w-5xl mx-auto mt-8 px-4">
           <div className="flex items-center gap-2 text-sm text-neutral-500">
-            <a href="/" className="hover:text-[#4A5D23] transition-colors">Home</a>
+            <a href="/" className="hover:text-brand transition-colors">Home</a>
             <ChevronRight size={14} />
-            <a href="/blog" className="hover:text-[#4A5D23] transition-colors">Blog</a>
+            <a href="/blog" className="hover:text-brand transition-colors">Blog</a>
             <ChevronRight size={14} />
-            <span className="text-[#4A5D23]">{blogPost.title}</span>
+            <span className="text-brand">{blogPost.title}</span>
           </div>
         </div>
 
@@ -186,7 +186,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="px-4 py-2 bg-[#4A5D23] text-white text-xs font-bold rounded-full inline-block mb-6">
+            <span className="px-4 py-2 bg-brand text-white text-xs font-bold rounded-full inline-block mb-6">
               {blogPost.category}
             </span>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
@@ -194,7 +194,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
             </h1>
             <div className="flex flex-col md:flex-row md:items-center gap-4 mb-8">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-[#4A5D23] text-white text-sm font-black flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-brand text-white text-sm font-black flex items-center justify-center">
                   {blogPost.author.charAt(0)}
                 </div>
                 <div>
@@ -223,7 +223,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="prose prose-lg max-w-none prose-headings:text-[#4A5D23] prose-h2:text-2xl prose-h3:text-xl prose-p:leading-relaxed prose-p:mb-6 prose-hr:my-8 prose-hr:border-neutral-200"
+                className="prose prose-lg max-w-none prose-headings:text-brand prose-h2:text-2xl prose-h3:text-xl prose-p:leading-relaxed prose-p:mb-6 prose-hr:my-8 prose-hr:border-neutral-200"
                 dangerouslySetInnerHTML={{ __html: blogPost.content }}
               />
 
@@ -259,10 +259,10 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
               </div>
 
               {/* Author Bio */}
-              <div className="p-6 bg-[#F0EDEA] rounded-xl">
+              <div className="p-6 bg-footer-bg rounded-xl">
                 <h3 className="text-xl font-bold mb-4">About the Author</h3>
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-full bg-[#4A5D23] text-white text-base font-black flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-brand text-white text-base font-black flex items-center justify-center flex-shrink-0">
                     {blogPost.author.charAt(0)}
                   </div>
                   <div>
@@ -299,7 +299,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
                   <div className="mt-6 text-center">
                     <a 
                       href="/" 
-                      className="inline-flex items-center gap-2 font-medium text-[#4A5D23] hover:text-[#3a4e1a] transition-colors text-sm"
+                      className="inline-flex items-center gap-2 font-medium text-brand hover:text-brand-hover transition-colors text-sm"
                     >
                       View More Properties <ArrowRight size={14} />
                     </a>
@@ -327,10 +327,10 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({
                           />
                         </div>
                         <div>
-                          <div className="text-xs text-[#4A5D23] font-medium mb-1">
+                          <div className="text-xs text-brand font-medium mb-1">
                             {post.category}
                           </div>
-                          <h3 className="text-sm font-bold mb-1 group-hover:text-[#4A5D23] transition-colors line-clamp-2">
+                          <h3 className="text-sm font-bold mb-1 group-hover:text-brand transition-colors line-clamp-2">
                             {post.title}
                           </h3>
                           <div className="text-xs text-neutral-500">
