@@ -12,7 +12,7 @@ const dbHeaders = {
 // TODO(eng): the Supabase rows currently used for the demo include stock photos
 // (Unsplash, picsum) that don't depict the listed unit. Once the real listing
 // data feed is connected, ensure `row.image` and `row.images` carry actual unit
-// photos so PropertyCard / PropertyDetailsModal render genuine imagery.
+// photos so PropertyCard / PropertyDetailsView render genuine imagery.
 export const rowToProperty = (row: Record<string, unknown>): Property => ({
   id: row.id as string,
   title: row.title as string,

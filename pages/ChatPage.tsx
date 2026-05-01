@@ -6,7 +6,6 @@ import { Property, ChatMessage, SearchFilters } from '../types';
 import PropertyCard from '../components/PropertyCard';
 import ChatInterface, { RichMediaCanvas } from '../components/ChatInterface';
 import LiveInterface from '../components/LiveInterface';
-import PropertyDetailsModal from '../components/PropertyDetailsModal';
 import { sendMessageToGemini } from '../services/geminiService';
 import { getFilteredProperties, getAllProperties } from '../services/propertyService';
 import { useAppContext } from '../context/AppContext';

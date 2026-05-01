@@ -35,8 +35,8 @@ export const FEATURES = {
    *  Surfaces gated: voice button on LandingPage and ChatPage; LiveInterface mount. */
   AI_VOICE: flag('VITE_FEATURE_AI_VOICE', true),
 
-  /** AI-generated lifestyle match section in PropertyDetailsModal.
-   *  Surfaces gated: the `isAnalyzing` / `matchScore` block in PropertyDetailsModal. */
+  /** AI-generated lifestyle match section in PropertyDetailsView.
+   *  Surfaces gated: the `isAnalyzing` / `matchScore` block in PropertyDetailsView. */
   AI_LIFESTYLE_MATCH: flag('VITE_FEATURE_AI_LIFESTYLE_MATCH', true),
 
   /** Behavioral preference intelligence (preferenceSynthesizer + tracker).

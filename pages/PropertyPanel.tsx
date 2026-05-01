@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useOutletContext } from 'react-router-dom';
 import { Property } from '../types';
-import PropertyDetailsModal from '../components/PropertyDetailsModal';
+import PropertyDetailsView from '../components/PropertyDetailsView';
 import { useAppContext } from '../context/AppContext';
 import { useDwellTime } from '../hooks/useTracker';
 import { getPropertyById } from '../services/propertyService';
@@ -44,7 +44,7 @@ const PropertyPanel: React.FC = () => {
   };
 
   return (
-    <PropertyDetailsModal
+    <PropertyDetailsView
       property={property}
       onClose={() => navigate(`/search/${chatId}`)}
       isFavorite={isFavorite}

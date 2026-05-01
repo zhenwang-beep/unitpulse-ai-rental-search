@@ -220,14 +220,15 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
   const handleLandingSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!landingInput.trim()) return;
+    const q = landingInput.trim();
+    if (!q) return;
     if (FEATURES.AI_CHAT) {
-      navigate('/search', { state: { query: landingInput } });
+      navigate('/search', { state: { query: q } });
+    } else {
+      // AI_CHAT off → keyword search results page.
+      navigate(`/search?q=${encodeURIComponent(q)}`);
     }
-    // When AI_CHAT is OFF, the input acts as a live keyword filter — landingInput
-    // is already wired into filteredProperties below, so submitting just blurs.
     setLandingGhostText('');
-    landingInputRef.current?.blur();
   };
 
   const handleLandingInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -262,8 +263,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
         if (FEATURES.AI_CHAT) {
           navigate('/search', { state: { query: choice } });
         } else {
-          setLandingInput(choice);
-          setIsLandingFocused(false);
+          navigate(`/search?q=${encodeURIComponent(choice)}`);
         }
         return;
       }
@@ -420,8 +420,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                           if (FEATURES.AI_CHAT) {
                             navigate('/search', { state: { query: s } });
                           } else {
-                            setLandingInput(s);
-                            setIsLandingFocused(false);
+                            navigate(`/search?q=${encodeURIComponent(s)}`);
                           }
                         }}
                         onMouseEnter={() => setDropdownIndex(i)}
@@ -452,9 +451,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     if (FEATURES.AI_CHAT) {
                       navigate('/search', { state: { query: chip.query } });
                     } else {
-                      // Use the short chip label instead of the long natural-language
-                      // query — better fit for keyword filtering against amenities/title.
-                      setLandingInput(chip.label);
+                      // AI off → submit the chip's short label as a keyword search
+                      // (better signal:noise than the long natural-language query).
+                      navigate(`/search?q=${encodeURIComponent(chip.label)}`);
                     }
                   }}
                   className="group flex items-center gap-2 px-3 py-2 min-h-11 md:min-h-0 bg-white/80 backdrop-blur-md border border-black/5 rounded-full hover:bg-brand hover:text-white transition-all duration-500 hover:shadow-lg hover:shadow-brand/20 hover:-translate-y-0.5"
@@ -527,46 +526,45 @@ const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {(() => {
-            // When AI_CHAT is OFF, the input doubles as a live keyword filter. Tokenize
-            // the query (drop stopwords + 1-2 char tokens) and require every meaningful
-            // token to appear somewhere in the property's combined text.
-            const STOPWORDS = new Set(['a','an','the','for','with','and','or','of','in','to','me','my','i','find','show','want','need','looking','near','under','over']);
-            const tokens = !FEATURES.AI_CHAT
-              ? landingInput.toLowerCase().split(/[^a-z0-9$]+/).filter(t => t.length >= 3 && !STOPWORDS.has(t))
-              : [];
-            const filteredProperties = landingProperties.filter((p) => {
-              if (selectedCity !== 'All' && !p.location.includes(selectedCity)) return false;
-              if (!FEATURES.AI_CHAT && tokens.length) {
-                const haystack = [
-                  p.title,
-                  p.location,
-                  p.type,
-                  p.description,
-                  ...(p.amenities ?? []),
-                ].join(' ').toLowerCase();
-                return tokens.every(t => haystack.includes(t));
-              }
-              return true;
-            });
+            // Trending properties only on the landing page — first 8 (filtered by
+            // selected city). The full grid lives at /listings.
+            // TODO(eng): when the data API supports it, replace `slice(0, 8)` with
+            // a server-side `?trending=true&limit=8` filter so the order reflects
+            // real engagement signals (views, favorites, freshness) rather than
+            // insertion order.
+            const trending = landingProperties
+              .filter((p) => selectedCity === 'All' || p.location.includes(selectedCity))
+              .slice(0, 8);
             return (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredProperties.map((p) => (
-                  <div key={p.id} className="transform transition-all duration-700 animate-fade-in-up">
-                    <PropertyCard
-                      property={p}
-                      isFavorite={favorites.some(f => f.id === p.id)}
-                      onToggleFavorite={handleToggleFavorite}
-                      onClick={(property: Property) => {
-                        if (FEATURES.AI_CHAT) {
-                          navigate('/search', { state: { propertyId: property.id } });
-                        } else {
-                          navigate(`/property/${property.id}`);
-                        }
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {trending.map((p) => (
+                    <div key={p.id} className="transform transition-all duration-700 animate-fade-in-up">
+                      <PropertyCard
+                        property={p}
+                        isFavorite={favorites.some(f => f.id === p.id)}
+                        onToggleFavorite={handleToggleFavorite}
+                        onClick={(property: Property) => {
+                          if (FEATURES.AI_CHAT) {
+                            navigate('/search', { state: { propertyId: property.id } });
+                          } else {
+                            navigate(`/property/${property.id}`);
+                          }
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-center mt-12">
+                  <button
+                    onClick={() => navigate('/listings')}
+                    className="inline-flex items-center gap-2 px-6 py-3 md:py-2.5 min-h-11 md:min-h-0 bg-white text-black border border-black/10 rounded-full text-sm font-semibold hover:border-black hover:shadow-md transition-all"
+                  >
+                    Browse all rentals
+                    <ArrowRight size={14} />
+                  </button>
+                </div>
+              </>
             );
           })()}
         </div>

@@ -18,6 +18,8 @@ import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import PartnerPage from './pages/PartnerPage';
 import TestPage from './pages/TestPage';
+import SearchResultsPage from './pages/SearchResultsPage';
+import AllListingsPage from './pages/AllListingsPage';
 import FavoritesPage from './components/FavoritesPage';
 import Toast, { ToastData } from './components/Toast';
 import { Property } from './types';
@@ -172,9 +174,48 @@ const AppShell: React.FC = () => {
             <Route path="property/:propertyId" element={<PropertyPanel />} />
           </Route>
         ) : (
-          <Route path="/search/*" element={<Navigate to="/" replace />} />
+          <Route
+            path="/search"
+            element={
+              <SearchResultsPage
+                isLoggedIn={isLoggedIn}
+                isDropdownOpen={isDropdownOpen}
+                setIsDropdownOpen={setIsDropdownOpen}
+                setShowLoginView={setShowLoginView}
+                setPendingFavoriteProperty={setPendingFavoriteProperty}
+                handleLogout={handleLogout}
+                showToast={setToast}
+              />
+            }
+          />
         )}
-        <Route path="/property/:propertyId" element={<PropertyDetailPage />} />
+        <Route
+          path="/listings"
+          element={
+            <AllListingsPage
+              isLoggedIn={isLoggedIn}
+              isDropdownOpen={isDropdownOpen}
+              setIsDropdownOpen={setIsDropdownOpen}
+              setShowLoginView={setShowLoginView}
+              setPendingFavoriteProperty={setPendingFavoriteProperty}
+              handleLogout={handleLogout}
+              showToast={setToast}
+            />
+          }
+        />
+        <Route
+          path="/property/:propertyId"
+          element={
+            <PropertyDetailPage
+              isLoggedIn={isLoggedIn}
+              isDropdownOpen={isDropdownOpen}
+              setIsDropdownOpen={setIsDropdownOpen}
+              setShowLoginView={setShowLoginView}
+              handleLogout={handleLogout}
+              showToast={setToast}
+            />
+          }
+        />
         <Route path="/favorites" element={
           <FavoritesPage
             isLoggedIn={isLoggedIn}

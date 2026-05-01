@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import ContactFormModal from './ContactFormModal';
 import { FEATURES } from '../featureFlags';
 
-interface PropertyDetailsModalProps {
+interface PropertyDetailsViewProps {
   property: Property | null;
   onClose: () => void;
   isFavorite: boolean;
@@ -41,7 +41,7 @@ const BUILDING_AMENITIES = [
 ];
 
 
-const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
+const PropertyDetailsView: React.FC<PropertyDetailsViewProps> = ({
   property,
   onClose,
   isFavorite,
@@ -493,6 +493,10 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
             </div>
           </div>
 
+          {/* Property FAQ — SEO/GEO surface. Mock data for now; engineers will hook
+              up a property-FAQ API later (see TODO.md "Property FAQ data"). */}
+          <PropertyFAQSection property={property} />
+
         </div>
       </div>
 
@@ -794,4 +798,142 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
   );
 };
 
-export default PropertyDetailsModal;
+export default PropertyDetailsView;
+
+// --- Property FAQ section -------------------------------------------------
+//
+// SEO/GEO surface — AI engines (ChatGPT, Perplexity, Google AI Overviews,
+// Gemini, Claude) heavily favor Q&A formatting and FAQPage schema for
+// citations. Long-term we want 10+ Q&As per property, sourced from a real
+// data feed (operator-provided, augmented by AI extraction from listing copy).
+//
+// TODO(eng): replace `buildMockFAQs` with a hook that fetches property-level
+// FAQs from the API. Shape: `{ q: string; a: string; sources?: string[] }[]`.
+// The API will return 8–20 entries per property; ensure pagination/lazy
+// rendering if the list exceeds ~12 to keep LCP within budget.
+//
+// Each FAQ in the list also needs to populate the FAQPage JSON-LD block at
+// the top of this component for Search Console / AI engines to pick up.
+//
+function buildMockFAQs(property: Property): { q: string; a: string }[] {
+  const monthly = `$${property.price.toLocaleString()}/mo`;
+  const beds = property.bedrooms === 0 ? 'studio' : `${property.bedrooms}-bedroom`;
+  const sqft = property.sqftRange ?? `${property.sqft.toLocaleString()} sqft`;
+  const amenities = property.amenities ?? [];
+  const isPetFriendly = amenities.some(a => a.toLowerCase().includes('pet'));
+  const hasParking = amenities.some(a => /parking|garage|ev charging/i.test(a));
+  const hasLaundry = amenities.some(a => /laundry|washer|w\/d/i.test(a));
+  const hasGym = amenities.some(a => /gym|fitness/i.test(a));
+  return [
+    {
+      q: `How much is rent at ${property.title}?`,
+      a: `${property.title} starts at ${monthly} for a ${beds} unit (${sqft}). Pricing varies by floor plan and availability — see the floor plans section above for current rates and unit-level details.`,
+    },
+    {
+      q: `Where is ${property.title} located?`,
+      a: `${property.title} is in ${property.location}. Check the map above for the exact location and explore nearby transit, schools, and neighborhood amenities. Walk Score and transit details are available in the neighborhood guide.`,
+    },
+    {
+      q: `Is ${property.title} pet-friendly?`,
+      a: isPetFriendly
+        ? `Yes — ${property.title} is pet-friendly. Specific pet policies (deposit, monthly fee, breed restrictions) vary; the leasing team can share full policy details when you tour.`
+        : `Pet policies for ${property.title} aren't currently published. Contact the leasing team for the latest pet policy — many ${property.location} buildings have updated their policies recently.`,
+    },
+    {
+      q: `What amenities are included at ${property.title}?`,
+      a: amenities.length > 0
+        ? `${property.title} includes ${amenities.slice(0, 6).join(', ')}${amenities.length > 6 ? `, and ${amenities.length - 6} more` : ''}. Building amenities are listed in full above.`
+        : `Amenity details for ${property.title} are being updated. Contact the property for the latest amenity list.`,
+    },
+    {
+      q: `Is parking available at ${property.title}?`,
+      a: hasParking
+        ? `Yes — parking is available at ${property.title}. Parking type (covered, garage, EV) and additional cost vary by unit; ask the leasing team for current availability and rates.`
+        : `Parking availability at ${property.title} isn't currently published. Many residents use street parking or nearby garages — the leasing team can confirm options when you tour.`,
+    },
+    {
+      q: `Does ${property.title} have in-unit laundry?`,
+      a: hasLaundry
+        ? `Yes — ${property.title} has in-unit laundry. Specific machines (full-size vs. stacked) vary by floor plan.`
+        : `In-unit laundry is not standard at ${property.title}. Check with the leasing team about shared laundry rooms or laundry hookups.`,
+    },
+    {
+      q: `Does ${property.title} have a gym or fitness center?`,
+      a: hasGym
+        ? `Yes — ${property.title} has a fitness center on site. Hours and equipment list available from the leasing team.`
+        : `${property.title} does not currently advertise an on-site gym. Many residents use nearby fitness studios in ${property.location}.`,
+    },
+    {
+      q: `How do I schedule a tour at ${property.title}?`,
+      a: `Click the "Schedule a tour" button at the bottom of this page or call the property directly. Same-day and weekend tours are typically available for ${property.location} listings.`,
+    },
+  ];
+}
+
+const PropertyFAQSection: React.FC<{ property: Property }> = ({ property }) => {
+  const faqs = React.useMemo(() => buildMockFAQs(property), [property]);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  // FAQPage JSON-LD for SEO/GEO. Search Console and AI engines parse this
+  // structured data and may surface the property's Q&As as featured snippets
+  // or AI-Overview citations.
+  const faqSchema = React.useMemo(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  }), [faqs]);
+
+  return (
+    <div className="space-y-4">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <div className="flex items-center justify-between">
+        <h3 className="text-xs font-black text-black uppercase tracking-wider">
+          Frequently Asked Questions
+        </h3>
+        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
+          {faqs.length} questions
+        </span>
+      </div>
+      <div className="rounded-2xl border border-black/5 divide-y divide-black/5 overflow-hidden bg-white">
+        {faqs.map(({ q, a }, i) => {
+          const isOpen = openIndex === i;
+          return (
+            <div key={i}>
+              <button
+                onClick={() => setOpenIndex(isOpen ? null : i)}
+                aria-expanded={isOpen}
+                className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-neutral-50 transition-colors"
+              >
+                <span className="text-sm font-semibold text-black leading-snug">{q}</span>
+                <ChevronDown
+                  size={16}
+                  className={`shrink-0 text-neutral-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                />
+              </button>
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    className="overflow-hidden"
+                  >
+                    <p className="px-5 pb-4 text-sm text-neutral-600 leading-relaxed">{a}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
