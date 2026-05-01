@@ -241,20 +241,21 @@ const TimelineNodeHorizontal: React.FC<{ index: number; scrollYProgress: MotionV
   return (
     <div className="flex flex-col items-center gap-3 relative z-10 cursor-pointer group" onClick={onClick}>
       <motion.div
-        initial={{ borderColor: 'rgba(55, 65, 81, 1)', backgroundColor: 'rgba(17, 24, 39, 1)', color: 'rgba(156, 163, 175, 1)' }}
+        initial={{ borderColor: 'rgba(64, 64, 64, 1)', backgroundColor: 'rgba(23, 23, 23, 1)', color: 'rgba(163, 163, 163, 1)' }}
         animate={{
-          borderColor: isActive ? 'rgba(16, 185, 129, 1)' : 'rgba(55, 65, 81, 1)',
-          backgroundColor: isActive ? 'rgba(6, 78, 59, 1)' : 'rgba(17, 24, 39, 1)',
-          color: isActive ? 'rgba(52, 211, 153, 1)' : 'rgba(156, 163, 175, 1)'
+          // Active: Olive On-Dark border + dark olive fill + Olive On-Dark text (per design system §1).
+          borderColor: isActive ? 'rgba(168, 185, 125, 1)' : 'rgba(64, 64, 64, 1)',
+          backgroundColor: isActive ? 'rgba(58, 78, 26, 1)' : 'rgba(23, 23, 23, 1)',
+          color: isActive ? 'rgba(168, 185, 125, 1)' : 'rgba(163, 163, 163, 1)'
         }}
         transition={{ duration: 0.3 }}
-        className="w-10 h-10 rounded-full border-2 flex items-center justify-center font-heading text-lg shadow-lg group-hover:border-[#4A5D23]/50 group-hover:text-[#4A5D23] transition-colors"
+        className="w-10 h-10 rounded-full border-2 flex items-center justify-center font-heading text-lg shadow-lg group-hover:border-[#A8B97D]/50 group-hover:text-[#A8B97D] transition-colors"
       >
         {index + 1}
       </motion.div>
       <motion.span
         animate={{ color: isActive ? 'rgba(255, 255, 255, 1)' : 'rgba(107, 114, 128, 1)' }}
-        className="hidden md:block text-[10px] md:text-xs font-bold uppercase tracking-widest text-center absolute top-14 w-32 -ml-16 left-1/2 group-hover:text-[#4A5D23] transition-colors"
+        className="hidden md:block text-[10px] md:text-xs font-bold uppercase tracking-widest text-center absolute top-14 w-32 -ml-16 left-1/2 group-hover:text-[#A8B97D] transition-colors"
       >
         {name}
       </motion.span>
@@ -295,7 +296,7 @@ const ProductSlide: React.FC<{ product: any; index: number; total: number; scrol
           <div className="flex items-center gap-4 mb-2 md:mb-4">
             <h3 className="font-heading text-3xl md:text-4xl lg:text-5xl text-white">{product.name}</h3>
           </div>
-          <div className="text-lg md:text-xl text-[#4A5D23] mb-4 md:mb-6 font-light tracking-wide">
+          <div className="text-lg md:text-xl text-[#A8B97D] mb-4 md:mb-6 font-light tracking-wide">
             {product.action} {product.titleSuffix}
           </div>
           <p className="text-neutral-400 mb-0 lg:mb-8 leading-relaxed text-sm md:text-lg">{product.description}</p>
@@ -303,7 +304,7 @@ const ProductSlide: React.FC<{ product: any; index: number; total: number; scrol
         <div className="md:w-1/2 lg:w-full space-y-3 md:space-y-4 md:self-end">
           {product.valuePoints.map((point: string, i: number) => (
             <div key={i} className="flex items-center gap-3 text-neutral-300 text-sm md:text-base">
-              <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-[#4A5D23] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-[#A8B97D] shrink-0" />
               <span>{point}</span>
             </div>
           ))}
@@ -347,7 +348,7 @@ const MobileProductSlide: React.FC<{ product: any; index: number }> = ({ product
           <div className="flex items-center gap-4 mb-2">
             <h3 className="font-heading text-3xl text-white">{product.name}</h3>
           </div>
-          <div className="text-lg text-[#4A5D23] mb-4 font-light tracking-wide">
+          <div className="text-lg text-[#A8B97D] mb-4 font-light tracking-wide">
             {product.action} {product.titleSuffix}
           </div>
           <p className="text-neutral-400 mb-0 leading-relaxed text-sm">{product.description}</p>
@@ -355,7 +356,7 @@ const MobileProductSlide: React.FC<{ product: any; index: number }> = ({ product
         <div className="sm:w-1/2 space-y-3">
           {product.valuePoints.map((point: string, i: number) => (
             <div key={i} className="flex items-center gap-3 text-neutral-300 text-sm">
-              <CheckCircle2 className="w-4 h-4 text-[#4A5D23] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-[#A8B97D] shrink-0" />
               <span>{point}</span>
             </div>
           ))}
@@ -429,7 +430,7 @@ const FeatureCanvas: React.FC = () => {
             <div className="flex items-center justify-between relative">
               <div className="absolute left-8 right-8 top-5 -translate-y-1/2 h-0.5 bg-neutral-900 -z-10"></div>
               <motion.div
-                className="absolute left-8 right-8 top-5 -translate-y-1/2 h-0.5 bg-[#4A5D23] -z-10 origin-left"
+                className="absolute left-8 right-8 top-5 -translate-y-1/2 h-0.5 bg-[#A8B97D] -z-10 origin-left"
                 style={{ scaleX: scrollYProgress }}
               ></motion.div>
               {products.map((product, index) => (
@@ -468,7 +469,7 @@ const FeatureCanvas: React.FC = () => {
           transition={{ duration: 0.7 }}
           className="relative bg-neutral-900/80 border border-neutral-900 rounded-3xl p-8 md:p-12 md:pb-8 overflow-hidden flex flex-col"
         >
-          <div className="absolute -right-20 -top-20 w-64 h-64 bg-[#F4F7EC] rounded-full blur-[80px] pointer-events-none"></div>
+          <div className="absolute -right-20 -top-20 w-64 h-64 bg-[#A8B97D]/10 rounded-full blur-[80px] pointer-events-none"></div>
           <div className="w-full relative z-10 mb-4">
             <Pipeline />
           </div>

@@ -23,8 +23,9 @@ All colors are defined as hex values applied via Tailwind's arbitrary value synt
 | Token | Hex | Tailwind | Use |
 |---|---|---|---|
 | Brand Black | `#171717` | `text-black` / `bg-black` | Body text, icon buttons, primary text |
-| Primary Olive | `#4A5D23` | `bg-[#4A5D23]` | Primary buttons, active states, match badges |
+| Primary Olive | `#4A5D23` | `bg-[#4A5D23]` | Primary buttons, active states, match badges (on light surfaces) |
 | Primary Olive Hover | `#3a4e1a` | `hover:bg-[#3a4e1a]` | Hover/active state for all olive elements |
+| **Olive On-Dark** | `#A8B97D` | `text-[#A8B97D]` / `bg-[#A8B97D]` | Olive accent on `bg-black` / dark surfaces. `#4A5D23` fails WCAG contrast on black (~2:1). Use `#A8B97D` (~9:1) instead. |
 | Olive Text (body) | `#243510` | `text-[#243510]` | Body text inside AI-tint sections |
 | Olive Text (heading) | `#1a2609` | `text-[#1a2609]` | Headings inside AI-tint sections |
 
@@ -42,6 +43,7 @@ All colors are defined as hex values applied via Tailwind's arbitrary value synt
 - **Never** use `bg-gray-50` or `bg-neutral-50` — use `#F4F1EE` instead.
 - **Never** use `#FCF9F4` — the canonical warm bg is `#FCF9F8`.
 - **Never** introduce raw hex values not in this table.
+- **Never** put `#4A5D23` (Primary Olive) on a dark background — it fails WCAG contrast (~2:1). Use `#A8B97D` (Olive On-Dark) on `bg-black` / dark surfaces instead.
 
 ---
 
