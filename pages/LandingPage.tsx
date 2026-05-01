@@ -452,7 +452,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     if (FEATURES.AI_CHAT) {
                       navigate('/search', { state: { query: chip.query } });
                     } else {
-                      setLandingInput(chip.query);
+                      // Use the short chip label instead of the long natural-language
+                      // query — better fit for keyword filtering against amenities/title.
+                      setLandingInput(chip.label);
                     }
                   }}
                   className="group flex items-center gap-2 px-3 py-2 min-h-11 md:min-h-0 bg-white/80 backdrop-blur-md border border-black/5 rounded-full hover:bg-brand hover:text-white transition-all duration-500 hover:shadow-lg hover:shadow-brand/20 hover:-translate-y-0.5"
@@ -525,12 +527,16 @@ const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {(() => {
-            const keyword = landingInput.trim().toLowerCase();
+            // When AI_CHAT is OFF, the input doubles as a live keyword filter. Tokenize
+            // the query (drop stopwords + 1-2 char tokens) and require every meaningful
+            // token to appear somewhere in the property's combined text.
+            const STOPWORDS = new Set(['a','an','the','for','with','and','or','of','in','to','me','my','i','find','show','want','need','looking','near','under','over']);
+            const tokens = !FEATURES.AI_CHAT
+              ? landingInput.toLowerCase().split(/[^a-z0-9$]+/).filter(t => t.length >= 3 && !STOPWORDS.has(t))
+              : [];
             const filteredProperties = landingProperties.filter((p) => {
               if (selectedCity !== 'All' && !p.location.includes(selectedCity)) return false;
-              // When AI_CHAT is OFF, the input doubles as a live keyword filter so users can
-              // still narrow results without a conversational AI search.
-              if (!FEATURES.AI_CHAT && keyword) {
+              if (!FEATURES.AI_CHAT && tokens.length) {
                 const haystack = [
                   p.title,
                   p.location,
@@ -538,7 +544,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                   p.description,
                   ...(p.amenities ?? []),
                 ].join(' ').toLowerCase();
-                return haystack.includes(keyword);
+                return tokens.every(t => haystack.includes(t));
               }
               return true;
             });
