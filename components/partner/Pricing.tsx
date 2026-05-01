@@ -12,11 +12,11 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <FadeIn>
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="font-serif text-4xl md:text-5xl mb-6 text-black">
+            <h2 className="font-heading text-4xl md:text-5xl mb-6 text-black">
               Pay for performance.<br />
-              <span className="text-gray-400">Not software.</span>
+              <span className="text-neutral-400">Not software.</span>
             </h2>
-            <p className="text-lg text-gray-500">
+            <p className="text-lg text-neutral-500">
               Start with free tools. Upgrade to autonomous agents. Pay for results.
             </p>
           </div>
@@ -25,32 +25,32 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* UP Marketing */}
           <FadeIn delay={100} className="h-full">
-            <div className="h-full p-8 rounded-2xl border border-gray-200 bg-white flex flex-col hover:border-gray-300 transition-all hover:shadow-xl relative group">
+            <div className="h-full p-8 rounded-2xl border border-black/5 bg-white flex flex-col hover:border-black/10 transition-all hover:shadow-xl relative group">
               <div className="mb-6">
-                <h3 className="font-serif text-2xl font-bold text-black mb-2">UP Marketing</h3>
-                <p className="text-sm text-gray-500 font-medium uppercase tracking-wider">The Hunter</p>
+                <h3 className="font-heading text-2xl font-bold text-black mb-2">UP Marketing</h3>
+                <p className="text-sm text-neutral-500 font-medium uppercase tracking-wider">The Hunter</p>
               </div>
               
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
                   <span className="text-4xl font-bold text-black">Free</span>
-                  <span className="text-gray-500">/ 30 days</span>
+                  <span className="text-neutral-500">/ 30 days</span>
                 </div>
-                <div className="text-sm text-gray-400 mt-2">
+                <div className="text-sm text-neutral-400 mt-2">
                   Custom pricing based on portfolio size.
                 </div>
               </div>
 
               <ul className="space-y-4 mb-8 flex-1">
-                <li className="flex items-start gap-3 text-sm text-gray-600">
-                  <Check size={16} className="text-emerald-500 mt-0.5 shrink-0" />
+                <li className="flex items-start gap-3 text-sm text-neutral-600">
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Automated Listing Syndication</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-gray-600">
-                  <Check size={16} className="text-emerald-500 mt-0.5 shrink-0" />
+                <li className="flex items-start gap-3 text-sm text-neutral-600">
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Real-time Ad Optimization</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-gray-600">
+                <li className="flex items-start gap-3 text-sm text-neutral-600">
                   <Plus size={16} className="text-black mt-0.5 shrink-0" />
                   <span>Channel Autopilots Available</span>
                 </li>
@@ -79,7 +79,7 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
 
               <button 
                 onClick={onOpenModal}
-                className="w-full py-4 rounded-xl border border-gray-200 font-bold text-sm uppercase tracking-widest hover:bg-black hover:text-white hover:border-black transition-all"
+                className="w-full py-4 rounded-xl border border-black/5 font-bold text-sm uppercase tracking-widest hover:bg-black hover:text-white hover:border-black transition-all"
               >
                 Get Started
               </button>
@@ -88,43 +88,43 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
 
           {/* UP Leasing */}
           <FadeIn delay={200} className="h-full">
-            <div className="h-full p-8 rounded-2xl border border-gray-200 bg-gray-50 flex flex-col hover:border-gray-300 transition-all hover:shadow-xl relative group transform md:-translate-y-4 overflow-hidden">
+            <div className="h-full p-8 rounded-2xl border border-black/5 bg-[#F4F1EE] flex flex-col hover:border-black/10 transition-all hover:shadow-xl relative group transform md:-translate-y-4 overflow-hidden">
               <div className="mb-6">
-                <h3 className="font-serif text-2xl font-bold text-black mb-2">UP Leasing</h3>
-                <p className="text-sm text-gray-500 font-medium uppercase tracking-wider">The Closer</p>
+                <h3 className="font-heading text-2xl font-bold text-black mb-2">UP Leasing</h3>
+                <p className="text-sm text-neutral-500 font-medium uppercase tracking-wider">The Closer</p>
               </div>
               
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-bold text-black">Let's Talk</span>
                 </div>
-                <p className="text-sm text-gray-400 mt-2">
+                <p className="text-sm text-neutral-400 mt-2">
                   Performance based. Client only pays when a lease is signed. Zero risk.
                 </p>
               </div>
 
               <ul className="space-y-4 mb-8 flex-1">
-                <li className="flex items-start gap-3 text-sm text-gray-600">
-                  <Check size={16} className="text-emerald-500 mt-0.5 shrink-0" />
+                <li className="flex items-start gap-3 text-sm text-neutral-600">
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>24/7 AI Lead Engagement</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-gray-600">
-                  <Check size={16} className="text-emerald-500 mt-0.5 shrink-0" />
+                <li className="flex items-start gap-3 text-sm text-neutral-600">
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Autonomous Tour Scheduling</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-gray-600">
-                  <Check size={16} className="text-emerald-500 mt-0.5 shrink-0" />
+                <li className="flex items-start gap-3 text-sm text-neutral-600">
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Application & Lease Automation</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-gray-600">
-                  <Check size={16} className="text-emerald-500 mt-0.5 shrink-0" />
+                <li className="flex items-start gap-3 text-sm text-neutral-600">
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Zero Upfront Cost</span>
                 </li>
               </ul>
 
               <button 
                 onClick={onOpenModal}
-                className="w-full py-4 rounded-xl bg-black text-white font-bold text-sm uppercase tracking-widest hover:bg-gray-800 transition-all shadow-lg"
+                className="w-full py-4 rounded-xl bg-black text-white font-bold text-sm uppercase tracking-widest hover:bg-neutral-900 transition-all shadow-lg"
               >
                 Schedule a Demo
               </button>
@@ -133,44 +133,44 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
 
           {/* UP Insight */}
           <FadeIn delay={300} className="h-full">
-            <div className="h-full p-8 rounded-2xl border border-gray-200 bg-white flex flex-col hover:border-gray-300 transition-all hover:shadow-xl relative group overflow-hidden">
+            <div className="h-full p-8 rounded-2xl border border-black/5 bg-white flex flex-col hover:border-black/10 transition-all hover:shadow-xl relative group overflow-hidden">
               <div className="mb-6">
-                <h3 className="font-serif text-2xl font-bold text-black mb-2">UP Insight</h3>
-                <p className="text-sm text-gray-500 font-medium uppercase tracking-wider">The Brain</p>
+                <h3 className="font-heading text-2xl font-bold text-black mb-2">UP Insight</h3>
+                <p className="text-sm text-neutral-500 font-medium uppercase tracking-wider">The Brain</p>
               </div>
               
               <div className="mb-8">
                 <div className="flex items-baseline gap-1">
                   <span className="text-4xl font-bold text-black">Free</span>
-                  <span className="text-gray-500">/ forever</span>
+                  <span className="text-neutral-500">/ forever</span>
                 </div>
-                <p className="text-sm text-gray-400 mt-2">
+                <p className="text-sm text-neutral-400 mt-2">
                   The cockpit for your entire operation.
                 </p>
               </div>
 
               <ul className="space-y-4 mb-8 flex-1">
-                <li className="flex items-start gap-3 text-sm text-gray-600">
-                  <Check size={16} className="text-emerald-500 mt-0.5 shrink-0" />
+                <li className="flex items-start gap-3 text-sm text-neutral-600">
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Unified Data Dashboard</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-gray-600">
-                  <Check size={16} className="text-emerald-500 mt-0.5 shrink-0" />
+                <li className="flex items-start gap-3 text-sm text-neutral-600">
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Full-Funnel Visualization</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-gray-600">
-                  <Check size={16} className="text-emerald-500 mt-0.5 shrink-0" />
+                <li className="flex items-start gap-3 text-sm text-neutral-600">
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>Market & Competitor Analysis</span>
                 </li>
-                <li className="flex items-start gap-3 text-sm text-gray-600">
-                  <Check size={16} className="text-emerald-500 mt-0.5 shrink-0" />
+                <li className="flex items-start gap-3 text-sm text-neutral-600">
+                  <Check size={16} className="text-[#4A5D23] mt-0.5 shrink-0" />
                   <span>"Data Copilot" Query Interface</span>
                 </li>
               </ul>
 
               <button 
                 onClick={onOpenModal}
-                className="w-full py-4 rounded-xl border border-gray-200 font-bold text-sm uppercase tracking-widest hover:bg-black hover:text-white hover:border-black transition-all"
+                className="w-full py-4 rounded-xl border border-black/5 font-bold text-sm uppercase tracking-widest hover:bg-black hover:text-white hover:border-black transition-all"
               >
                 Get Started
               </button>
@@ -189,31 +189,31 @@ const Pricing: React.FC<PricingProps> = ({ onOpenModal }) => {
                 className="w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-1000"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/90 to-gray-900/50"></div>
-              <div className="absolute inset-0 bg-emerald-900/20 mix-blend-overlay"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-neutral-900 via-neutral-900/90 to-neutral-900/50"></div>
+              <div className="absolute inset-0 bg-[#4A5D23]/20 mix-blend-overlay"></div>
             </div>
 
             {/* Content */}
             <div className="relative z-10 p-10 md:p-16 flex flex-col items-center justify-center text-center">
               <div className="max-w-3xl flex flex-col items-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-6">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span className="text-emerald-400 font-mono text-xs font-bold tracking-widest uppercase">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F4F7EC] border border-[#4A5D23]/20 mb-6">
+                  <span className="w-2 h-2 rounded-full bg-[#4A5D23] animate-pulse"></span>
+                  <span className="text-[#4A5D23] font-mono text-xs font-bold tracking-widest uppercase">
                     Premium Offering
                   </span>
                 </div>
                 
-                <h3 className="font-serif text-4xl md:text-5xl text-white mb-6 leading-tight">
-                  Leasing as a Service <span className="text-gray-400 italic font-light text-3xl md:text-4xl">(LaaS)</span>
+                <h3 className="font-heading text-4xl md:text-5xl text-white mb-6 leading-tight">
+                  Leasing as a Service <span className="text-neutral-400 italic font-light text-3xl md:text-4xl">(LaaS)</span>
                 </h3>
                 
-                <p className="text-xl text-gray-300 mb-10 leading-relaxed">
+                <p className="text-xl text-neutral-300 mb-10 leading-relaxed">
                   Go beyond software. We run the entire leasing operation for you—an end-to-end, fully managed solution powered by our AI agents and overseen by our industry experts.
                 </p>
                 
                 <button 
                   onClick={onOpenModal}
-                  className="px-8 py-4 rounded-xl bg-emerald-500 text-white font-bold text-sm uppercase tracking-widest hover:bg-emerald-400 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] inline-flex items-center gap-3 group/btn"
+                  className="px-8 py-4 rounded-xl bg-[#4A5D23] text-white font-bold text-sm uppercase tracking-widest hover:bg-[#4A5D23] transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] inline-flex items-center gap-3 group/btn"
                 >
                   Inquire About LaaS
                   <svg className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -96,19 +96,19 @@ const Stats: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col items-center text-center mb-20 gap-8">
           <FadeIn>
-            <h2 className="font-serif text-3xl md:text-5xl text-black">Built to deliver results. Reliably.</h2>
+            <h2 className="font-heading text-3xl md:text-5xl text-black">Built to deliver results. Reliably.</h2>
           </FadeIn>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-200 mt-12 border-t border-b border-gray-200 md:border-t-0 md:border-b-0">
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-black/10 mt-12 border-t border-b border-black/5 md:border-t-0 md:border-b-0">
           {stats.map((stat, idx) => (
             <FadeIn key={idx} delay={idx * 100 + 300} className="h-full">
               <div className="cursor-default group flex flex-col items-center gap-6 text-center justify-center h-full py-8 md:py-0 px-4">
-                <div className="text-6xl md:text-7xl font-serif text-black shrink-0 leading-none">
+                <div className="text-6xl md:text-7xl font-heading text-black shrink-0 leading-none">
                   <AnimatedValue value={stat.value} />
                 </div>
                 <div className="flex flex-col">
-                  <div className="text-lg tracking-widest text-center text-gray-500 mb-1">{stat.label}</div>
+                  <div className="text-lg tracking-widest text-center text-neutral-500 mb-1">{stat.label}</div>
                 </div>
               </div>
             </FadeIn>

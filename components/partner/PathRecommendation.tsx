@@ -82,8 +82,8 @@ const PathRecommendation: React.FC<PathRecommendationProps> = ({ onOpenModal }) 
           {/* Left Content */}
           <div className="flex flex-col">
             <FadeIn>
-              <p className="text-xs font-bold tracking-widest text-gray-400 uppercase mb-2">Not sure where to start?</p>
-              <h2 className="text-4xl md:text-5xl font-serif text-gray-900 mb-12 leading-tight">
+              <p className="text-xs font-bold tracking-widest text-neutral-400 uppercase mb-2">Not sure where to start?</p>
+              <h2 className="text-4xl md:text-5xl font-heading text-neutral-900 mb-12 leading-tight">
                 We'll Recommend <br /> a Path.
               </h2>
             </FadeIn>
@@ -94,7 +94,7 @@ const PathRecommendation: React.FC<PathRecommendationProps> = ({ onOpenModal }) 
                   key={path.id}
                   onClick={() => handleManualSelect(path)}
                   className={`text-left text-6xl md:text-7xl font-sans tracking-tight transition-colors duration-300 ${
-                    activePath.id === path.id ? 'text-black' : 'text-gray-400 hover:text-gray-600'
+                    activePath.id === path.id ? 'text-black' : 'text-neutral-400 hover:text-neutral-600'
                   }`}
                 >
                   {path.title}
@@ -102,7 +102,7 @@ const PathRecommendation: React.FC<PathRecommendationProps> = ({ onOpenModal }) 
               ))}
             </div>
 
-            <div className="border-t border-gray-300 pt-8 min-h-[180px]">
+            <div className="border-t border-black/10 pt-8 min-h-[180px]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activePath.id}
@@ -111,11 +111,11 @@ const PathRecommendation: React.FC<PathRecommendationProps> = ({ onOpenModal }) 
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{activePath.condition}</h3>
-                  <p className="text-gray-600 mb-6 leading-relaxed max-w-md">{activePath.description}</p>
+                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">{activePath.condition}</h3>
+                  <p className="text-neutral-600 mb-6 leading-relaxed max-w-md">{activePath.description}</p>
                   <button
                     onClick={onOpenModal}
-                    className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 rounded font-medium hover:bg-gray-800 transition-colors group"
+                    className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 rounded font-medium hover:bg-neutral-900 transition-colors group"
                   >
                     Get a Recommendation
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -149,7 +149,7 @@ const PathRecommendation: React.FC<PathRecommendationProps> = ({ onOpenModal }) 
                   className={`absolute inset-0 ${activePath.bento.containerClass}`}
                 >
                   {activePath.bento.images.map((img, idx) => (
-                    <div key={idx} className={`${img.class} rounded-2xl overflow-hidden shadow-lg relative bg-white border border-gray-200/50 group`}>
+                    <div key={idx} className={`${img.class} rounded-2xl overflow-hidden shadow-lg relative bg-white border border-black/5 group`}>
                       <img
                         src={img.src}
                         alt={`${activePath.title} feature ${idx + 1}`}

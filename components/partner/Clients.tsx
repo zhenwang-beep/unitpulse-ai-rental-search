@@ -81,7 +81,7 @@ const LogoTicker = ({
             className="relative h-12 flex items-center justify-center gap-3 grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100"
           >
             <img src={item.logo} alt={item.name} className="h-full w-auto object-contain max-w-[120px]" />
-            {showLabel && <span className="text-lg font-semibold text-gray-700 whitespace-nowrap">{item.name}</span>}
+            {showLabel && <span className="text-lg font-semibold text-neutral-700 whitespace-nowrap">{item.name}</span>}
           </div>
         ))}
       </div>
@@ -96,7 +96,7 @@ const LogoTicker = ({
             className="relative h-12 flex items-center justify-center gap-3 grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100"
           >
             <img src={item.logo} alt={item.name} className="h-full w-auto object-contain max-w-[120px]" />
-            {showLabel && <span className="text-lg font-serif font-semibold text-gray-700 whitespace-nowrap">{item.name}</span>}
+            {showLabel && <span className="text-lg font-heading font-semibold text-neutral-700 whitespace-nowrap">{item.name}</span>}
           </div>
         ))}
       </div>
@@ -108,7 +108,7 @@ const Clients: React.FC = () => {
   return (
     <section className="pt-16 pb-8 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 mb-10 text-center">
-        <p className="text-sm font-medium text-gray-400 uppercase tracking-widest">Trusted by Industry Leaders</p>
+        <p className="text-sm font-medium text-neutral-400 uppercase tracking-widest">Trusted by Industry Leaders</p>
       </div>
 
       <div className="space-y-8">

@@ -157,7 +157,7 @@ const HeroVisual = () => {
           ))}
 
           <g transform="translate(0, 310)">
-            <text textAnchor="middle" className="font-mono text-sm font-bold fill-gray-400 uppercase tracking-widest">
+            <text textAnchor="middle" className="font-mono text-sm font-bold fill-neutral-400 uppercase tracking-widest">
               Signed Leases
             </text>
           </g>
@@ -187,7 +187,7 @@ const HeroVisual = () => {
                 <circle cx="15" cy="15" r="5" fill="none" stroke="#10b981" strokeWidth="2" />
                 <circle cx="15" cy="15" r="2" fill="#10b981" style={{ animation: 'dot-appear 2s infinite' }} />
               </g>
-              <text x="80" y="78" textAnchor="middle" className="font-sans text-[13px] font-bold fill-gray-800">
+              <text x="80" y="78" textAnchor="middle" className="font-sans text-[13px] font-bold fill-neutral-800">
                 UP Marketing
               </text>
             </g>
@@ -221,7 +221,7 @@ const HeroVisual = () => {
                   <rect x="0" y="24" width="16" height="6" rx="3" fill="#ecfdf5" stroke="#a7f3d0" strokeWidth="0.5" />
                 </g>
               </g>
-              <text x="80" y="78" textAnchor="middle" className="font-sans text-[13px] font-bold fill-gray-800">
+              <text x="80" y="78" textAnchor="middle" className="font-sans text-[13px] font-bold fill-neutral-800">
                 UP Leasing
               </text>
             </g>
@@ -263,7 +263,7 @@ const HeroVisual = () => {
                   style={{ animation: 'dot-appear 4s ease-in-out infinite', transformOrigin: 'center' }}
                 />
               </g>
-              <text x="80" y="78" textAnchor="middle" className="font-sans text-[13px] font-bold fill-gray-800">
+              <text x="80" y="78" textAnchor="middle" className="font-sans text-[13px] font-bold fill-neutral-800">
                 UP Insight
               </text>
             </g>
@@ -400,7 +400,7 @@ const HeroVisual = () => {
 
           {/* Adjusted Text Position */}
           <g transform="translate(0, -250)">
-            <text textAnchor="middle" className="font-mono text-sm font-bold fill-gray-400 uppercase tracking-widest">
+            <text textAnchor="middle" className="font-mono text-sm font-bold fill-neutral-400 uppercase tracking-widest">
               Inbound Traffic
             </text>
           </g>
@@ -429,13 +429,13 @@ const Hero: React.FC<HeroProps> = ({ onOpenModal }) => {
         <div className="w-full relative z-20">
           <FadeIn delay={100}>
             <h1 className="leading-[1.15] tracking-tight mb-8 text-5xl sm:text-5xl md:text-7xl lg:text-8xl flex flex-row flex-wrap items-center justify-center gap-x-3 sm:gap-x-4">
-              <span className="font-serif text-black font-medium">AI Agents for</span>
-              <SpotlightHighlight className="font-serif italic text-gray-400 font-light">Leasing</SpotlightHighlight>
+              <span className="font-heading text-black font-medium">AI Agents for</span>
+              <SpotlightHighlight className="font-heading italic text-neutral-400 font-light">Leasing</SpotlightHighlight>
             </h1>
           </FadeIn>
 
           <FadeIn delay={300}>
-            <p className="text-lg md:text-xl text-gray-500 mb-12 font-light leading-relaxed max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-neutral-500 mb-12 font-light leading-relaxed max-w-2xl mx-auto">
               AI operates, you steer. From demand generation to signed leases. Execute with speed and precision.
             </p>
           </FadeIn>
@@ -449,12 +449,12 @@ const Hero: React.FC<HeroProps> = ({ onOpenModal }) => {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full h-14 pl-4 pr-16 sm:pr-40 bg-gray-50 border border-gray-200 rounded-lg text-black outline-none focus:border-black focus:ring-0 transition-all placeholder:text-gray-400 text-sm"
+                  className="w-full h-14 pl-4 pr-16 sm:pr-40 bg-[#F4F1EE] border border-black/5 rounded-lg text-black outline-none focus:border-black focus:ring-0 transition-all placeholder:text-neutral-400 text-sm"
                   required
                 />
                 <button
                   type="submit"
-                  className="absolute top-1.5 right-1.5 bottom-1.5 w-11 sm:w-auto sm:px-4 bg-black text-white text-xs sm:text-[10px] font-bold uppercase tracking-[0.1em] hover:bg-gray-800 transition-colors rounded-lg flex items-center justify-center gap-2"
+                  className="absolute top-1.5 right-1.5 bottom-1.5 w-11 sm:w-auto sm:px-4 bg-black text-white text-xs sm:text-[10px] font-bold uppercase tracking-[0.1em] hover:bg-neutral-900 transition-colors rounded-lg flex items-center justify-center gap-2"
                   aria-label="Request Demo"
                 >
                   <span className="hidden sm:inline">Request Demo</span>

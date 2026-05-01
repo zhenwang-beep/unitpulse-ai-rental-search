@@ -99,7 +99,7 @@ const CaseStudy: React.FC = () => {
     <div className="mt-24">
       <div className="max-w-7xl mx-auto">
         <FadeIn delay={200}>
-          <div className="bg-gray-50 border border-gray-100 rounded-3xl p-8 md:p-16 relative overflow-hidden transition-all duration-500">
+          <div className="bg-[#F4F1EE] border border-black/5 rounded-3xl p-8 md:p-16 relative overflow-hidden transition-all duration-500">
             <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white rounded-full blur-[100px] -z-10 opacity-60"></div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-12 lg:gap-x-16">
@@ -108,7 +108,7 @@ const CaseStudy: React.FC = () => {
                 <div className="flex items-center justify-center gap-4 md:gap-6 w-full lg:w-auto">
                   <button
                     onClick={handlePrev}
-                    className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-colors shadow-sm flex-shrink-0"
+                    className="w-12 h-12 rounded-full bg-white border border-black/5 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-colors shadow-sm flex-shrink-0"
                     aria-label="Previous"
                   >
                     <ChevronLeft size={20} />
@@ -137,7 +137,7 @@ const CaseStudy: React.FC = () => {
 
                   <button
                     onClick={handleNext}
-                    className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-colors shadow-sm flex-shrink-0"
+                    className="w-12 h-12 rounded-full bg-white border border-black/5 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-colors shadow-sm flex-shrink-0"
                     aria-label="Next"
                   >
                     <ChevronRight size={20} />
@@ -148,28 +148,28 @@ const CaseStudy: React.FC = () => {
               {/* Middle Row: Quote */}
               <div className="lg:col-span-12">
                 <div key={`quote-${currentIndex}`} className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-                  <h3 className="text-xl text-center md:text-2xl lg:text-3xl font-serif text-black leading-tight lg:leading-[1.5]">
+                  <h3 className="text-xl text-center md:text-2xl lg:text-3xl font-heading text-black leading-tight lg:leading-[1.5]">
                     “{currentStudy.quote}”
                   </h3>
                 </div>
               </div>
 
               {/* Bottom Row: Footer Info */}
-              <div className="lg:col-span-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-8 pt-8 lg:pt-4 border-t border-gray-200 lg:border-t-0 mt-4">
+              <div className="lg:col-span-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-8 pt-8 lg:pt-4 border-t border-black/5 lg:border-t-0 mt-4">
                 <div className="flex flex-col gap-1" key={`info-${currentIndex}`}>
                   <div className="text-lg font-bold text-black">{currentStudy.person}</div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm text-neutral-500">
                     {currentStudy.role}, {currentStudy.company}
                   </div>
                 </div>
 
                 <div className="hidden lg:block">
-                  <span className="text-xl font-serif font-black text-gray-300 uppercase tracking-widest select-none">{currentStudy.company}</span>
+                  <span className="text-xl font-heading font-black text-neutral-300 uppercase tracking-widest select-none">{currentStudy.company}</span>
                 </div>
 
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-black border-b border-black pb-0.5 hover:text-gray-600 hover:border-gray-600 transition-colors"
+                  className="group inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-black border-b border-black pb-0.5 hover:text-neutral-600 hover:border-neutral-600 transition-colors"
                 >
                   Read the case study
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -188,7 +188,7 @@ const CaseStudy: React.FC = () => {
               {/* Close Button: Absolute positioned to stay fixed relative to the modal container */}
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="absolute top-4 right-4 z-10 p-2 text-gray-400 hover:text-black hover:bg-gray-100 rounded-full transition-colors bg-white/80 backdrop-blur-sm"
+                className="absolute top-4 right-4 z-10 p-2 text-neutral-400 hover:text-black hover:bg-neutral-100 rounded-full transition-colors bg-white/80 backdrop-blur-sm"
                 aria-label="Close"
               >
                 <X size={20} />
@@ -196,18 +196,18 @@ const CaseStudy: React.FC = () => {
 
               {/* Scrollable Content Area */}
               <div className="overflow-y-auto p-8 md:p-12">
-                <div className="mb-8 border-b border-gray-100 pb-8 pt-4">
+                <div className="mb-8 border-b border-black/5 pb-8 pt-4">
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-bold uppercase tracking-widest text-gray-600">
+                    <span className="px-3 py-1 bg-neutral-100 rounded-full text-[10px] font-bold uppercase tracking-widest text-neutral-600">
                       {currentStudy.focus} Focus
                     </span>
-                    <span className="text-gray-300">|</span>
-                    <span className="text-sm font-bold text-gray-500">{currentStudy.company}</span>
+                    <span className="text-neutral-300">|</span>
+                    <span className="text-sm font-bold text-neutral-500">{currentStudy.company}</span>
                   </div>
-                  <h3 className="font-serif text-3xl md:text-4xl text-black mb-4">
+                  <h3 className="font-heading text-3xl md:text-4xl text-black mb-4">
                     How {currentStudy.company} achieved {currentStudy.statLabel} of {currentStudy.stat}
                   </h3>
-                  <p className="text-gray-500 text-lg leading-relaxed">"{currentStudy.quote}"</p>
+                  <p className="text-neutral-500 text-lg leading-relaxed">"{currentStudy.quote}"</p>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8 mb-10">
@@ -215,32 +215,32 @@ const CaseStudy: React.FC = () => {
                     <h4 className="font-bold text-xs uppercase tracking-widest text-black mb-4 flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-red-500"></div> The Challenge
                     </h4>
-                    <p className="text-gray-600 text-sm leading-relaxed">{currentStudy.details.challenge}</p>
+                    <p className="text-neutral-600 text-sm leading-relaxed">{currentStudy.details.challenge}</p>
                   </div>
                   <div>
                     <h4 className="font-bold text-xs uppercase tracking-widest text-black mb-4 flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500"></div> The Solution
+                      <div className="w-2 h-2 rounded-full bg-[#4A5D23]"></div> The Solution
                     </h4>
-                    <p className="text-gray-600 text-sm leading-relaxed">{currentStudy.details.solution}</p>
+                    <p className="text-neutral-600 text-sm leading-relaxed">{currentStudy.details.solution}</p>
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-2xl p-6 md:p-8">
+                <div className="bg-[#F4F1EE] rounded-2xl p-6 md:p-8">
                   <h4 className="font-bold text-xs uppercase tracking-widest text-black mb-6">Key Outcomes</h4>
                   <div className="grid gap-4">
                     {currentStudy.details.results.map((res, i) => (
-                      <div key={i} className="flex items-start gap-3 text-sm text-gray-700">
-                        <CheckCircle2 size={18} className="text-emerald-500 shrink-0 mt-0.5" />
+                      <div key={i} className="flex items-start gap-3 text-sm text-neutral-700">
+                        <CheckCircle2 size={18} className="text-[#4A5D23] shrink-0 mt-0.5" />
                         <span className="font-medium">{res}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="mt-8 pt-8 border-t border-gray-100 flex justify-center">
+                <div className="mt-8 pt-8 border-t border-black/5 flex justify-center">
                   <button
                     onClick={() => setIsModalOpen(false)}
-                    className="text-sm font-bold uppercase tracking-widest text-gray-400 hover:text-black transition-colors"
+                    className="text-sm font-bold uppercase tracking-widest text-neutral-400 hover:text-black transition-colors"
                   >
                     Close Case Study
                   </button>

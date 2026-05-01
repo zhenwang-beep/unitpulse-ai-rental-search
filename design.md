@@ -37,10 +37,11 @@ All colors are defined as hex values applied via Tailwind's arbitrary value synt
 | Olive border | `rgba(74,93,35,0.15)` | `border-[#4A5D23]/15` | AI-tint card borders |
 
 ### Anti-Patterns ❌
-- **Never** use `bg-emerald-*` or `text-emerald-*`
-- **Never** use `bg-neutral-50` — use `#F4F1EE` instead
-- **Never** use `#FCF9F4` — the canonical warm bg is `#FCF9F8`
-- **Never** introduce raw hex values not in this table
+- **Never** use `bg-emerald-*`, `text-emerald-*`, or `border-emerald-*` — use `#4A5D23` (Olive) instead. Emerald-* is a brighter, bluer green that clashes with the rental site's woodsy olive.
+- **Never** use `bg-gray-*` or `text-gray-*` — use `bg-neutral-*` / `text-neutral-*`. Tailwind's `gray` and `neutral` are visually similar but the rental site standardizes on `neutral` for consistency.
+- **Never** use `bg-gray-50` or `bg-neutral-50` — use `#F4F1EE` instead.
+- **Never** use `#FCF9F4` — the canonical warm bg is `#FCF9F8`.
+- **Never** introduce raw hex values not in this table.
 
 ---
 
@@ -71,6 +72,10 @@ All colors are defined as hex values applied via Tailwind's arbitrary value synt
 - Use `font-heading` (Manrope) for all display, page, and section headings.
 - Use default `font-sans` (Inter) for all body text, labels, and UI text.
 - Heading hierarchy: `font-black` for display → `font-bold` for section → `font-semibold` for card titles.
+
+### Anti-Patterns ❌
+- **Never** use `font-serif`. The rental site has no serif tier — all headings use `font-heading` (Manrope).
+- **Never** introduce a third type family. We have exactly three: Manrope (heading), Inter (body), JetBrains Mono (code).
 
 ---
 
@@ -257,7 +262,30 @@ Use an amber-bordered card with a "Try again" retry button. Never render API err
 
 ---
 
-## 11. Mobile-Specific Patterns
+## 11. Partner / Marketing Page (`/partner`)
+
+The partner-facing B2B marketing page lives at `/partner` (and via subdomain rewrite at `partner.unitpulse.ai`). It uses the same tokens as the rental site — no separate brand. Specifics:
+
+### Section Backgrounds
+- **Above-the-fold (Hero, Clients, Stats):** `bg-[#FCF9F8]` (cream) — flows continuously from `TopNav`.
+- **Dark feature canvas (`#agents`):** `bg-black text-white` is permitted **only** for the scroll-driven 3-product section. All other partner sections use cream or white.
+- **Pricing, CallToAction, Footer:** cream background with `bg-white` cards on top — same as rental landing page.
+
+### Required
+- Use the shared `TopNav` from `components/TopNav.tsx`. No separate partner navbar.
+- Use `PageFooter` from `components/PageFooter.tsx` (the four-column "For renters / For partners / Company / Legal" footer). No separate partner footer.
+- Use natural body scroll (no `h-[100dvh] overflow-y-auto` wrapper) so framer-motion's `useScroll` can drive the scroll-linked animations in `FeatureCanvas`.
+- Headings: `font-heading` (Manrope). The original partner site used `font-serif` — that's an anti-pattern here.
+- Accent green: `#4A5D23` (Olive). The original partner site used `emerald-*` — that's an anti-pattern here.
+- Imported partner components live under `components/partner/` and follow the same color tokens as the rest of the app.
+
+### Do Not
+- Don't add a separate set of brand colors for the partner audience. One brand, one design system.
+- Don't reach into rental-side components from partner sections. They are siblings, not parent/child.
+
+---
+
+## 12. Mobile-Specific Patterns
 
 - Minimum touch target: `44×44px` (use `min-h-[44px] min-w-[44px]` on interactive elements)
 - Tab bar inside modal (Listing / Chat): `shrink-0 lg:hidden`, stacked inside flex column to avoid z-index conflicts
@@ -266,7 +294,7 @@ Use an amber-bordered card with a "Try again" retry button. Never render API err
 
 ---
 
-## 12. Accessibility Requirements
+## 13. Accessibility Requirements
 
 - All icon-only buttons must have `aria-label`
 - Minimum color contrast: 4.5:1 for body text, 3:1 for large text (WCAG AA)
