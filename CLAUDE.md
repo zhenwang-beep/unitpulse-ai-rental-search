@@ -108,8 +108,9 @@ The consumer site is moving to a Zillow-style hierarchical URL structure.
 | `/search/:chatId` | `ChatPage` (AI on) | Conversational AI search |
 | `/{state}` | `StateIndexPage` | State hub, lists cities |
 | `/{state}/{city}` | `CityIndexPage` | City hub: editorial header, neighborhoods, market stats, trending, FAQ |
-| `/{state}/{city}/{slug}` | `PropertyDetailPage` (canonical mode) | Property detail page |
+| `/{state}/{city}/{slug}` | `PropertyDetailPage` (canonical mode) | Property detail page — **always renders standalone** regardless of `AI_CHAT`; never redirects into chat (canonical URLs are the indexable surface) |
 | `/property/:id` | `PropertyDetailPage` (legacy mode) | Legacy — fetches by id, 301s to canonical |
+| `/search/:chatId/property/:id` | `PropertyPanel` (inside `ChatPage`) | Chat-panel mode for property-clicks **inside** the chat experience. Different URL space from canonical — never indexed for SEO. |
 | `/{state}/{city}/{neighborhood}/{slug}` | *not yet* | Phase 2 — once `neighborhoodSlug` ships as a property field |
 
 Valid states/cities are listed in `urlHelpers.ts`. Add new combos there.
@@ -140,7 +141,7 @@ AI features are gated by env-var feature flags in `featureFlags.ts`.
 
 | Flag | Gates |
 |---|---|
-| `VITE_FEATURE_AI_CHAT` | `/search/:chatId` route (`ChatPage`); landing-page chat input behavior |
+| `VITE_FEATURE_AI_CHAT` | `/search/:chatId` route (`ChatPage`); landing-page chat input behavior. **Does NOT redirect canonical property URLs** — `/{state}/{city}/{slug}` always renders the standalone page, even when chat is enabled. |
 | `VITE_FEATURE_AI_VOICE` | Voice button on LandingPage / ChatPage; `LiveInterface` mount |
 | `VITE_FEATURE_AI_LIFESTYLE_MATCH` | "Lifestyle Match" section + "% Match" badge in `PropertyDetailsView` |
 | `VITE_FEATURE_AI_PREFERENCES` | ChatPage preference sidebar; `useTracker` side effects (partial — see TODO.md) |
@@ -267,6 +268,12 @@ reading the relevant commit message first:
 - **Stock photos in property data**: known issue, marked TODO(eng), do
   not "fix" by deleting the fallback — the fallback prevents broken
   images on listings without uploaded photos. Wait for real photo data.
+- **Canonical property URLs redirecting into chat**: this was the original
+  behavior when `AI_CHAT=on`. It was removed deliberately because the
+  redirect erased SEO/GEO investment in the URL hierarchy (chat URL has
+  no breadcrumb, no `BreadcrumbList` schema, no canonical signal). Do
+  NOT re-introduce — chat lives in its own URL space (`/search/:chatId/...`)
+  and canonical URLs always render the indexable page.
 
 ---
 

@@ -85,9 +85,12 @@ for what each one gates.
 - `/listings` — full property grid with city filter
 - `/search?q=...` — keyword search results (when `AI_CHAT` is off)
 - `/search/:chatId` — conversational AI search (when `AI_CHAT` is on)
+- `/search/:chatId/property/:id` — chat-panel mode for property views inside chat
 - `/{state}` — state hub (e.g. `/ca`)
 - `/{state}/{city}` — city hub with editorial content, neighborhoods, market stats
-- `/{state}/{city}/{slug}` — canonical property detail page
+- `/{state}/{city}/{slug}` — canonical property detail page; **always renders
+  the indexable standalone page** regardless of `AI_CHAT` state. The chat
+  experience never absorbs canonical URLs — chat lives in its own URL space.
 - `/property/:id` — legacy property URL (301s to canonical)
 - `/favorites`, `/blog`, `/faq`, `/rentals`, `/privacy`, `/terms`, `/partner`
 

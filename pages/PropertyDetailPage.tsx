@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Navigate, useNavigate, Link } from 'react-router-dom';
 import { ChevronRight, Home, Share, Heart, Check } from 'lucide-react';
-import { PERSISTENT_THREAD_ID } from '../constants';
 import { useAppContext } from '../context/AppContext';
 import { getAllProperties, getPropertyById } from '../services/propertyService';
 import { Property } from '../types';
 import PropertyDetailsView from '../components/PropertyDetailsView';
 import TopNav from '../components/TopNav';
-import { FEATURES } from '../featureFlags';
 import { ToastData } from '../components/Toast';
 import {
   getCityUrl,
@@ -19,18 +17,17 @@ import {
   CITIES_BY_STATE,
 } from '../urlHelpers';
 
-// Direct URL access to a property:
+// Direct URL access to a property — always renders the standalone page
+// regardless of AI_CHAT state. This preserves SEO/GEO investment in the
+// canonical URL hierarchy (`/{state}/{city}/{slug}`); the chat experience
+// lives in its own URL space (`/search/:chatId/...`) and never absorbs
+// canonical URLs. See TODO.md "SEO architecture (canonical URLs)".
 //
-//   AI_CHAT on  → redirect to the persistent chat thread (legacy behavior).
-//   AI_CHAT off → render PropertyDetailsView as a standalone page with full
-//                  site chrome (TopNav + breadcrumbs).
-//
-// Two URL shapes handled by the same page:
+// Two URL shapes handled by the same component:
 //   /property/:id                    legacy route — fetches by id, then
-//                                    redirects to canonical hierarchy URL
-//   /:state/:city/:slug              canonical hierarchy URL (Phase 2 of the
-//                                    domain strategy). Resolves by matching
-//                                    `imageSeed` against the slug.
+//                                    301s to canonical hierarchy URL
+//   /:state/:city/:slug              canonical hierarchy URL. Resolves by
+//                                    matching `imageSeed` against the slug.
 
 interface PropertyDetailPageProps {
   isLoggedIn?: boolean;
@@ -58,18 +55,13 @@ const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
     slug?: string;
   }>();
   const navigate = useNavigate();
-  const { addThread, favorites, toggleFavorite } = useAppContext();
+  const { favorites, toggleFavorite } = useAppContext();
   const [property, setProperty] = useState<Property | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
 
   useEffect(() => {
-    // Canonical-mode pages need a property fetch even when AI_CHAT is on,
-    // so we can map slug → id and redirect into the chat thread.
     if (mode === 'legacy' && propertyId) {
-      // Legacy mode with AI_CHAT on doesn't need a fetch — we already have
-      // the id. Skip the fetch in that case.
-      if (FEATURES.AI_CHAT) return;
       getPropertyById(propertyId)
         .then((p) => (p ? setProperty(p) : setNotFound(true)))
         .catch(() => setNotFound(true));
@@ -90,21 +82,6 @@ const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
   // Validate state/city for canonical routes early.
   if (mode === 'canonical' && (!isValidStateCode(state) || !state || !city)) {
     return <Navigate to="/" replace />;
-  }
-
-  if (FEATURES.AI_CHAT) {
-    if (mode === 'canonical') {
-      // Wait for the slug→property fetch to land before redirecting into the
-      // chat thread. Without this, we'd Navigate to / before the lookup
-      // finished.
-      if (notFound) return <Navigate to="/" replace />;
-      if (!property) return null;
-      addThread(PERSISTENT_THREAD_ID, 'UnitPulse');
-      return <Navigate to={`/search/${PERSISTENT_THREAD_ID}/property/${property.id}`} replace />;
-    }
-    addThread(PERSISTENT_THREAD_ID, 'UnitPulse');
-    if (!propertyId) return <Navigate to="/" replace />;
-    return <Navigate to={`/search/${PERSISTENT_THREAD_ID}/property/${propertyId}`} replace />;
   }
 
   if (notFound) return <Navigate to="/" replace />;

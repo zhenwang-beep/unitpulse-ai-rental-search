@@ -66,35 +66,34 @@ needs engineering to turn these into real fields:
   (e.g. "2-bedroom apartments in Koreatown"). Generate at build time only
   for combinations with ≥3 actual listings to avoid thin-content penalties.
 
-## SEO when AI_CHAT re-enables (architectural)
+## SEO architecture (canonical URLs) — RESOLVED
 
-The URL hierarchy is fully SEO-friendly today **only because AI_CHAT is off
-in production**. When AI_CHAT enables later, canonical URLs like
-`/ca/los-angeles/sawyer-koreatown` redirect to
-`/search/<thread>/property/<id>` and render inside the chat panel — which
-has no breadcrumbs, no `BreadcrumbList` JSON-LD, and no canonical URL
-signal. Search engines would index the chat URL instead of the canonical
-one, losing the SEO investment in the hierarchy.
+**Status**: implemented. Canonical property URLs (`/{state}/{city}/{slug}`)
+now always render `PropertyDetailPage` regardless of `AI_CHAT` flag state.
+The chat panel lives in its own URL space (`/search/:chatId/property/:id`)
+for users who navigate **inside** the chat experience.
 
-This is not solved by adding breadcrumbs to the chat panel (the redirect
-itself is the issue, not the panel UI). Real options when AI_CHAT enables:
+This was the original "Option 1" of three SEO architectural choices
+considered. Don't re-introduce the AI_CHAT redirect on canonical URLs —
+see CLAUDE.md "Known tripwires".
 
-1. **Don't redirect canonical URLs.** Render `PropertyDetailPage` directly
-   for `/{state}/{city}/{slug}` and offer "Continue in chat" as an
-   affordance. Chat lives in its own URL space (`/chat/...`); canonical
-   URLs always render the indexable page. Cleanest option.
-2. **Emit canonical signal + property schema in the chat panel.** Keep
-   the redirect, but inject `<link rel="canonical" href="/{state}/{city}/{slug}">`
-   and the full property `RealEstateListing`/`Apartment` schema into the
-   chat-panel HTML. Engines may still prefer the canonical URL for
-   indexing.
-3. **Pre-render canonical pages for crawlers.** Detect bots, serve the
-   non-redirected canonical content. Adds infra complexity (SSR or a
-   pre-render service); least preferred.
+### Follow-ups still open
 
-Decide before flipping `AI_CHAT=true` in production. Recommend (1) — it
-also keeps URL-shareability working naturally without requiring users to
-mentally model the chat-thread layer.
+- **`<meta name="robots" content="noindex">` on chat URLs.** Defensive:
+  even though we never link external traffic to `/search/:chatId/...`,
+  add a noindex meta tag to those routes so crawlers that find them via
+  internal linking don't index the chat-panel content. Add to
+  `ChatPage.tsx` head (via a small `useEffect` that sets/removes the
+  meta tag, or react-helmet-async if we add it).
+- **"Continue in chat" affordance from `PropertyDetailPage`** when
+  `AI_CHAT=true`. A button next to the share + favorite controls that
+  starts a new chat thread pre-loaded with the property context. Click →
+  navigate to `/search/<new-thread>/property/<id>`. Optional UX polish
+  for users who deep-link in and want the conversational experience.
+- **Server-side canonical link tag.** When the AWS deploy supports SSR or
+  pre-rendering, inject `<link rel="canonical" href="...">` into the
+  HTML head for canonical URLs (today it's React-rendered into the body
+  via JSON-LD; some crawlers prefer the head link). Phase 2-ish.
 
 ## Sitemap, robots.txt, llms.txt
 
