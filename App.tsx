@@ -20,6 +20,8 @@ import PartnerPage from './pages/PartnerPage';
 import TestPage from './pages/TestPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import AllListingsPage from './pages/AllListingsPage';
+import StateIndexPage from './pages/StateIndexPage';
+import CityIndexPage from './pages/CityIndexPage';
 import FavoritesPage from './components/FavoritesPage';
 import Toast, { ToastData } from './components/Toast';
 import { Property } from './types';
@@ -203,10 +205,56 @@ const AppShell: React.FC = () => {
             />
           }
         />
+        {/* Legacy property URL — fetches by id, then 301s to canonical hierarchy URL. */}
         <Route
           path="/property/:propertyId"
           element={
             <PropertyDetailPage
+              mode="legacy"
+              isLoggedIn={isLoggedIn}
+              isDropdownOpen={isDropdownOpen}
+              setIsDropdownOpen={setIsDropdownOpen}
+              setShowLoginView={setShowLoginView}
+              handleLogout={handleLogout}
+              showToast={setToast}
+            />
+          }
+        />
+        {/* Canonical URL hierarchy — see urlHelpers.ts for valid state/city combos.
+            TODO(seo): add neighborhood layer (/:state/:city/:neighborhood/:slug) once
+            properties carry a neighborhoodSlug field. */}
+        <Route
+          path="/:state"
+          element={
+            <StateIndexPage
+              isLoggedIn={isLoggedIn}
+              isDropdownOpen={isDropdownOpen}
+              setIsDropdownOpen={setIsDropdownOpen}
+              setShowLoginView={setShowLoginView}
+              handleLogout={handleLogout}
+              showToast={setToast}
+            />
+          }
+        />
+        <Route
+          path="/:state/:city"
+          element={
+            <CityIndexPage
+              isLoggedIn={isLoggedIn}
+              isDropdownOpen={isDropdownOpen}
+              setIsDropdownOpen={setIsDropdownOpen}
+              setShowLoginView={setShowLoginView}
+              setPendingFavoriteProperty={setPendingFavoriteProperty}
+              handleLogout={handleLogout}
+              showToast={setToast}
+            />
+          }
+        />
+        <Route
+          path="/:state/:city/:slug"
+          element={
+            <PropertyDetailPage
+              mode="canonical"
               isLoggedIn={isLoggedIn}
               isDropdownOpen={isDropdownOpen}
               setIsDropdownOpen={setIsDropdownOpen}

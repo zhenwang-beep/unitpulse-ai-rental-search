@@ -12,6 +12,7 @@ import { ToastData } from '../components/Toast';
 import PageFooter from '../components/PageFooter';
 import TopNav from '../components/TopNav';
 import { FEATURES } from '../featureFlags';
+import { getPropertyUrl } from '../urlHelpers';
 
 const PLACEHOLDER_PROMPTS = [
   "A modern loft in SoHo under $3000...",
@@ -548,7 +549,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                           if (FEATURES.AI_CHAT) {
                             navigate('/search', { state: { propertyId: property.id } });
                           } else {
-                            navigate(`/property/${property.id}`);
+                            navigate(getPropertyUrl(property));
                           }
                         }}
                       />

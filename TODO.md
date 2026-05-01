@@ -44,7 +44,73 @@ an AI conversation. With `AI_CHAT=off`, that flow is dead. Options:
 
 Decide before wiring `AI_CHAT` deeper into the landing page.
 
-## Property data API
+## URL hierarchy — Phase 2 (data model + neighborhood layer)
+
+Phase 1 of the hierarchy ships in this branch (see CLAUDE.md "URL hierarchy"
+table). Properties currently resolve to canonical URLs by deriving state
+code from `property.location` and reusing `imageSeed` as the slug. Phase 2
+needs engineering to turn these into real fields:
+
+- Add `stateCode`, `citySlug`, `neighborhoodSlug`, `slug` columns to the
+  property data source (Supabase row → API response → `Property` type).
+- Backfill the existing demo data; make `slug` unique within (state, city,
+  neighborhood) and append a short uniqueness suffix on collision.
+- Replace the `getAllProperties().find(p => getPropertySlug(p) === slug)`
+  lookup in `PropertyDetailPage.tsx` with a server-side
+  `getPropertyByCanonical(state, city, neighborhood, slug)`.
+- Add `/{state}/{city}/{neighborhood}` route + `NeighborhoodIndexPage`
+  component (similar to `CityIndexPage`, with neighborhood-level editorial,
+  walk score, transit, school context, listings, FAQ).
+- Add `/{state}/{city}/{neighborhood}/{property-type}` route +
+  `TypeFilteredPage` for programmatic SEO pages
+  (e.g. "2-bedroom apartments in Koreatown"). Generate at build time only
+  for combinations with ≥3 actual listings to avoid thin-content penalties.
+
+## Sitemap, robots.txt, llms.txt
+
+When the URL hierarchy is real (post-Phase 2):
+
+- Generate `sitemap.xml` (or sitemap index + segmented files:
+  `sitemap-properties.xml`, `sitemap-cities.xml`, `sitemap-neighborhoods.xml`,
+  `sitemap-guides.xml`). Submit to Google Search Console + Bing Webmaster.
+- Add `public/robots.txt` explicitly allowing AI crawlers: `GPTBot`,
+  `Google-Extended`, `ClaudeBot`, `PerplexityBot`, `OAI-SearchBot`. Block
+  `Bytespider` (trains without driving traffic). Disallow `/search` and
+  `/favorites` (no canonical content).
+- Add `public/llms.txt` per the emerging standard — flat-text index of
+  the site for LLMs: list of URLs + one-line descriptions, structured by
+  hierarchy.
+
+## Property FAQ data API
+
+`buildMockFAQs` in `PropertyDetailsView.tsx` is templated mock data. The
+production version needs:
+
+- Server-returned FAQs per property, shape: `{ q: string; a: string;
+  category: 'Pricing' | 'Location' | 'Amenities' | 'Tours & Leasing' |
+  'Pet Policy'; sources?: string[] }[]`. Categories drive the segmented
+  tab UI; ALL FAQs (regardless of category filter) must populate the
+  FAQPage JSON-LD block — search engines and LLMs read structured data,
+  not the visible DOM.
+- 10–20+ Q&As per property is the goal. Sources can mix operator-curated,
+  AI-extracted from listing copy, and tenant-FAQ scraped from past
+  inquiries.
+- If the list grows past ~20, add lazy rendering / pagination inside the
+  tabs to keep LCP within budget.
+
+## Editorial content for state/city pages
+
+`StateIndexPage` and `CityIndexPage` ship with templated copy. Each city
+deserves hand-edited editorial:
+
+- Tagline + 200–500 word intro that reads like a knowledgeable friend
+  (not marketing copy).
+- Real market stats sourced from a data feed (currently hardcoded in
+  `CITY_EDITORIAL` map in `CityIndexPage.tsx`).
+- 4–6 neighborhoods with vibe descriptions and links to neighborhood
+  pages once those exist.
+- Locale-specific FAQs (rent control, commute patterns, climate, etc.)
+  beyond the generic 4 we ship today.
 
 ## Property data API
 

@@ -9,6 +9,7 @@ import { useAppContext } from '../context/AppContext';
 import { Property } from '../types';
 import { ToastData } from '../components/Toast';
 import { getAllProperties } from '../services/propertyService';
+import { getPropertyUrl } from '../urlHelpers';
 
 interface AllListingsPageProps {
   isLoggedIn: boolean;
@@ -180,7 +181,7 @@ const AllListingsPage: React.FC<AllListingsPageProps> = ({
                 property={p}
                 isFavorite={favorites.some((f) => f.id === p.id)}
                 onToggleFavorite={handleToggleFavorite}
-                onClick={(prop: Property) => navigate(`/property/${prop.id}`)}
+                onClick={(prop: Property) => navigate(getPropertyUrl(prop))}
               />
             </motion.div>
           ))}

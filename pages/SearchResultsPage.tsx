@@ -9,6 +9,7 @@ import { useAppContext } from '../context/AppContext';
 import { Property } from '../types';
 import { ToastData } from '../components/Toast';
 import { getAllProperties } from '../services/propertyService';
+import { getPropertyUrl } from '../urlHelpers';
 
 interface SearchResultsPageProps {
   isLoggedIn: boolean;
@@ -107,17 +108,18 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     }
   };
 
-  // Heuristic city redirect — if user typed a city name, suggest the city page.
+  // Heuristic city redirect — if the user typed a city name, suggest the city
+  // hub page in the canonical URL hierarchy.
   const cityRedirect = useMemo(() => {
     const KNOWN_CITIES: { match: string; slug: string; label: string }[] = [
-      { match: 'los angeles', slug: '/rentals/los-angeles', label: 'Los Angeles' },
-      { match: 'la', slug: '/rentals/los-angeles', label: 'Los Angeles' },
-      { match: 'new york', slug: '/rentals/new-york', label: 'New York' },
-      { match: 'nyc', slug: '/rentals/new-york', label: 'New York' },
-      { match: 'seattle', slug: '/rentals/seattle', label: 'Seattle' },
-      { match: 'chicago', slug: '/rentals/chicago', label: 'Chicago' },
-      { match: 'houston', slug: '/rentals/houston', label: 'Houston' },
-      { match: 'irvine', slug: '/rentals/irvine', label: 'Irvine' },
+      { match: 'los angeles', slug: '/ca/los-angeles', label: 'Los Angeles' },
+      { match: 'la', slug: '/ca/los-angeles', label: 'Los Angeles' },
+      { match: 'new york', slug: '/ny/new-york', label: 'New York' },
+      { match: 'nyc', slug: '/ny/new-york', label: 'New York' },
+      { match: 'seattle', slug: '/wa/seattle', label: 'Seattle' },
+      { match: 'chicago', slug: '/il/chicago', label: 'Chicago' },
+      { match: 'houston', slug: '/tx/houston', label: 'Houston' },
+      { match: 'irvine', slug: '/ca/irvine', label: 'Irvine' },
     ];
     const lower = query.toLowerCase();
     return KNOWN_CITIES.find((c) => lower.includes(c.match));
@@ -221,7 +223,7 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
                   property={p}
                   isFavorite={favorites.some((f) => f.id === p.id)}
                   onToggleFavorite={handleToggleFavorite}
-                  onClick={(prop: Property) => navigate(`/property/${prop.id}`)}
+                  onClick={(prop: Property) => navigate(getPropertyUrl(prop))}
                 />
               </motion.div>
             ))}

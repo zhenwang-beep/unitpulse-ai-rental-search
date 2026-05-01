@@ -3,22 +3,34 @@ import { useParams, Navigate, useNavigate, Link } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
 import { PERSISTENT_THREAD_ID } from '../constants';
 import { useAppContext } from '../context/AppContext';
-import { getPropertyById } from '../services/propertyService';
+import { getAllProperties, getPropertyById } from '../services/propertyService';
 import { Property } from '../types';
 import PropertyDetailsView from '../components/PropertyDetailsView';
 import TopNav from '../components/TopNav';
 import { FEATURES } from '../featureFlags';
 import { ToastData } from '../components/Toast';
+import {
+  getCityUrl,
+  getPropertySlug,
+  getPropertyUrl,
+  getStateUrl,
+  isValidStateCode,
+  STATE_NAMES,
+  CITIES_BY_STATE,
+} from '../urlHelpers';
 
-// Direct URL access to /property/:id —
-// AI_CHAT on:  open in the persistent conversation thread (legacy behavior).
-// AI_CHAT off: render PropertyDetailsView as a standalone page with full site
-//              chrome (TopNav + breadcrumbs) so it can be linked, indexed,
-//              and shared like any other content page.
+// Direct URL access to a property:
 //
-// TODO(eng): once the URL hierarchy migration ships, this page will live at
-// /{state}/{city}/{neighborhood}/{property-slug}/ and the breadcrumbs will
-// reflect the real path. See unitpulse-domain-strategy.md.
+//   AI_CHAT on  → redirect to the persistent chat thread (legacy behavior).
+//   AI_CHAT off → render PropertyDetailsView as a standalone page with full
+//                  site chrome (TopNav + breadcrumbs).
+//
+// Two URL shapes handled by the same page:
+//   /property/:id                    legacy route — fetches by id, then
+//                                    redirects to canonical hierarchy URL
+//   /:state/:city/:slug              canonical hierarchy URL (Phase 2 of the
+//                                    domain strategy). Resolves by matching
+//                                    `imageSeed` against the slug.
 
 interface PropertyDetailPageProps {
   isLoggedIn?: boolean;
@@ -27,6 +39,8 @@ interface PropertyDetailPageProps {
   setShowLoginView?: (v: boolean) => void;
   handleLogout?: () => void;
   showToast?: (data: ToastData) => void;
+  /** Routing mode: 'legacy' for /property/:id, 'canonical' for /:state/:city/:slug. */
+  mode?: 'legacy' | 'canonical';
 }
 
 const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
@@ -35,31 +49,85 @@ const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
   setIsDropdownOpen = () => {},
   setShowLoginView = () => {},
   handleLogout = () => {},
+  mode = 'legacy',
 }) => {
-  const { propertyId } = useParams<{ propertyId: string }>();
+  const { propertyId, state, city, slug } = useParams<{
+    propertyId?: string;
+    state?: string;
+    city?: string;
+    slug?: string;
+  }>();
   const navigate = useNavigate();
   const { addThread, favorites, toggleFavorite } = useAppContext();
   const [property, setProperty] = useState<Property | null>(null);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    if (!propertyId || FEATURES.AI_CHAT) return;
-    getPropertyById(propertyId)
-      .then((p) => (p ? setProperty(p) : setNotFound(true)))
-      .catch(() => setNotFound(true));
-  }, [propertyId]);
+    // Canonical-mode pages need a property fetch even when AI_CHAT is on,
+    // so we can map slug → id and redirect into the chat thread.
+    if (mode === 'legacy' && propertyId) {
+      // Legacy mode with AI_CHAT on doesn't need a fetch — we already have
+      // the id. Skip the fetch in that case.
+      if (FEATURES.AI_CHAT) return;
+      getPropertyById(propertyId)
+        .then((p) => (p ? setProperty(p) : setNotFound(true)))
+        .catch(() => setNotFound(true));
+    } else if (mode === 'canonical' && state && city && slug) {
+      // Resolve canonical URL → property by matching imageSeed (which we use
+      // as the slug). Engineers will replace this with a server-side lookup
+      // by (state, city, slug) once those become first-class fields.
+      getAllProperties()
+        .then((all) => {
+          const match = all.find((p) => getPropertySlug(p) === slug);
+          if (match) setProperty(match);
+          else setNotFound(true);
+        })
+        .catch(() => setNotFound(true));
+    }
+  }, [mode, propertyId, state, city, slug]);
 
-  if (!propertyId) return <Navigate to="/" replace />;
+  // Validate state/city for canonical routes early.
+  if (mode === 'canonical' && (!isValidStateCode(state) || !state || !city)) {
+    return <Navigate to="/" replace />;
+  }
 
   if (FEATURES.AI_CHAT) {
+    if (mode === 'canonical') {
+      // Wait for the slug→property fetch to land before redirecting into the
+      // chat thread. Without this, we'd Navigate to / before the lookup
+      // finished.
+      if (notFound) return <Navigate to="/" replace />;
+      if (!property) return null;
+      addThread(PERSISTENT_THREAD_ID, 'UnitPulse');
+      return <Navigate to={`/search/${PERSISTENT_THREAD_ID}/property/${property.id}`} replace />;
+    }
     addThread(PERSISTENT_THREAD_ID, 'UnitPulse');
+    if (!propertyId) return <Navigate to="/" replace />;
     return <Navigate to={`/search/${PERSISTENT_THREAD_ID}/property/${propertyId}`} replace />;
   }
 
   if (notFound) return <Navigate to="/" replace />;
   if (!property) return null;
 
+  // If we landed on the legacy /property/:id route and we can resolve a
+  // canonical URL, redirect for SEO consolidation.
+  if (mode === 'legacy') {
+    const canonical = getPropertyUrl(property);
+    if (canonical !== `/property/${property.id}`) {
+      return <Navigate to={canonical} replace />;
+    }
+  }
+
   const isFavorite = favorites.some((f) => f.id === property.id);
+
+  // Compose breadcrumb based on what we know about the property.
+  const stateForCrumb = mode === 'canonical' ? state : null;
+  const stateName = stateForCrumb ? STATE_NAMES[stateForCrumb] : null;
+  const cityNameForCrumb = (() => {
+    if (!stateForCrumb) return null;
+    const found = CITIES_BY_STATE[stateForCrumb]?.find((c) => c.slug === city);
+    return found ? found.name : null;
+  })();
 
   return (
     <div className="h-[100dvh] w-full bg-surface-app overflow-y-auto flex flex-col">
@@ -77,7 +145,7 @@ const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
         aria-label="Breadcrumb"
         className="w-full px-4 md:px-8 py-3 bg-white border-b border-black/5"
       >
-        <ol className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-neutral-500">
+        <ol className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-neutral-500 flex-wrap">
           <li className="flex items-center gap-2">
             <Link to="/" className="inline-flex items-center gap-1 hover:text-black transition-colors">
               <Home size={12} />
@@ -85,10 +153,29 @@ const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
             </Link>
             <ChevronRight size={12} className="text-neutral-300" />
           </li>
-          <li className="flex items-center gap-2">
-            <Link to="/listings" className="hover:text-black transition-colors">Listings</Link>
-            <ChevronRight size={12} className="text-neutral-300" />
-          </li>
+          {stateForCrumb && stateName ? (
+            <>
+              <li className="flex items-center gap-2">
+                <Link to={getStateUrl(stateForCrumb)} className="hover:text-black transition-colors">
+                  {stateName}
+                </Link>
+                <ChevronRight size={12} className="text-neutral-300" />
+              </li>
+              {city && cityNameForCrumb && (
+                <li className="flex items-center gap-2">
+                  <Link to={getCityUrl(stateForCrumb, city)} className="hover:text-black transition-colors">
+                    {cityNameForCrumb}
+                  </Link>
+                  <ChevronRight size={12} className="text-neutral-300" />
+                </li>
+              )}
+            </>
+          ) : (
+            <li className="flex items-center gap-2">
+              <Link to="/listings" className="hover:text-black transition-colors">Listings</Link>
+              <ChevronRight size={12} className="text-neutral-300" />
+            </li>
+          )}
           <li className="text-black font-medium truncate" aria-current="page">
             {property.title}
           </li>
@@ -103,15 +190,23 @@ const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
             '@type': 'BreadcrumbList',
             itemListElement: [
               { '@type': 'ListItem', position: 1, name: 'Home', item: window.location.origin + '/' },
-              { '@type': 'ListItem', position: 2, name: 'Listings', item: window.location.origin + '/listings' },
-              { '@type': 'ListItem', position: 3, name: property.title },
+              ...(stateForCrumb && stateName
+                ? [
+                    { '@type': 'ListItem', position: 2, name: stateName, item: window.location.origin + getStateUrl(stateForCrumb) },
+                    ...(city && cityNameForCrumb
+                      ? [{ '@type': 'ListItem', position: 3, name: cityNameForCrumb, item: window.location.origin + getCityUrl(stateForCrumb, city) }]
+                      : []),
+                    { '@type': 'ListItem', position: city && cityNameForCrumb ? 4 : 3, name: property.title },
+                  ]
+                : [
+                    { '@type': 'ListItem', position: 2, name: 'Listings', item: window.location.origin + '/listings' },
+                    { '@type': 'ListItem', position: 3, name: property.title },
+                  ]),
             ],
           }),
         }}
       />
 
-      {/* Property detail body — uses PropertyDetailsView in inline mode so it
-          fills the page below the nav + breadcrumb chrome. */}
       <div className="flex-1 min-h-0">
         <PropertyDetailsView
           property={property}
@@ -119,6 +214,7 @@ const PropertyDetailPage: React.FC<PropertyDetailPageProps> = ({
           isFavorite={isFavorite}
           onToggleFavorite={() => toggleFavorite(property)}
           isInline
+          hideBackButton
           isLoggedIn={isLoggedIn}
         />
       </div>

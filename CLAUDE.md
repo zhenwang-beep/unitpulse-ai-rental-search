@@ -98,6 +98,37 @@ bundle (no Gemini imports, no network calls).
 
 See `.env.example` for the full list. See `TODO.md` for revival recipes.
 
+## URL hierarchy (canonical, Phase 1)
+
+The consumer site is moving to a Zillow-style hierarchical URL structure
+(see `unitpulse-domain-strategy.md` if you have it; otherwise this section
+is the contract):
+
+| Route | Component | Purpose |
+|---|---|---|
+| `/` | `LandingPage` | Hero + chat/keyword search + 8 trending properties + Browse all CTA |
+| `/listings` | `AllListingsPage` | Browse-all escape hatch, city filter |
+| `/search?q=...` | `SearchResultsPage` (when AI off) | Keyword search; suggests city hub if a city name is in the query |
+| `/{state}` | `StateIndexPage` | State hub, lists cities |
+| `/{state}/{city}` | `CityIndexPage` | City hub: editorial header, neighborhoods grid, market stats, trending in city, FAQ |
+| `/{state}/{city}/{slug}` | `PropertyDetailPage` (canonical mode) | Property detail page with TopNav, breadcrumbs, FAQ section, sticky CTA |
+| `/property/:id` | `PropertyDetailPage` (legacy mode) | Legacy URL — fetches by id, then 301s to canonical |
+| `/{state}/{city}/{neighborhood}/{slug}` | *not yet* | Future Phase 2 — once `neighborhoodSlug` ships as a property field |
+
+Valid states/cities are listed in `urlHelpers.ts`. Add new combos there.
+
+URL helpers (`urlHelpers.ts`):
+- `getPropertyUrl(property)` — canonical URL for a property; falls back to
+  `/property/:id` if state/city can't be resolved
+- `getCityUrl(state, citySlug)`, `getStateUrl(state)`
+- `isValidStateCode`, `isValidCity` — route-guard helpers
+- `getPropertySlug(property)` — derived from `imageSeed` (already a kebab-
+  case stable id on each property in the demo data)
+
+**Important**: any new code that links to a property MUST use
+`getPropertyUrl(property)` rather than constructing `/property/${id}`. The
+canonical URLs are what we want indexed and shared.
+
 ## Outstanding work
 
 `TODO.md` at repo root tracks all deferred work, including revival recipes

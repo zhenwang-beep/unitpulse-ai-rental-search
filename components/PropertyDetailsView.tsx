@@ -15,6 +15,10 @@ interface PropertyDetailsViewProps {
   isSigned?: boolean;
   onSignLease?: (id: string) => void;
   isLoggedIn?: boolean;
+  /** Hide the floating Back button at the top of the body. Used when the page
+   *  already has external chrome (TopNav + breadcrumb), so the back action is
+   *  available via the breadcrumb. */
+  hideBackButton?: boolean;
 }
 
 const BUILDING_AMENITIES = [
@@ -47,6 +51,7 @@ const PropertyDetailsView: React.FC<PropertyDetailsViewProps> = ({
   isFavorite,
   onToggleFavorite,
   isInline = false,
+  hideBackButton = false,
   isSigned = false,
   onSignLease,
   isLoggedIn = false,
@@ -99,15 +104,18 @@ const PropertyDetailsView: React.FC<PropertyDetailsViewProps> = ({
 
         {/* Top navigation bar */}
         <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 gap-3">
-          {/* Left: back / close */}
-          <button
-            onClick={onClose}
-            aria-label={isInline ? "Back to search" : "Close property details"}
-            className="flex items-center gap-1.5 pl-1 pr-3 py-1.5 bg-white/80 backdrop-blur-md shadow-sm border border-black/5 rounded-full hover:bg-white transition-colors shrink-0"
-          >
-            <ChevronLeft size={16} />
-            {isInline && <span className="text-xs font-semibold">Back</span>}
-          </button>
+          {/* Left: back / close — hidden when the host page provides
+              breadcrumbs, since the back action is available there. */}
+          {!hideBackButton && (
+            <button
+              onClick={onClose}
+              aria-label={isInline ? "Back to search" : "Close property details"}
+              className="flex items-center gap-1.5 pl-1 pr-3 py-1.5 bg-white/80 backdrop-blur-md shadow-sm border border-black/5 rounded-full hover:bg-white transition-colors shrink-0"
+            >
+              <ChevronLeft size={16} />
+              {isInline && <span className="text-xs font-semibold">Back</span>}
+            </button>
+          )}
 
           <div className="flex-1" />
 
@@ -808,14 +816,20 @@ export default PropertyDetailsView;
 // data feed (operator-provided, augmented by AI extraction from listing copy).
 //
 // TODO(eng): replace `buildMockFAQs` with a hook that fetches property-level
-// FAQs from the API. Shape: `{ q: string; a: string; sources?: string[] }[]`.
-// The API will return 8–20 entries per property; ensure pagination/lazy
-// rendering if the list exceeds ~12 to keep LCP within budget.
+// FAQs from the API. Shape: `{ q: string; a: string; category: FaqCategory;
+// sources?: string[] }[]`. The API will return 10–20+ entries per property;
+// ensure pagination/lazy rendering if the list grows beyond ~20 to keep LCP
+// within budget.
 //
 // Each FAQ in the list also needs to populate the FAQPage JSON-LD block at
 // the top of this component for Search Console / AI engines to pick up.
+// Important: include ALL Q&As in the JSON-LD even when the UI shows a tab
+// filter — search engines and LLMs read the structured data, not the DOM.
 //
-function buildMockFAQs(property: Property): { q: string; a: string }[] {
+type FaqCategory = 'Pricing' | 'Location' | 'Amenities' | 'Tours & Leasing' | 'Pet Policy';
+type Faq = { q: string; a: string; category: FaqCategory };
+
+function buildMockFAQs(property: Property): Faq[] {
   const monthly = `$${property.price.toLocaleString()}/mo`;
   const beds = property.bedrooms === 0 ? 'studio' : `${property.bedrooms}-bedroom`;
   const sqft = property.sqftRange ?? `${property.sqft.toLocaleString()} sqft`;
@@ -826,57 +840,117 @@ function buildMockFAQs(property: Property): { q: string; a: string }[] {
   const hasGym = amenities.some(a => /gym|fitness/i.test(a));
   return [
     {
+      category: 'Pricing',
       q: `How much is rent at ${property.title}?`,
       a: `${property.title} starts at ${monthly} for a ${beds} unit (${sqft}). Pricing varies by floor plan and availability — see the floor plans section above for current rates and unit-level details.`,
     },
     {
+      category: 'Pricing',
+      q: `What's included in the rent at ${property.title}?`,
+      a: `Base rent at ${property.title} typically covers building amenities and common-area maintenance. Utilities (electric, gas, internet) are usually billed separately. The leasing team can break down exactly what's included before you sign.`,
+    },
+    {
+      category: 'Pricing',
+      q: `Are there any move-in fees or deposits at ${property.title}?`,
+      a: `Move-in costs at ${property.title} typically include first month's rent, a security deposit, and an application fee. Specific amounts vary; the leasing team will share a full move-in cost breakdown when you apply.`,
+    },
+    {
+      category: 'Location',
       q: `Where is ${property.title} located?`,
       a: `${property.title} is in ${property.location}. Check the map above for the exact location and explore nearby transit, schools, and neighborhood amenities. Walk Score and transit details are available in the neighborhood guide.`,
     },
     {
-      q: `Is ${property.title} pet-friendly?`,
-      a: isPetFriendly
-        ? `Yes — ${property.title} is pet-friendly. Specific pet policies (deposit, monthly fee, breed restrictions) vary; the leasing team can share full policy details when you tour.`
-        : `Pet policies for ${property.title} aren't currently published. Contact the leasing team for the latest pet policy — many ${property.location} buildings have updated their policies recently.`,
+      category: 'Location',
+      q: `What's the neighborhood like around ${property.title}?`,
+      a: `${property.location} offers a mix of dining, shopping, and transit options. Residents at ${property.title} typically enjoy quick access to local cafes, parks, and major commute routes. See the neighborhood guide for more detail.`,
     },
     {
+      category: 'Amenities',
       q: `What amenities are included at ${property.title}?`,
       a: amenities.length > 0
         ? `${property.title} includes ${amenities.slice(0, 6).join(', ')}${amenities.length > 6 ? `, and ${amenities.length - 6} more` : ''}. Building amenities are listed in full above.`
         : `Amenity details for ${property.title} are being updated. Contact the property for the latest amenity list.`,
     },
     {
+      category: 'Amenities',
       q: `Is parking available at ${property.title}?`,
       a: hasParking
         ? `Yes — parking is available at ${property.title}. Parking type (covered, garage, EV) and additional cost vary by unit; ask the leasing team for current availability and rates.`
         : `Parking availability at ${property.title} isn't currently published. Many residents use street parking or nearby garages — the leasing team can confirm options when you tour.`,
     },
     {
+      category: 'Amenities',
       q: `Does ${property.title} have in-unit laundry?`,
       a: hasLaundry
         ? `Yes — ${property.title} has in-unit laundry. Specific machines (full-size vs. stacked) vary by floor plan.`
         : `In-unit laundry is not standard at ${property.title}. Check with the leasing team about shared laundry rooms or laundry hookups.`,
     },
     {
+      category: 'Amenities',
       q: `Does ${property.title} have a gym or fitness center?`,
       a: hasGym
         ? `Yes — ${property.title} has a fitness center on site. Hours and equipment list available from the leasing team.`
         : `${property.title} does not currently advertise an on-site gym. Many residents use nearby fitness studios in ${property.location}.`,
     },
     {
+      category: 'Tours & Leasing',
       q: `How do I schedule a tour at ${property.title}?`,
       a: `Click the "Schedule a tour" button at the bottom of this page or call the property directly. Same-day and weekend tours are typically available for ${property.location} listings.`,
+    },
+    {
+      category: 'Tours & Leasing',
+      q: `What's the application process for ${property.title}?`,
+      a: `Most ${property.location} listings require an online application, proof of income (typically 2.5–3x monthly rent), photo ID, and a credit check. The leasing team typically reviews applications within 24–48 hours.`,
+    },
+    {
+      category: 'Tours & Leasing',
+      q: `What lease terms does ${property.title} offer?`,
+      a: `${property.title} typically offers 12-month lease terms; shorter or month-to-month terms may be available depending on availability. Ask the leasing team about current options.`,
+    },
+    {
+      category: 'Pet Policy',
+      q: `Is ${property.title} pet-friendly?`,
+      a: isPetFriendly
+        ? `Yes — ${property.title} is pet-friendly. Specific pet policies (deposit, monthly fee, breed restrictions) vary; the leasing team can share full policy details when you tour.`
+        : `Pet policies for ${property.title} aren't currently published. Contact the leasing team for the latest pet policy — many ${property.location} buildings have updated their policies recently.`,
+    },
+    {
+      category: 'Pet Policy',
+      q: `Are there pet fees or deposits at ${property.title}?`,
+      a: isPetFriendly
+        ? `${property.title} typically charges a one-time pet deposit and a monthly pet rent. Exact amounts and any breed/weight restrictions are confirmed by the leasing team during application.`
+        : `Pet fee details for ${property.title} aren't currently published. The leasing team can confirm the latest fee structure if pets are accepted.`,
     },
   ];
 }
 
+const FAQ_CATEGORIES: ('All' | FaqCategory)[] = ['All', 'Pricing', 'Location', 'Amenities', 'Tours & Leasing', 'Pet Policy'];
+
 const PropertyFAQSection: React.FC<{ property: Property }> = ({ property }) => {
   const faqs = React.useMemo(() => buildMockFAQs(property), [property]);
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [activeCategory, setActiveCategory] = useState<'All' | FaqCategory>('All');
+  const [openKey, setOpenKey] = useState<string | null>(null);
 
-  // FAQPage JSON-LD for SEO/GEO. Search Console and AI engines parse this
-  // structured data and may surface the property's Q&As as featured snippets
-  // or AI-Overview citations.
+  const visibleFaqs = React.useMemo(
+    () => activeCategory === 'All' ? faqs : faqs.filter(f => f.category === activeCategory),
+    [faqs, activeCategory],
+  );
+
+  // Reset which Q is open when the category changes (keep first one open).
+  React.useEffect(() => {
+    setOpenKey(visibleFaqs[0] ? visibleFaqs[0].q : null);
+  }, [activeCategory]);
+
+  // Counts per category for the tab badges.
+  const counts = React.useMemo(() => {
+    const c: Record<string, number> = { All: faqs.length };
+    for (const f of faqs) c[f.category] = (c[f.category] ?? 0) + 1;
+    return c;
+  }, [faqs]);
+
+  // FAQPage JSON-LD for SEO/GEO. ALWAYS include every FAQ — the tab UI is
+  // for humans, but search engines and LLMs read the structured data and
+  // need the full list to cite from.
   const faqSchema = React.useMemo(() => ({
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -901,13 +975,48 @@ const PropertyFAQSection: React.FC<{ property: Property }> = ({ property }) => {
           {faqs.length} questions
         </span>
       </div>
-      <div className="rounded-2xl border border-black/5 divide-y divide-black/5 overflow-hidden bg-white">
-        {faqs.map(({ q, a }, i) => {
-          const isOpen = openIndex === i;
+
+      {/* Category tabs — segmented filter. As we add more FAQs (10–20+ per
+          property when the data API ships), the tab UI keeps the section
+          scannable without losing the SEO/GEO benefit (full list stays in
+          the JSON-LD above). */}
+      <div className="flex flex-wrap gap-2" role="tablist" aria-label="FAQ categories">
+        {FAQ_CATEGORIES.map((cat) => {
+          const active = cat === activeCategory;
+          const count = counts[cat] ?? 0;
+          if (cat !== 'All' && count === 0) return null;
           return (
-            <div key={i}>
+            <button
+              key={cat}
+              role="tab"
+              aria-selected={active}
+              onClick={() => setActiveCategory(cat)}
+              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-colors border ${
+                active
+                  ? 'bg-black text-white border-black'
+                  : 'bg-white text-neutral-600 border-black/10 hover:border-black hover:text-black'
+              }`}
+            >
+              <span>{cat}</span>
+              <span className={`text-[10px] font-bold ${active ? 'text-white/60' : 'text-neutral-400'}`}>
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div
+        role="tabpanel"
+        aria-label={`${activeCategory} FAQs`}
+        className="rounded-2xl border border-black/5 divide-y divide-black/5 overflow-hidden bg-white"
+      >
+        {visibleFaqs.map(({ q, a }) => {
+          const isOpen = openKey === q;
+          return (
+            <div key={q}>
               <button
-                onClick={() => setOpenIndex(isOpen ? null : i)}
+                onClick={() => setOpenKey(isOpen ? null : q)}
                 aria-expanded={isOpen}
                 className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left hover:bg-neutral-50 transition-colors"
               >
