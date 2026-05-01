@@ -27,7 +27,7 @@ const TermsPage: React.FC<TermsPageProps> = ({
   };
 
   return (
-    <div className="h-[100dvh] w-full bg-[#FCF9F8] text-black font-sans overflow-y-auto scroll-smooth" onScroll={handleScroll}>
+    <div className="h-[100dvh] w-full bg-surface-app text-black font-sans overflow-y-auto scroll-smooth" onScroll={handleScroll}>
       <TopNav
         isLoggedIn={isLoggedIn}
         isDropdownOpen={isDropdownOpen}

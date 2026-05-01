@@ -53,7 +53,7 @@ const PartnerPage: React.FC<PartnerPageProps> = ({
   // so framer-motion's `useScroll` in FeatureCanvas can track window scroll for its animations.
   // TopNav falls back to window.scrollY when no scrollY prop is passed.
   return (
-    <div className="w-full bg-[#FCF9F8] text-black font-sans">
+    <div className="w-full bg-surface-app text-black font-sans">
       <TopNav
         isLoggedIn={isLoggedIn}
         isDropdownOpen={isDropdownOpen}

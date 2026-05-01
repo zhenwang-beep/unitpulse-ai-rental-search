@@ -132,7 +132,7 @@ const ProductVideo = ({ src, isActive = true }: { src: string; isActive?: boolea
             className={`
               flex items-center justify-center overflow-hidden transition-all duration-500 ease-in-out z-10 w-7 h-7 md:w-10 md:h-10 rounded-full shadow-sm border backdrop-blur-md
               ${
-                isFinished ? 'bg-white hover:bg-[#F4F1EE] text-neutral-800 border-black/5' : 'bg-white/90 hover:bg-white text-neutral-800 border-black/5'
+                isFinished ? 'bg-white hover:bg-surface-2 text-neutral-800 border-black/5' : 'bg-white/90 hover:bg-white text-neutral-800 border-black/5'
               }
             `}
           >
@@ -249,13 +249,13 @@ const TimelineNodeHorizontal: React.FC<{ index: number; scrollYProgress: MotionV
           color: isActive ? 'rgba(168, 185, 125, 1)' : 'rgba(163, 163, 163, 1)'
         }}
         transition={{ duration: 0.3 }}
-        className="w-10 h-10 rounded-full border-2 flex items-center justify-center font-heading text-lg shadow-lg group-hover:border-[#A8B97D]/50 group-hover:text-[#A8B97D] transition-colors"
+        className="w-10 h-10 rounded-full border-2 flex items-center justify-center font-heading text-lg shadow-lg group-hover:border-brand-on-dark/50 group-hover:text-brand-on-dark transition-colors"
       >
         {index + 1}
       </motion.div>
       <motion.span
         animate={{ color: isActive ? 'rgba(255, 255, 255, 1)' : 'rgba(107, 114, 128, 1)' }}
-        className="hidden md:block text-[10px] md:text-xs font-bold uppercase tracking-widest text-center absolute top-14 w-32 -ml-16 left-1/2 group-hover:text-[#A8B97D] transition-colors"
+        className="hidden md:block text-[10px] md:text-xs font-bold uppercase tracking-widest text-center absolute top-14 w-32 -ml-16 left-1/2 group-hover:text-brand-on-dark transition-colors"
       >
         {name}
       </motion.span>
@@ -296,7 +296,7 @@ const ProductSlide: React.FC<{ product: any; index: number; total: number; scrol
           <div className="flex items-center gap-4 mb-2 md:mb-4">
             <h3 className="font-heading text-3xl md:text-4xl lg:text-5xl text-white">{product.name}</h3>
           </div>
-          <div className="text-lg md:text-xl text-[#A8B97D] mb-4 md:mb-6 font-light tracking-wide">
+          <div className="text-lg md:text-xl text-brand-on-dark mb-4 md:mb-6 font-light tracking-wide">
             {product.action} {product.titleSuffix}
           </div>
           <p className="text-neutral-400 mb-0 lg:mb-8 leading-relaxed text-sm md:text-lg">{product.description}</p>
@@ -304,7 +304,7 @@ const ProductSlide: React.FC<{ product: any; index: number; total: number; scrol
         <div className="md:w-1/2 lg:w-full space-y-3 md:space-y-4 md:self-end">
           {product.valuePoints.map((point: string, i: number) => (
             <div key={i} className="flex items-center gap-3 text-neutral-300 text-sm md:text-base">
-              <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-[#A8B97D] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-brand-on-dark shrink-0" />
               <span>{point}</span>
             </div>
           ))}
@@ -318,7 +318,7 @@ const ProductSlide: React.FC<{ product: any; index: number; total: number; scrol
         className="w-full lg:w-2/3 flex-1 min-h-[200px] max-h-[40vh] md:max-h-[45vh] lg:max-h-[55vh] relative max-w-6xl"
       >
         <div className={`w-full h-full relative rounded-2xl overflow-hidden ${product.videoSrc ? '' : 'bg-white border border-black/5 shadow-2xl'}`}>
-          {!product.videoSrc && <div className="absolute inset-0 bg-[#F4F7EC]/60 mix-blend-overlay opacity-50"></div>}
+          {!product.videoSrc && <div className="absolute inset-0 bg-surface-ai/60 mix-blend-overlay opacity-50"></div>}
           {product.videoSrc && (
             <div className="w-full h-full relative z-10 flex items-center justify-center">
               <ProductVideo src={product.videoSrc} isActive={isActive} />
@@ -348,7 +348,7 @@ const MobileProductSlide: React.FC<{ product: any; index: number }> = ({ product
           <div className="flex items-center gap-4 mb-2">
             <h3 className="font-heading text-3xl text-white">{product.name}</h3>
           </div>
-          <div className="text-lg text-[#A8B97D] mb-4 font-light tracking-wide">
+          <div className="text-lg text-brand-on-dark mb-4 font-light tracking-wide">
             {product.action} {product.titleSuffix}
           </div>
           <p className="text-neutral-400 mb-0 leading-relaxed text-sm">{product.description}</p>
@@ -356,7 +356,7 @@ const MobileProductSlide: React.FC<{ product: any; index: number }> = ({ product
         <div className="sm:w-1/2 space-y-3">
           {product.valuePoints.map((point: string, i: number) => (
             <div key={i} className="flex items-center gap-3 text-neutral-300 text-sm">
-              <CheckCircle2 className="w-4 h-4 text-[#A8B97D] shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-brand-on-dark shrink-0" />
               <span>{point}</span>
             </div>
           ))}
@@ -364,7 +364,7 @@ const MobileProductSlide: React.FC<{ product: any; index: number }> = ({ product
       </div>
 
       <div className="w-full aspect-video relative rounded-2xl overflow-hidden">
-        {!product.videoSrc && <div className="absolute inset-0 bg-[#F4F7EC]/60 mix-blend-overlay opacity-50"></div>}
+        {!product.videoSrc && <div className="absolute inset-0 bg-surface-ai/60 mix-blend-overlay opacity-50"></div>}
         {product.videoSrc && (
           <div className="w-full h-full relative z-10 flex items-center justify-center">
             <ProductVideo src={product.videoSrc} isActive={isInView} />
@@ -430,7 +430,7 @@ const FeatureCanvas: React.FC = () => {
             <div className="flex items-center justify-between relative">
               <div className="absolute left-8 right-8 top-5 -translate-y-1/2 h-0.5 bg-neutral-900 -z-10"></div>
               <motion.div
-                className="absolute left-8 right-8 top-5 -translate-y-1/2 h-0.5 bg-[#A8B97D] -z-10 origin-left"
+                className="absolute left-8 right-8 top-5 -translate-y-1/2 h-0.5 bg-brand-on-dark -z-10 origin-left"
                 style={{ scaleX: scrollYProgress }}
               ></motion.div>
               {products.map((product, index) => (
@@ -469,7 +469,7 @@ const FeatureCanvas: React.FC = () => {
           transition={{ duration: 0.7 }}
           className="relative bg-neutral-900/80 border border-neutral-900 rounded-3xl p-8 md:p-12 md:pb-8 overflow-hidden flex flex-col"
         >
-          <div className="absolute -right-20 -top-20 w-64 h-64 bg-[#A8B97D]/10 rounded-full blur-[80px] pointer-events-none"></div>
+          <div className="absolute -right-20 -top-20 w-64 h-64 bg-brand-on-dark/10 rounded-full blur-[80px] pointer-events-none"></div>
           <div className="w-full relative z-10 mb-4">
             <Pipeline />
           </div>

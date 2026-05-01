@@ -83,7 +83,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, initialEma
 
       <div className="relative w-full sm:max-w-lg h-full sm:h-auto bg-white sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col sm:max-h-[90vh] animate-[pulse_0.2s_ease-out]">
         {/* Header */}
-        <div className="px-8 py-6 border-b border-black/5 flex justify-between items-center bg-[#F4F1EE]">
+        <div className="px-8 py-6 border-b border-black/5 flex justify-between items-center bg-surface-2">
           <div>
             <h3 className="font-heading text-2xl text-black">Get in touch</h3>
             <p className="text-sm text-neutral-500 mt-1">Book a personalized demo with our team.</p>
@@ -100,7 +100,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, initialEma
         <div className="p-8 overflow-y-auto custom-scrollbar flex-1">
           {status === 'success' ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="w-16 h-16 bg-[#F4F7EC] rounded-full flex items-center justify-center text-[#3a4e1a] mb-6">
+              <div className="w-16 h-16 bg-surface-ai rounded-full flex items-center justify-center text-brand-hover mb-6">
                 <CheckCircle2 size={32} />
               </div>
               <h4 className="text-2xl font-heading text-black mb-2">Request Received</h4>
@@ -123,7 +123,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, initialEma
                     required
                     type="text"
                     placeholder="Jane Doe"
-                    className="w-full px-4 py-3 bg-[#F4F1EE] border border-black/5 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-0 transition-colors"
+                    className="w-full px-4 py-3 bg-surface-2 border border-black/5 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-0 transition-colors"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
@@ -134,7 +134,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, initialEma
                     required
                     type="email"
                     placeholder="jane@company.com"
-                    className="w-full px-4 py-3 bg-[#F4F1EE] border border-black/5 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-0 transition-colors"
+                    className="w-full px-4 py-3 bg-surface-2 border border-black/5 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-0 transition-colors"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   />
@@ -147,7 +147,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, initialEma
                   required
                   type="tel"
                   placeholder="+1234567890"
-                  className="w-full px-4 py-3 bg-[#F4F1EE] border border-black/5 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-0 transition-colors"
+                  className="w-full px-4 py-3 bg-surface-2 border border-black/5 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-0 transition-colors"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 />
@@ -160,7 +160,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, initialEma
                     required
                     type="text"
                     placeholder="Acme Inc"
-                    className="w-full px-4 py-3 bg-[#F4F1EE] border border-black/5 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-0 transition-colors"
+                    className="w-full px-4 py-3 bg-surface-2 border border-black/5 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-0 transition-colors"
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                   />
@@ -171,7 +171,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, initialEma
                     type="text"
                     required
                     placeholder="Director of Operations"
-                    className="w-full px-4 py-3 bg-[#F4F1EE] border border-black/5 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-0 transition-colors"
+                    className="w-full px-4 py-3 bg-surface-2 border border-black/5 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-0 transition-colors"
                     value={formData.role}
                     onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                   />
@@ -184,7 +184,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, initialEma
                   rows={3}
                   required
                   placeholder="Tell us about your portfolio size or current challenges..."
-                  className="w-full px-4 py-3 bg-[#F4F1EE] border border-black/5 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-0 transition-colors resize-none"
+                  className="w-full px-4 py-3 bg-surface-2 border border-black/5 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-0 transition-colors resize-none"
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 ></textarea>
@@ -208,7 +208,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, initialEma
               type="submit"
               form="contact-form"
               disabled={status === 'submitting'}
-              className="w-full py-4 bg-[#4A5D23] text-white text-sm font-semibold uppercase tracking-widest rounded-xl hover:bg-[#3a4e1a] transition-all shadow-xl shadow-[#4A5D23]/10 hover:shadow-2xl hover:shadow-[#4A5D23]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+              className="w-full py-4 bg-brand text-white text-sm font-semibold uppercase tracking-widest rounded-xl hover:bg-brand-hover transition-all shadow-xl shadow-brand/10 hover:shadow-2xl hover:shadow-brand/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
             >
               {status === 'submitting' ? 'Sending...' : 'Request Demo'}
               {status !== 'submitting' && <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />}

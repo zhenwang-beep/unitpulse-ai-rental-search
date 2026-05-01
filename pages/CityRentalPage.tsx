@@ -200,10 +200,10 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
 
   if (!city || !details) {
     return (
-      <div className="min-h-screen bg-[#FCF9F8] flex flex-col items-center justify-center gap-4">
+      <div className="min-h-screen bg-surface-app flex flex-col items-center justify-center gap-4">
         <Building size={48} className="text-neutral-300" />
         <h1 className="text-2xl font-black text-neutral-400">City not found</h1>
-        <button onClick={() => navigate('/rentals')} className="px-6 py-3 bg-[#4A5D23] text-white rounded-xl font-medium">
+        <button onClick={() => navigate('/rentals')} className="px-6 py-3 bg-brand text-white rounded-xl font-medium">
           View All Markets
         </button>
       </div>
@@ -211,7 +211,7 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
   }
 
   return (
-    <div className="h-[100dvh] w-full bg-[#FCF9F8] text-black font-sans overflow-y-auto scroll-smooth" onScroll={handleScroll}>
+    <div className="h-[100dvh] w-full bg-surface-app text-black font-sans overflow-y-auto scroll-smooth" onScroll={handleScroll}>
       <TopNav
         isLoggedIn={isLoggedIn}
         isDropdownOpen={isDropdownOpen}
@@ -258,7 +258,7 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
       <div className="w-full max-w-6xl mx-auto px-4 mb-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { icon: DollarSign, label: 'Avg Monthly Rent', value: `$${city.avgRent.toLocaleString()}`, color: 'bg-[#4A5D23]/10 text-[#4A5D23]' },
+            { icon: DollarSign, label: 'Avg Monthly Rent', value: `$${city.avgRent.toLocaleString()}`, color: 'bg-brand/10 text-brand' },
             { icon: TrendingUp, label: 'YoY Change', value: city.trend, color: city.trendUp ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600' },
             { icon: Home, label: 'Active Listings', value: city.listings.toLocaleString(), color: 'bg-blue-50 text-blue-600' },
             { icon: Building, label: 'Avg $/sqft', value: `$${details.sqftPrice}/sqft`, color: 'bg-amber-50 text-amber-600' },
@@ -277,7 +277,7 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
       {/* Neighborhood Guide */}
       <div className="w-full max-w-6xl mx-auto px-4 mb-16">
         <div className="mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#4A5D23]/10 text-[#4A5D23] text-xs font-black uppercase tracking-wider mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand/10 text-brand text-xs font-black uppercase tracking-wider mb-4">
             <MapPin size={14} />
             Neighborhood Guide
           </div>
@@ -290,9 +290,9 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
             <motion.div key={i} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.07 }} className="bg-white rounded-2xl border border-black/5 p-5 hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between mb-3">
                 <h3 className="text-lg font-bold text-black">{hood.name}</h3>
-                <div className="flex items-center gap-1 px-2.5 py-1 bg-[#4A5D23]/10 rounded-full">
-                  <Star size={12} className="text-[#4A5D23]" fill="#4A5D23" />
-                  <span className="text-xs font-bold text-[#4A5D23]">{hood.walkScore}</span>
+                <div className="flex items-center gap-1 px-2.5 py-1 bg-brand/10 rounded-full">
+                  <Star size={12} className="text-brand" fill="#4A5D23" />
+                  <span className="text-xs font-bold text-brand">{hood.walkScore}</span>
                 </div>
               </div>
               <p className="text-neutral-500 text-sm leading-relaxed mb-4">{hood.vibe}</p>
@@ -308,7 +308,7 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
       {/* Renting Tips */}
       <div className="w-full max-w-6xl mx-auto px-4 mb-16">
         <div className="p-8 md:p-10 bg-white rounded-[2rem] border border-black/5">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#4A5D23]/10 text-[#4A5D23] text-xs font-black uppercase tracking-wider mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand/10 text-brand text-xs font-black uppercase tracking-wider mb-4">
             <Shield size={14} />
             Local Tips
           </div>
@@ -318,7 +318,7 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
           <div className="flex flex-col gap-4">
             {details.tips.map((tip, i) => (
               <div key={i} className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-[#4A5D23] text-white text-sm font-black flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-8 h-8 rounded-full bg-brand text-white text-sm font-black flex items-center justify-center shrink-0 mt-0.5">
                   {i + 1}
                 </div>
                 <p className="text-neutral-700 leading-relaxed">{tip}</p>
@@ -331,7 +331,7 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
       {/* City FAQ */}
       <div className="w-full max-w-6xl mx-auto px-4 mb-16">
         <div className="mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#4A5D23]/10 text-[#4A5D23] text-xs font-black uppercase tracking-wider mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand/10 text-brand text-xs font-black uppercase tracking-wider mb-4">
             <HelpCircle size={14} />
             Common Questions
           </div>
@@ -343,7 +343,7 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
           {details.faqs.map((faq, i) => (
             <div key={i}>
               <button onClick={() => setOpenFaq(openFaq === i ? null : i)} className="w-full flex items-center justify-between p-5 md:p-6 text-left hover:bg-neutral-50/50 transition-colors group">
-                <span className="text-base font-semibold text-black pr-4 group-hover:text-[#4A5D23] transition-colors">{faq.q}</span>
+                <span className="text-base font-semibold text-black pr-4 group-hover:text-brand transition-colors">{faq.q}</span>
                 <ChevronDown size={20} className={`shrink-0 text-neutral-400 transition-transform duration-300 ${openFaq === i ? 'rotate-180' : ''}`} />
               </button>
               <AnimatePresence>
@@ -365,7 +365,7 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
         <h2 className="text-2xl font-black font-heading tracking-tighter text-black mb-6">Explore Other Markets</h2>
         <div className="flex gap-3 flex-wrap">
           {CITY_DATA.filter(c => c.slug !== citySlug).map(c => (
-            <button key={c.slug} onClick={() => navigate(`/rentals/${c.slug}`)} className="px-5 py-2.5 bg-white border border-black/5 rounded-full text-sm font-semibold hover:border-[#4A5D23] hover:text-[#4A5D23] transition-all">
+            <button key={c.slug} onClick={() => navigate(`/rentals/${c.slug}`)} className="px-5 py-2.5 bg-white border border-black/5 rounded-full text-sm font-semibold hover:border-brand hover:text-brand transition-all">
               {c.name}
             </button>
           ))}
@@ -374,7 +374,7 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
 
       {/* CTA */}
       <div className="w-full max-w-6xl mx-auto px-4 pb-20">
-        <div className="p-8 md:p-12 rounded-[2rem] bg-[#4A5D23] text-white text-center relative overflow-hidden">
+        <div className="p-8 md:p-12 rounded-[2rem] bg-brand text-white text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -ml-20 -mb-20" />
           <div className="relative z-10">
@@ -384,7 +384,7 @@ const CityRentalPage: React.FC<CityRentalPageProps> = ({
             <p className="text-white/70 text-lg mb-8 max-w-lg mx-auto">
               Let our AI search {city.listings.toLocaleString()}+ listings to match you with the right apartment — based on your lifestyle, not just price.
             </p>
-            <button onClick={() => navigate('/search', { state: { query: `Apartments in ${city.name}` } })} className="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#4A5D23] rounded-2xl font-bold hover:shadow-xl transition-all">
+            <button onClick={() => navigate('/search', { state: { query: `Apartments in ${city.name}` } })} className="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand rounded-2xl font-bold hover:shadow-xl transition-all">
               <MessageSquare size={20} />
               Search {city.name} Rentals
               <ArrowRight size={16} />

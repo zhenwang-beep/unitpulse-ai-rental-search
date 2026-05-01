@@ -98,7 +98,7 @@ export const RichMediaCanvas = ({ property, onAction }: { property: Property, on
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
         <div className="absolute bottom-6 left-6 right-6 text-white">
           <div className="flex items-center gap-2 mb-2">
-            <span className="px-2.5 py-1 bg-[#4A5D23] text-white text-xs font-medium rounded uppercase tracking-wider">Available Now</span>
+            <span className="px-2.5 py-1 bg-brand text-white text-xs font-medium rounded uppercase tracking-wider">Available Now</span>
             <div className="flex items-center gap-1 text-amber-400">
               <Star size={12} fill="currentColor" />
               <span className="text-xs font-bold">{property.rating || '4.9'}</span>
@@ -189,7 +189,7 @@ export const RichMediaCanvas = ({ property, onAction }: { property: Property, on
           </div>
           <button 
             onClick={() => onAction("Request Tour")}
-            className="w-full py-4 bg-[#4A5D23] text-white rounded-xl font-medium text-xs md:text-sm uppercase tracking-wider hover:bg-[#3a4e1a] transition-all shadow-xl shadow-[#4A5D23]/10 flex items-center justify-center gap-2"
+            className="w-full py-4 bg-brand text-white rounded-xl font-medium text-xs md:text-sm uppercase tracking-wider hover:bg-brand-hover transition-all shadow-xl shadow-brand/10 flex items-center justify-center gap-2"
           >
             <span>Request Tour</span>
             <ArrowUp size={18} className="rotate-90" />
@@ -256,7 +256,7 @@ const ApplicationForm = ({ onComplete }: { onComplete: () => void }) => {
               <input type="email" placeholder="Email Address" className="w-full px-4 py-3 bg-white border border-black/5 rounded-xl focus:ring-1 focus:ring-black outline-none text-sm" />
               <input type="tel" placeholder="Phone Number" className="w-full px-4 py-3 bg-white border border-black/5 rounded-xl focus:ring-1 focus:ring-black outline-none text-sm" />
             </div>
-            <button onClick={nextStep} className="w-full py-3 bg-[#4A5D23] text-white rounded-xl font-medium uppercase tracking-wider hover:bg-[#3a4e1a] transition-colors mt-6">Confirm Details</button>
+            <button onClick={nextStep} className="w-full py-3 bg-brand text-white rounded-xl font-medium uppercase tracking-wider hover:bg-brand-hover transition-colors mt-6">Confirm Details</button>
           </motion.div>
         )}
 
@@ -331,14 +331,14 @@ const ApplicationForm = ({ onComplete }: { onComplete: () => void }) => {
           >
             <div className="space-y-4">
               <label className="block text-xs font-medium text-neutral-400 uppercase tracking-wider">Final Review</label>
-              <div className="p-4 bg-[#F4F7EC] rounded-2xl border border-[#4A5D23]/15 flex items-start gap-3">
-                <ShieldCheck className="text-[#4A5D23] shrink-0 mt-0.5" size={20} />
-                <p className="text-xs text-[#243510] leading-relaxed">
+              <div className="p-4 bg-surface-ai rounded-2xl border border-brand/15 flex items-start gap-3">
+                <ShieldCheck className="text-brand shrink-0 mt-0.5" size={20} />
+                <p className="text-xs text-brand-text leading-relaxed">
                   By clicking complete, you authorize UnitPulse to perform a secure background and credit check. Your data is encrypted and protected.
                 </p>
               </div>
             </div>
-            <button onClick={nextStep} className="w-full py-3 bg-[#4A5D23] text-white rounded-xl font-medium uppercase tracking-wider hover:bg-[#3a4e1a] transition-colors mt-6">Complete Application</button>
+            <button onClick={nextStep} className="w-full py-3 bg-brand text-white rounded-xl font-medium uppercase tracking-wider hover:bg-brand-hover transition-colors mt-6">Complete Application</button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -365,26 +365,26 @@ const ContractSummary = ({ property, onComplete }: { property: Property, onCompl
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
-        className="w-full bg-gradient-to-br from-[#F4F7EC] to-[#F4F1EE] rounded-3xl border border-[#4A5D23]/20 shadow-2xl mt-4 overflow-hidden"
+        className="w-full bg-gradient-to-br from-surface-ai to-surface-2 rounded-3xl border border-brand/20 shadow-2xl mt-4 overflow-hidden"
       >
         <div className="p-10 flex flex-col items-center text-center gap-5">
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.15, type: 'spring', stiffness: 260, damping: 20 }}
-            className="w-20 h-20 bg-[#4A5D23] rounded-full flex items-center justify-center shadow-xl shadow-[#4A5D23]/30"
+            className="w-20 h-20 bg-brand rounded-full flex items-center justify-center shadow-xl shadow-brand/30"
           >
             <Check size={40} strokeWidth={3} className="text-white" />
           </motion.div>
           <div>
-            <p className="text-xs font-bold text-[#4A5D23] uppercase tracking-widest mb-2">Lease Signed</p>
+            <p className="text-xs font-bold text-brand uppercase tracking-widest mb-2">Lease Signed</p>
             <h3 className="text-2xl font-black font-heading text-black tracking-tight">Welcome home. 🎉</h3>
             <p className="text-sm text-neutral-500 font-medium mt-2">{property.title} · {property.location}</p>
           </div>
           <div className="flex gap-3 w-full mt-2">
             <button
               onClick={() => onComplete?.()}
-              className="flex-1 py-3 bg-[#4A5D23] text-white rounded-xl font-semibold text-sm hover:bg-[#3a4e1a] transition-all"
+              className="flex-1 py-3 bg-brand text-white rounded-xl font-semibold text-sm hover:bg-brand-hover transition-all"
             >
               View Move-in Checklist
             </button>
@@ -401,13 +401,13 @@ const ContractSummary = ({ property, onComplete }: { property: Property, onCompl
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full bg-[#FCF9F8] rounded-3xl border border-black/5 shadow-2xl mt-4 overflow-hidden"
+      className="w-full bg-surface-app rounded-3xl border border-black/5 shadow-2xl mt-4 overflow-hidden"
     >
       <div className="p-8 pb-4">
         <div className="flex items-center justify-between mb-4">
           <div className="text-xs font-medium text-black uppercase tracking-wider">Official Agreement</div>
-          <div className="flex items-center gap-1.5 px-2 py-1 bg-[#F4F7EC] text-[#4A5D23] rounded-full">
-            <div className="w-1 h-1 bg-[#4A5D23] rounded-full animate-pulse" />
+          <div className="flex items-center gap-1.5 px-2 py-1 bg-surface-ai text-brand rounded-full">
+            <div className="w-1 h-1 bg-brand rounded-full animate-pulse" />
             <span className="text-xs font-medium uppercase tracking-wider">Ready to Close</span>
           </div>
         </div>
@@ -456,13 +456,13 @@ const ContractSummary = ({ property, onComplete }: { property: Property, onCompl
             <button onClick={() => setIsSigned(false)} className="text-[8px] font-medium text-black uppercase tracking-wider hover:underline">Clear Canvas</button>
           </div>
           <div 
-            className={`h-40 border-2 border-dashed rounded-2xl flex items-center justify-center cursor-pointer transition-all relative overflow-hidden ${isSigned ? 'bg-white border-[#4A5D23]/25' : 'bg-white border-neutral-200 hover:border-black'}`}
+            className={`h-40 border-2 border-dashed rounded-2xl flex items-center justify-center cursor-pointer transition-all relative overflow-hidden ${isSigned ? 'bg-white border-brand/25' : 'bg-white border-neutral-200 hover:border-black'}`}
             onClick={() => setIsSigned(true)}
           >
             {isSigned ? (
               <div className="flex flex-col items-center gap-2">
                 <div className="text-black font-heading text-3xl italic opacity-80">Signed digitally</div>
-                <div className="text-xs text-[#4A5D23] font-medium uppercase tracking-wider">Verified by UnitPulse</div>
+                <div className="text-xs text-brand font-medium uppercase tracking-wider">Verified by UnitPulse</div>
               </div>
             ) : (
               <div className="flex flex-col items-center gap-3 text-neutral-300">
@@ -478,7 +478,7 @@ const ContractSummary = ({ property, onComplete }: { property: Property, onCompl
         <button 
           disabled={!isSigned || isPaid}
           onClick={() => setIsPaid(true)}
-          className={`w-full py-5 rounded-2xl font-medium uppercase tracking-wider flex items-center justify-center gap-3 transition-all shadow-xl ${isPaid ? 'bg-[#4A5D23] text-white shadow-[#4A5D23]/20' : isSigned ? 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a] shadow-[#4A5D23]/20' : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'}`}
+          className={`w-full py-5 rounded-2xl font-medium uppercase tracking-wider flex items-center justify-center gap-3 transition-all shadow-xl ${isPaid ? 'bg-brand text-white shadow-brand/20' : isSigned ? 'bg-brand text-white hover:bg-brand-hover shadow-brand/20' : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'}`}
         >
           {isPaid ? (
             <>
@@ -529,7 +529,7 @@ const StyleAnalysis = ({
     >
       {step === 'analyzing' ? (
         <div className="p-12 flex flex-col items-center text-center space-y-8">
-          <Loader2 className="animate-spin text-[#4A5D23]" size={48} />
+          <Loader2 className="animate-spin text-brand" size={48} />
           <div className="space-y-2">
             <h3 className="text-xl font-bold tracking-tight text-black">Analyzing your style...</h3>
             <p className="text-neutral-500 text-sm">We're looking at the architecture, amenities, and vibes of your favorite homes.</p>
@@ -538,11 +538,11 @@ const StyleAnalysis = ({
       ) : (
         <div className="p-8 space-y-8">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-[#F4F7EC] rounded-2xl flex items-center justify-center text-[#4A5D23] text-2xl">
+            <div className="w-12 h-12 bg-surface-ai rounded-2xl flex items-center justify-center text-brand text-2xl">
               {styleAvatar || <Sparkles size={24} />}
             </div>
             <div>
-              <div className="text-xs font-bold text-[#4A5D23] uppercase tracking-[0.2em] mb-0.5">Your Style Profile</div>
+              <div className="text-xs font-bold text-brand uppercase tracking-[0.2em] mb-0.5">Your Style Profile</div>
               <h3 className="text-xl font-bold tracking-tight">{styleTitle || 'Style Summary'}</h3>
             </div>
           </div>
@@ -568,7 +568,7 @@ const StyleAnalysis = ({
                   setIsEditing(false);
                   onEdit(preference);
                 }}
-                className="px-8 py-3 bg-[#4A5D23] text-white rounded-full font-medium text-sm uppercase tracking-wider hover:bg-[#3a4e1a] transition-all"
+                className="px-8 py-3 bg-brand text-white rounded-full font-medium text-sm uppercase tracking-wider hover:bg-brand-hover transition-all"
               >
                 Save & Confirm
               </button>
@@ -576,7 +576,7 @@ const StyleAnalysis = ({
               <>
                 <button 
                   onClick={onConfirm}
-                  className="px-8 py-3 bg-[#4A5D23] text-white rounded-full font-medium text-sm uppercase tracking-wider hover:bg-[#3a4e1a] transition-all shadow-lg shadow-[#4A5D23]/20"
+                  className="px-8 py-3 bg-brand text-white rounded-full font-medium text-sm uppercase tracking-wider hover:bg-brand-hover transition-all shadow-lg shadow-brand/20"
                 >
                   Yes, Find Matches
                 </button>
@@ -625,17 +625,17 @@ const MoveInChecklist = ({ onComplete }: { onComplete: () => void }) => {
           <div 
             key={task.id}
             onClick={() => toggleTask(task.id)}
-            className={`flex items-center justify-between p-4 rounded-2xl border transition-all cursor-pointer ${task.completed ? 'bg-[#F4F7EC] border-[#4A5D23]/15' : 'bg-neutral-50 border-neutral-100 hover:border-black/20'}`}
+            className={`flex items-center justify-between p-4 rounded-2xl border transition-all cursor-pointer ${task.completed ? 'bg-surface-ai border-brand/15' : 'bg-neutral-50 border-neutral-100 hover:border-black/20'}`}
           >
             <div className="flex items-center gap-3">
-              <div className={`${task.completed ? 'text-[#4A5D23]' : 'text-neutral-400'}`}>
+              <div className={`${task.completed ? 'text-brand' : 'text-neutral-400'}`}>
                 {task.icon}
               </div>
               <span className={`text-sm font-bold ${task.completed ? 'text-[#2e4417] line-through opacity-60' : 'text-black'}`}>
                 {task.label}
               </span>
             </div>
-            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${task.completed ? 'bg-[#4A5D23] border-emerald-500 text-white' : 'border-neutral-300'}`}>
+            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${task.completed ? 'bg-brand border-emerald-500 text-white' : 'border-neutral-300'}`}>
               {task.completed && <Check size={14} strokeWidth={3} />}
             </div>
           </div>
@@ -646,7 +646,7 @@ const MoveInChecklist = ({ onComplete }: { onComplete: () => void }) => {
         <button 
           disabled={!allCompleted}
           onClick={onComplete}
-          className={`w-full py-4 rounded-2xl font-medium uppercase tracking-normal transition-all ${allCompleted ? 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a] shadow-xl shadow-[#4A5D23]/20' : 'bg-neutral-100 text-neutral-400 cursor-not-allowed'}`}
+          className={`w-full py-4 rounded-2xl font-medium uppercase tracking-normal transition-all ${allCompleted ? 'bg-brand text-white hover:bg-brand-hover shadow-xl shadow-brand/20' : 'bg-neutral-100 text-neutral-400 cursor-not-allowed'}`}
         >
           Finalize Move-in
         </button>
@@ -681,20 +681,20 @@ const TourScheduling = ({ propertyName, onComplete }: { propertyName: string; on
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full bg-[#F4F7EC] rounded-3xl border border-[#4A5D23]/15 shadow-lg mt-4 p-8 text-center"
+        className="w-full bg-surface-ai rounded-3xl border border-brand/15 shadow-lg mt-4 p-8 text-center"
       >
-        <div className="w-12 h-12 bg-[#4A5D23] rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="w-12 h-12 bg-brand rounded-full flex items-center justify-center mx-auto mb-4">
           <Check size={24} className="text-white" strokeWidth={3} />
         </div>
         <h3 className="text-xl font-black text-black mb-1">Tour Confirmed!</h3>
         <p className="text-sm font-medium text-neutral-500 mb-4">{propertyName}</p>
-        <div className="bg-white rounded-2xl border border-[#4A5D23]/15 px-6 py-4 inline-block mb-6">
-          <span className="text-sm font-bold text-[#1a2609]">{dateStr} at {selectedTime}</span>
+        <div className="bg-white rounded-2xl border border-brand/15 px-6 py-4 inline-block mb-6">
+          <span className="text-sm font-bold text-brand-heading">{dateStr} at {selectedTime}</span>
         </div>
         <p className="text-xs font-medium text-neutral-400 mb-6">We'll send a reminder to {phone}</p>
         <button
           onClick={onComplete}
-          className="px-6 py-2.5 bg-[#4A5D23] text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#3a4e1a] transition-all"
+          className="px-6 py-2.5 bg-brand text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-brand-hover transition-all"
         >
           Back to Chat
         </button>
@@ -711,7 +711,7 @@ const TourScheduling = ({ propertyName, onComplete }: { propertyName: string; on
       className="w-full bg-[#FCF9F4] rounded-3xl border border-black/5 shadow-lg mt-4 p-8"
     >
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-full bg-[#4A5D23] flex items-center justify-center shrink-0">
+        <div className="w-10 h-10 rounded-full bg-brand flex items-center justify-center shrink-0">
           <Calendar size={18} className="text-white" />
         </div>
         <div>
@@ -729,7 +729,7 @@ const TourScheduling = ({ propertyName, onComplete }: { propertyName: string; on
               onClick={() => setSelectedDay(i)}
               className={`flex flex-col items-center py-2.5 rounded-xl border text-center transition-all ${
                 selectedDay === i
-                  ? 'bg-[#4A5D23] border-[#4A5D23] text-white'
+                  ? 'bg-brand border-brand text-white'
                   : 'bg-white border-black/5 hover:border-black/20 text-black'
               }`}
             >
@@ -751,7 +751,7 @@ const TourScheduling = ({ propertyName, onComplete }: { propertyName: string; on
               onClick={() => setSelectedTime(slot)}
               className={`py-2.5 rounded-xl border text-xs font-bold transition-all ${
                 selectedTime === slot
-                  ? 'bg-[#4A5D23] border-[#4A5D23] text-white'
+                  ? 'bg-brand border-brand text-white'
                   : 'bg-white border-black/5 hover:border-black/20 text-black'
               }`}
             >
@@ -768,21 +768,21 @@ const TourScheduling = ({ propertyName, onComplete }: { propertyName: string; on
           placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-3 bg-white border border-black/5 rounded-xl focus:ring-1 focus:ring-[#4A5D23] outline-none text-sm"
+          className="w-full px-4 py-3 bg-white border border-black/5 rounded-xl focus:ring-1 focus:ring-brand outline-none text-sm"
         />
         <input
           type="tel"
           placeholder="Phone Number"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="w-full px-4 py-3 bg-white border border-black/5 rounded-xl focus:ring-1 focus:ring-[#4A5D23] outline-none text-sm"
+          className="w-full px-4 py-3 bg-white border border-black/5 rounded-xl focus:ring-1 focus:ring-brand outline-none text-sm"
         />
       </div>
 
       <button
         onClick={handleConfirm}
         disabled={!canConfirm}
-        className="w-full py-3 bg-[#4A5D23] text-white rounded-xl font-bold text-sm uppercase tracking-wider hover:bg-[#3a4e1a] transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="w-full py-3 bg-brand text-white rounded-xl font-bold text-sm uppercase tracking-wider hover:bg-brand-hover transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
         <Calendar size={16} />
         Confirm Tour
@@ -926,7 +926,7 @@ const CompactPropertyCard = ({
           </button>
           <button
             onClick={(e) => { e.stopPropagation(); onTour ? onTour(property) : onClick?.(property); }}
-            className="flex-1 py-1.5 bg-[#4A5D23] hover:bg-[#3a4e1a] text-white rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5"
+            className="flex-1 py-1.5 bg-brand hover:bg-brand-hover text-white rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5"
           >
             <Calendar size={10} />
             Tour
@@ -1032,7 +1032,7 @@ const PropertyComparisonTable = ({
                         <img src={property.images?.[0] || property.image} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                       </div>
                       <div className="min-w-0">
-                        <div className="text-xs font-medium tracking-tight truncate group-hover:text-[#4A5D23] transition-colors">{property.title}</div>
+                        <div className="text-xs font-medium tracking-tight truncate group-hover:text-brand transition-colors">{property.title}</div>
                         <div className="text-xs font-normal text-neutral-400 tracking-normal truncate flex items-center gap-1">
                           <MapPin size={8} />
                           {property.location}
@@ -1085,7 +1085,7 @@ const PropertyComparisonTable = ({
                           e.stopPropagation();
                           onSendMessage(`I'd like to schedule a tour for ${property.title}`);
                         }}
-                        className="px-2 py-1 bg-[#4A5D23] text-white text-xs font-medium uppercase tracking-wider rounded-lg hover:bg-[#3a4e1a] transition-all whitespace-nowrap flex items-center gap-1"
+                        className="px-2 py-1 bg-brand text-white text-xs font-medium uppercase tracking-wider rounded-lg hover:bg-brand-hover transition-all whitespace-nowrap flex items-center gap-1"
                       >
                         <Calendar size={10} />
                         Tour
@@ -1417,7 +1417,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const showContextChip = contextProperty && !isCollapsed && contextProperty.id !== dismissedContextPropertyId;
 
    return (
-    <div className="flex-1 min-h-0 flex flex-col w-full relative h-full overflow-hidden bg-[#FCF9F8]">
+    <div className="flex-1 min-h-0 flex flex-col w-full relative h-full overflow-hidden bg-surface-app">
        {!isCollapsed && (
          <div className="flex-1 min-h-0 overflow-y-auto scroll-smooth custom-scrollbar relative" ref={scrollRef} onScroll={onScroll}>
             <div className={`max-w-3xl mx-auto px-4 md:px-6 space-y-10 pb-60 ${!selectedProperty ? 'pt-10 md:pt-16' : 'pt-10'}`}>
@@ -1468,7 +1468,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                      <button
                        key={chip.label}
                        onClick={() => onSendMessage(chip.query)}
-                       className="group relative overflow-hidden rounded-2xl border border-black/5 bg-white hover:border-[#4A5D23]/20 hover:shadow-lg transition-all duration-200 text-left"
+                       className="group relative overflow-hidden rounded-2xl border border-black/5 bg-white hover:border-brand/20 hover:shadow-lg transition-all duration-200 text-left"
                      >
                        <img src={chip.image} alt="" loading="lazy" decoding="async" className="w-full h-20 object-cover" referrerPolicy="no-referrer" />
                        <div className="px-3 py-2.5">
@@ -1499,9 +1499,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                         <span className="text-xs font-medium text-black uppercase tracking-wider">UnitPulse</span>
                      </div>
 
-                     <div className={`text-neutral-800 text-sm leading-relaxed pl-1 whitespace-pre-wrap font-medium ${msg.isSigningMessage ? 'bg-[#F4F7EC] p-6 rounded-2xl border-2 border-emerald-500/20 shadow-xl shadow-emerald-500/5' : ''}`}>
+                     <div className={`text-neutral-800 text-sm leading-relaxed pl-1 whitespace-pre-wrap font-medium ${msg.isSigningMessage ? 'bg-surface-ai p-6 rounded-2xl border-2 border-emerald-500/20 shadow-xl shadow-emerald-500/5' : ''}`}>
                         {msg.isSigningMessage && (
-                          <div className="flex items-center gap-2 text-[#4A5D23] font-bold uppercase tracking-wider text-xs mb-4">
+                          <div className="flex items-center gap-2 text-brand font-bold uppercase tracking-wider text-xs mb-4">
                             <Check size={14} strokeWidth={3} />
                             Lease Agreement Ready
                           </div>
@@ -1576,9 +1576,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                         )}
 
                         {msg.isSigningMessage && !msg.interactiveType && (
-                          <div className="mt-8 p-6 bg-white rounded-xl border border-[#4A5D23]/15 flex items-center justify-between shadow-sm">
+                          <div className="mt-8 p-6 bg-white rounded-xl border border-brand/15 flex items-center justify-between shadow-sm">
                              <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 bg-[#4A5D23] text-white rounded-full flex items-center justify-center shadow-lg shadow-[#4A5D23]/20">
+                                <div className="w-10 h-10 bg-brand text-white rounded-full flex items-center justify-center shadow-lg shadow-brand/20">
                                    <Check size={20} strokeWidth={3} />
                                 </div>
                                 <div>
@@ -1586,7 +1586,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                                    <div className="text-xs text-neutral-400 font-medium uppercase tracking-wider">Secured by UnitPulse</div>
                                 </div>
                              </div>
-                             <div className="text-xs font-medium text-[#4A5D23] uppercase tracking-wider bg-[#F4F7EC] px-3 py-1.5 rounded-full">Active</div>
+                             <div className="text-xs font-medium text-brand uppercase tracking-wider bg-surface-ai px-3 py-1.5 rounded-full">Active</div>
                           </div>
                         )}
                       </div>
@@ -1618,7 +1618,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
          </div>
        )}
 
-       <div className={`w-full px-4 flex flex-col items-center justify-end z-50 shrink-0 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#FCF9F8] via-[#FCF9F8]/90 to-transparent ${!isCollapsed ? 'pb-4 pt-8' : 'pb-4 pt-0'}`}>
+       <div className={`w-full px-4 flex flex-col items-center justify-end z-50 shrink-0 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-surface-app via-surface-app/90 to-transparent ${!isCollapsed ? 'pb-4 pt-8' : 'pb-4 pt-0'}`}>
 
           {/* Suggested replies */}
           {!isCollapsed && !isLoading && messages.length > 0 && filteredSuggestions.length > 0 && (
@@ -1667,7 +1667,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                <div className="flex items-center px-1 pt-0.5">
                  <button
                    onClick={() => onPropertyClick(contextProperty)}
-                   className="group flex items-center gap-2 pl-1 pr-1 py-1 bg-neutral-50 border border-black/5 rounded-full hover:border-[#4A5D23]/30 hover:bg-neutral-100 transition-all duration-200"
+                   className="group flex items-center gap-2 pl-1 pr-1 py-1 bg-neutral-50 border border-black/5 rounded-full hover:border-brand/30 hover:bg-neutral-100 transition-all duration-200"
                  >
                    <img
                      src={contextProperty.image}
@@ -1721,7 +1721,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                      onClick={() => setShowPrefsPopover(v => !v)}
                      className={`relative flex items-center justify-center w-8 h-8 rounded-full transition-all ${
                        showPrefsPopover
-                         ? 'bg-[#4A5D23]/10'
+                         ? 'bg-brand/10'
                          : 'hover:bg-neutral-100'
                      }`}
                      title="Renter Profile"
@@ -1730,7 +1730,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                        percentage={Math.round(((new Set((userPreferences ?? []).map(p => p.category))).size / 8) * 100)}
                        size={28}
                      />
-                     <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-[#4A5D23]">
+                     <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-brand">
                        {(new Set((userPreferences ?? []).map(p => p.category))).size}
                      </span>
                    </button>
@@ -1742,7 +1742,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                          animate={{ opacity: 1, y: 0, scale: 1 }}
                          exit={{ opacity: 0, y: -2, scale: 0.95 }}
                          transition={{ duration: 0.2 }}
-                         className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap px-3 py-1.5 bg-[#4A5D23] text-white text-[10px] font-bold rounded-full shadow-lg pointer-events-none z-50"
+                         className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap px-3 py-1.5 bg-brand text-white text-[10px] font-bold rounded-full shadow-lg pointer-events-none z-50"
                        >
                          {prefToast}
                        </motion.div>
@@ -1826,7 +1826,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                        type="button"
                        onClick={onStop}
                        aria-label="Stop generating"
-                       className="h-8 w-8 rounded-full bg-[#4A5D23] text-white hover:bg-[#3a4e1a] transition-all flex items-center justify-center"
+                       className="h-8 w-8 rounded-full bg-brand text-white hover:bg-brand-hover transition-all flex items-center justify-center"
                      >
                        <Square size={14} fill="currentColor" />
                      </button>
@@ -1838,7 +1838,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                        aria-label="Send message"
                        className={`h-8 w-8 rounded-full transition-all flex items-center justify-center ${
                          hasText
-                           ? 'bg-[#4A5D23] text-white hover:bg-[#3a4e1a]'
+                           ? 'bg-brand text-white hover:bg-brand-hover'
                            : 'bg-neutral-100 text-neutral-300 cursor-not-allowed'
                        }`}
                      >

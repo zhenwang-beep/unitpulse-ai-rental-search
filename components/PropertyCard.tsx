@@ -182,7 +182,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
           <button
             onClick={(e) => { e.stopPropagation(); trackTourSchedule(property.id); setShowTourModal(true); }}
             aria-label="Schedule a tour"
-            className="flex-1 py-2.5 bg-[#4A5D23] hover:bg-[#3a4e1a] text-white rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-1.5"
+            className="flex-1 py-2.5 bg-brand hover:bg-brand-hover text-white rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-1.5"
           >
             <Calendar size={14} className="shrink-0" />
             Tour

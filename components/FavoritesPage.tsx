@@ -36,7 +36,7 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
   };
 
   return (
-    <div className="min-h-[100dvh] bg-[#FCF9F8] font-sans">
+    <div className="min-h-[100dvh] bg-surface-app font-sans">
       <TopNav
         isLoggedIn={isLoggedIn}
         isDropdownOpen={isDropdownOpen}
@@ -61,7 +61,7 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({
             </p>
             <button
               onClick={() => navigate('/')}
-              className="px-6 py-3 bg-[#4A5D23] text-white rounded-xl text-sm font-semibold hover:bg-[#3a4e1a] transition-all"
+              className="px-6 py-3 bg-brand text-white rounded-xl text-sm font-semibold hover:bg-brand-hover transition-all"
             >
               Start browsing
             </button>

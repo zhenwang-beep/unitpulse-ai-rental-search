@@ -200,7 +200,7 @@ const FAQPage: React.FC<FAQPageProps> = ({
   }, []);
 
   return (
-    <div className="h-[100dvh] w-full bg-[#FCF9F8] text-black font-sans overflow-y-auto scroll-smooth" onScroll={handleScroll}>
+    <div className="h-[100dvh] w-full bg-surface-app text-black font-sans overflow-y-auto scroll-smooth" onScroll={handleScroll}>
       <TopNav
         isLoggedIn={isLoggedIn}
         isDropdownOpen={isDropdownOpen}
@@ -214,7 +214,7 @@ const FAQPage: React.FC<FAQPageProps> = ({
       {/* Hero */}
       <div className="w-full max-w-6xl mx-auto px-4 pt-16 pb-10 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#4A5D23]/10 text-[#4A5D23] text-xs font-black uppercase tracking-wider mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand/10 text-brand text-xs font-black uppercase tracking-wider mb-6">
             <HelpCircle size={14} />
             Help Center
           </div>
@@ -233,7 +233,7 @@ const FAQPage: React.FC<FAQPageProps> = ({
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search questions..."
-              className="w-full h-14 pl-14 pr-6 bg-white border border-black/5 rounded-2xl text-sm focus:outline-none focus:border-[#4A5D23]/30 transition-all shadow-sm"
+              className="w-full h-14 pl-14 pr-6 bg-white border border-black/5 rounded-2xl text-sm focus:outline-none focus:border-brand/30 transition-all shadow-sm"
             />
             {searchQuery && (
               <span className="absolute right-5 top-1/2 -translate-y-1/2 text-xs text-neutral-400 font-medium">
@@ -249,7 +249,7 @@ const FAQPage: React.FC<FAQPageProps> = ({
         <div className="flex flex-wrap justify-center gap-2">
           <button
             onClick={() => setActiveCategory('all')}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${activeCategory === 'all' ? 'bg-[#4A5D23] text-white' : 'bg-white border border-black/5 text-neutral-600 hover:border-black/20'}`}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${activeCategory === 'all' ? 'bg-brand text-white' : 'bg-white border border-black/5 text-neutral-600 hover:border-black/20'}`}
           >
             All Topics
           </button>
@@ -257,7 +257,7 @@ const FAQPage: React.FC<FAQPageProps> = ({
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${activeCategory === cat.id ? 'bg-[#4A5D23] text-white' : 'bg-white border border-black/5 text-neutral-600 hover:border-black/20'}`}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${activeCategory === cat.id ? 'bg-brand text-white' : 'bg-white border border-black/5 text-neutral-600 hover:border-black/20'}`}
             >
               <cat.icon size={14} />
               {cat.label}
@@ -284,7 +284,7 @@ const FAQPage: React.FC<FAQPageProps> = ({
               className="mb-10"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-[#4A5D23]/10 flex items-center justify-center text-[#4A5D23]">
+                <div className="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center text-brand">
                   <cat.icon size={20} />
                 </div>
                 <h2 className="text-xl font-bold text-black tracking-tight">{cat.label}</h2>
@@ -300,7 +300,7 @@ const FAQPage: React.FC<FAQPageProps> = ({
                         onClick={() => toggleItem(key)}
                         className="w-full flex items-center justify-between p-5 md:p-6 text-left hover:bg-neutral-50/50 transition-colors group"
                       >
-                        <span className="text-base font-semibold text-black pr-4 group-hover:text-[#4A5D23] transition-colors">{item.q}</span>
+                        <span className="text-base font-semibold text-black pr-4 group-hover:text-brand transition-colors">{item.q}</span>
                         <ChevronDown
                           size={20}
                           className={`shrink-0 text-neutral-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
@@ -332,7 +332,7 @@ const FAQPage: React.FC<FAQPageProps> = ({
 
       {/* CTA Section */}
       <div className="w-full max-w-4xl mx-auto px-4 pb-20">
-        <div className="p-8 md:p-12 rounded-[2rem] bg-[#4A5D23] text-white text-center relative overflow-hidden">
+        <div className="p-8 md:p-12 rounded-[2rem] bg-brand text-white text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -ml-20 -mb-20" />
           <div className="relative z-10">
@@ -340,7 +340,7 @@ const FAQPage: React.FC<FAQPageProps> = ({
             <p className="text-white/70 text-lg mb-8 max-w-lg mx-auto">Our AI assistant is available 24/7 to answer any question about rentals, neighborhoods, or the platform.</p>
             <button
               onClick={() => navigate('/search')}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#4A5D23] rounded-2xl font-bold hover:shadow-xl transition-all"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand rounded-2xl font-bold hover:shadow-xl transition-all"
             >
               <MessageSquare size={20} />
               Chat with us
