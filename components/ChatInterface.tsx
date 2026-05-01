@@ -1398,15 +1398,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     if (messages.length === 0) setContextProperty(null);
   }, [messages]);
 
-  // Reset dismissed state and auto-open property panel on desktop when context property changes
+  // Reset dismissed state when context property changes. The panel only
+  // opens when the user explicitly clicks a property card or the context
+  // chip — never auto-open just because the AI returned matches.
   const prevContextIdRef = useRef<string | null>(null);
   useEffect(() => {
     if (contextProperty && contextProperty.id !== prevContextIdRef.current) {
       setDismissedContextPropertyId(null);
-      // Auto-open property panel on desktop
-      if (window.innerWidth >= 1024) {
-        onPropertyClick(contextProperty);
-      }
       prevContextIdRef.current = contextProperty.id;
     }
   }, [contextProperty?.id]);
