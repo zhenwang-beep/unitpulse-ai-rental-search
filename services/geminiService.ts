@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { GeminiResponse, Property } from '../types';
+import { GeminiResponse, PreferenceProfile, Property } from '../types';
 
 const apiKey = process.env.API_KEY;
 
@@ -11,7 +11,7 @@ const getAiClient = () => {
   return new GoogleGenAI({ apiKey });
 };
 
-const buildSystemInstruction = (properties: Property[]) => {
+const buildSystemInstruction = (properties: Property[], preferenceProfile?: PreferenceProfile | null) => {
   const locations = Array.from(new Set(properties.map(p => p.location))).join(', ');
   const amenities = Array.from(new Set(properties.flatMap(p => p.amenities))).slice(0, 30).join(', ');
   const propertyList = properties.slice(0, 12).map(p =>
@@ -74,6 +74,19 @@ When a user sends a message:
    Set "confidence" to "precise" if it has a concrete value, or "vague" if it's a general feeling. Only include NEW preferences from the current message. Return empty array if none.
 
 Output JSON format strictly.
+${preferenceProfile ? `
+USER PREFERENCE CONTEXT (from browsing behavior and prior interactions):
+${preferenceProfile.naturalLanguageSummary}
+
+Structured preferences:
+- Preferred locations: ${preferenceProfile.locationPreferences.slice(0, 3).map(l => l.value).join(', ') || 'Not yet determined'}
+- Budget range: ${preferenceProfile.budgetRange.min > 0 ? `$${preferenceProfile.budgetRange.min.toLocaleString()} - $${preferenceProfile.budgetRange.max.toLocaleString()}/mo` : 'Not yet determined'}
+- Top amenities: ${preferenceProfile.amenityPreferences.slice(0, 5).map(a => a.value).join(', ') || 'Not yet determined'}
+- Property type: ${preferenceProfile.propertyTypePreference[0]?.value || 'No preference'}
+- Engagement: ${preferenceProfile.engagementSummary.totalViews} properties viewed, ${preferenceProfile.engagementSummary.favoritesCount} favorited
+
+Use these preferences to proactively suggest properties the user would enjoy. Prioritize behavioral signals over generic recommendations. When the user asks for recommendations without specifying criteria, use these preferences as the default search parameters.
+` : ''}
 `;
 };
 
@@ -82,7 +95,8 @@ export const sendMessageToGemini = async (
   history: { role: string, text: string }[],
   selectedProperty?: Property | null,
   signal?: AbortSignal,
-  properties?: Property[]
+  properties?: Property[],
+  preferenceProfile?: PreferenceProfile | null
 ): Promise<GeminiResponse | null> => {
   const ai = getAiClient();
 
@@ -145,7 +159,7 @@ export const sendMessageToGemini = async (
       parts: [{ text: h.text }]
     }));
 
-    const systemInstruction = buildSystemInstruction(properties ?? []);
+    const systemInstruction = buildSystemInstruction(properties ?? [], preferenceProfile);
     let contextualInstruction = systemInstruction;
 
     if (selectedProperty) {
