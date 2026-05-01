@@ -6,58 +6,9 @@
     <title>UnitPulse Rental Search</title>
     <meta name="application-name" content="UnitPulse Rental Search" />
     <meta name="description" content="UnitPulse – AI-powered rental search. Find your perfect home through natural conversation." />
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['"Inter"', 'sans-serif'],
-              heading: ['"Manrope"', 'sans-serif'],
-            },
-            colors: {
-              // Olive (primary brand). Semantic tokens — see design.md.
-              brand: {
-                DEFAULT: '#4A5D23',
-                hover: '#3a4e1a',
-                'on-dark': '#A8B97D',  // For use on bg-black / dark surfaces
-                text: '#243510',       // Body text on AI tint
-                heading: '#1a2609',    // Headings on AI tint
-              },
-              // Cream/warm-neutral surfaces.
-              surface: {
-                app: '#FCF9F8',        // App background, sticky bars, modal panels
-                '2': '#F4F1EE',        // Pricing tables, amenity chips, tag bg
-                ai: '#F4F7EC',         // AI Lifestyle Match, olive-accent info sections
-                footer: '#F0EDEA',     // Landing page footer
-              },
-            },
-            animation: {
-              'float': 'float 6s ease-in-out infinite',
-              'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
-              'fade-in': 'fadeIn 0.8s ease-out forwards',
-            },
-            keyframes: {
-              float: {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-10px)' },
-              },
-              fadeInUp: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              },
-              fadeIn: {
-                '0%': { opacity: '0' },
-                '100%': { opacity: '1' },
-              }
-            }
-          }
-        }
-      }
-    </script>
     <style>
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
