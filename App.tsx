@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import { FEATURES } from './featureFlags';
 import { motion } from 'motion/react';
 import { Eye, EyeOff, X } from 'lucide-react';
 import { AppContextProvider, useAppContext } from './context/AppContext';
@@ -152,21 +153,27 @@ const AppShell: React.FC = () => {
             />
           }
         />
-        <Route path="/search" element={<SearchRedirect />} />
-        <Route
-          path="/search/:chatId"
-          element={
-            <ChatPage
-              isLoggedIn={isLoggedIn}
-              setShowLoginView={setShowLoginView}
-              setPendingFavoriteProperty={setPendingFavoriteProperty}
-              handleLogout={handleLogout}
-              showToast={setToast}
-            />
-          }
-        >
-          <Route path="property/:propertyId" element={<PropertyPanel />} />
-        </Route>
+        {FEATURES.AI_CHAT && (
+          <Route path="/search" element={<SearchRedirect />} />
+        )}
+        {FEATURES.AI_CHAT ? (
+          <Route
+            path="/search/:chatId"
+            element={
+              <ChatPage
+                isLoggedIn={isLoggedIn}
+                setShowLoginView={setShowLoginView}
+                setPendingFavoriteProperty={setPendingFavoriteProperty}
+                handleLogout={handleLogout}
+                showToast={setToast}
+              />
+            }
+          >
+            <Route path="property/:propertyId" element={<PropertyPanel />} />
+          </Route>
+        ) : (
+          <Route path="/search/*" element={<Navigate to="/" replace />} />
+        )}
         <Route path="/property/:propertyId" element={<PropertyDetailPage />} />
         <Route path="/favorites" element={
           <FavoritesPage

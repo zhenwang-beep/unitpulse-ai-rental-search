@@ -2,6 +2,50 @@
 
 Tracking deferred work that doesn't fit in the current sprint.
 
+## AI feature flags — first AWS production release
+
+The first production release on AWS ships **without AI surfaces**.
+All AI code stays in the repo; visibility is controlled by env-var
+feature flags in `featureFlags.ts`.
+
+**Default in production**: every `VITE_FEATURE_AI_*` is OFF.
+**Default in dev**: every flag is ON (set per-env to override).
+
+Currently wired: `AI_CHAT` (gates `/search/:chatId` route + redirects to `/`).
+
+Still to wire (each is a small targeted edit, do when fallback UX for
+the landing page is decided):
+
+- `AI_VOICE` — gate the voice button on `LandingPage` and the
+  `<LiveInterface>` mount on both `LandingPage` and `ChatPage`.
+- `AI_LIFESTYLE_MATCH` — wrap the `isAnalyzing` / `matchScore` block in
+  `PropertyDetailsModal.tsx` (~line 219-275) in `if (FEATURES.AI_LIFESTYLE_MATCH)`.
+- `AI_PREFERENCES` — gate the preference sidebar in `ChatPage`, neutralize
+  `useTracker` to a no-op when flag is OFF, skip `preferenceSynthesizer`
+  calls. Note: `useTracker` is also imported by `PropertyCard` and
+  `PropertyPanel` — handle those gracefully (early return inside the hook).
+
+### Picking up later
+
+To turn a feature on for production:
+1. Set `VITE_FEATURE_AI_<NAME>=true` in the deploy environment (Vercel
+   env settings, AWS Parameter Store, etc.).
+2. Redeploy. No code changes needed.
+3. Verify the surface appears and Gemini calls land.
+
+### Pending design decision: landing-page fallback when AI_CHAT is OFF
+
+Today the LandingPage chat input navigates to `/search/:chatId` to start
+an AI conversation. With `AI_CHAT=off`, that flow is dead. Options:
+- **(a)** Remove the chat input entirely; show only city filter + cards
+- **(b)** Keep the input but treat it as a basic keyword filter (no AI)
+- **(c)** Keep input + show "AI search coming soon" badge that nudges
+  email signup or routes to current grid
+
+Decide before wiring `AI_CHAT` deeper into the landing page.
+
+## Property data API
+
 ## Property data API
 
 Stock photos still appear in property listings (water drops, ocean rocks,

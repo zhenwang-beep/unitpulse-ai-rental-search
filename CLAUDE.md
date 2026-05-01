@@ -75,8 +75,28 @@ See `design.md` for prose-level usage guidance per surface.
 
 ## AI features status (READ BEFORE TOUCHING)
 
-Several AI features exist but are not all release-ready. See "AI feature
-flags" section in `TODO.md` for the deferral plan and how to flip them on.
+AI features are gated by env-var feature flags in `featureFlags.ts`.
+
+- **Production default**: every flag OFF — first AWS production release
+  ships traditional browse + filter UX without AI surfaces.
+- **Dev default**: every flag ON — engineers see the full app locally.
+- **To enable in deployed env**: set `VITE_FEATURE_*=true` (Vercel env
+  settings today; AWS Parameter Store / SSM after migration).
+
+Current flags:
+
+| Flag | Gates |
+|---|---|
+| `VITE_FEATURE_AI_CHAT` | `/search/:chatId` route (`ChatPage`); landing-page chat input AI behavior |
+| `VITE_FEATURE_AI_VOICE` | Voice button on LandingPage / ChatPage; `LiveInterface` mount |
+| `VITE_FEATURE_AI_LIFESTYLE_MATCH` | "Lifestyle Match" section in `PropertyDetailsModal` |
+| `VITE_FEATURE_AI_PREFERENCES` | ChatPage preference sidebar; `useTracker` side effects |
+
+Vite tree-shakes `if (!FEATURES.X) {...}` blocks at build time when X is
+statically `false`, so disabled AI code does not ship in the production
+bundle (no Gemini imports, no network calls).
+
+See `.env.example` for the full list. See `TODO.md` for revival recipes.
 
 ## Outstanding work
 
