@@ -14,20 +14,30 @@ const PageFooter: React.FC = () => (
           <p className="text-sm text-neutral-600 mb-3 font-semibold">AI-powered rental search for modern renters.</p>
           <p className="text-sm text-neutral-500 mb-8 leading-relaxed">UnitPulse uses AI to understand your lifestyle, budget, and preferences through a natural conversation — so you find homes that truly fit, not just listings that match filters.</p>
         </div>
-        <div className="lg:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-8">
           <div>
-            <h4 className="font-bold text-black mb-4 text-sm uppercase tracking-wider">Resources</h4>
+            <h4 className="font-bold text-black mb-4 text-sm uppercase tracking-wider">For renters</h4>
             <ul className="space-y-3 text-sm text-neutral-500">
+              <li><a href="/" className="hover:text-black transition-colors">Find rentals</a></li>
+              <li><a href="/rentals" className="hover:text-black transition-colors">Markets</a></li>
               <li><a href="/blog" className="hover:text-black transition-colors">Blog</a></li>
               <li><a href="/faq" className="hover:text-black transition-colors">FAQ</a></li>
-              <li><a href="/rentals" className="hover:text-black transition-colors">Rental Markets</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold text-black mb-4 text-sm uppercase tracking-wider">For partners</h4>
+            <ul className="space-y-3 text-sm text-neutral-500">
+              <li><a href="/partner" className="hover:text-black transition-colors">Become a partner</a></li>
+              <li><a href="/partner#features" className="hover:text-black transition-colors">Features</a></li>
+              <li><a href="/partner#pricing" className="hover:text-black transition-colors">Pricing</a></li>
+              <li><a href="/partner#contact" className="hover:text-black transition-colors">Contact sales</a></li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold text-black mb-4 text-sm uppercase tracking-wider">Company</h4>
             <ul className="space-y-3 text-sm text-neutral-500">
-              <li><a href="#" className="hover:text-black transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-black transition-colors">Contact</a></li>
+              <li><a href="/partner#about" className="hover:text-black transition-colors">About us</a></li>
+              <li><a href="/partner#contact" className="hover:text-black transition-colors">Contact</a></li>
             </ul>
           </div>
           <div>
@@ -35,6 +45,7 @@ const PageFooter: React.FC = () => (
             <ul className="space-y-3 text-sm text-neutral-500">
               <li><a href="/privacy" className="hover:text-black transition-colors">Privacy Policy</a></li>
               <li><a href="/terms" className="hover:text-black transition-colors">Terms of Service</a></li>
+              <li><a href="/upleasing-privacy" className="hover:text-black transition-colors">Upleasing Privacy</a></li>
             </ul>
           </div>
         </div>

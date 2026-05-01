@@ -4,8 +4,8 @@
     {
       "name": "lumina-dev",
       "runtimeExecutable": "/Users/wangzhen/.nvm/versions/node/v22.19.0/bin/node",
-      "runtimeArgs": ["node_modules/.bin/vite"],
-      "port": 3000
+      "runtimeArgs": ["node_modules/.bin/vite", "--port", "3002", "--strictPort"],
+      "port": 3002
     }
   ]
 }
