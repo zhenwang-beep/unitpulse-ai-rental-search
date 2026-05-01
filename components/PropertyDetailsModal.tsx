@@ -83,6 +83,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({
 
   if (!property) return null;
 
+  // TODO(eng): drop the picsum fallback once the property data API returns real photos.
   const images = (property.images?.length ? property.images : [property.image || `https://picsum.photos/seed/${property.imageSeed}/1200/800`]);
   const floorPlans = property.floorPlans ?? [];
   const matchScore = property.matchScore ?? 95;

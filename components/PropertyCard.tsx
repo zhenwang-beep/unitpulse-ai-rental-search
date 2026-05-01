@@ -18,6 +18,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, isFavorite, onTog
   const [isHovered, setIsHovered] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showTourModal, setShowTourModal] = useState(false);
+  // TODO(eng): once the property data API ships real photos, drop the picsum fallback —
+  // it serves stock images that don't depict the actual unit and confuse renters.
   const images = property.images || [`https://picsum.photos/seed/${property.imageSeed}/800/600`];
   const { trackView, trackPhotoNav, trackFavorite, trackTourSchedule } = useTracker();
 

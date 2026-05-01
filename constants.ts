@@ -1,6 +1,11 @@
 import { Property } from './types';
 
-// Real property data sourced from tripalink.com — Los Angeles listings
+// Real property data sourced from tripalink.com — Los Angeles listings.
+// TODO(eng): replace MOCK_PROPERTIES with a live data feed. Some entries still
+// reference stock/Unsplash imagery that doesn't depict the actual unit (water
+// drops, ocean rocks, etc.); current Supabase rows in propertyService.ts have
+// the same issue. Pipe real listing photos through `images` and `image` once
+// the property data API is integrated.
 export const MOCK_PROPERTIES: Property[] = [
   {
     id: 'tp-50000143',
